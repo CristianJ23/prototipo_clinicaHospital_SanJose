@@ -1,7 +1,112 @@
-.formulario{
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    height: 100%; /* Asegura que el body y el html ocupen toda la pantalla */
+}
+
+.login-container {
+    display: flex;
+    height: 100vh; /* Asegura que el contenedor ocupe la altura completa de la pantalla */
+    width: 100vw; /* Asegura que ocupe el ancho completo */
+}
+
+.image-section {
+    flex: 1;
+    background: url('../img2/v2_10546.png') no-repeat center center;
+    background-size: cover;
+}
+
+.form-section {
+    flex: 1;
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+}
+
+.contenedor-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    padding: 20px;
+}
+
+h1 {
+    color: #3da07b;
+    margin-bottom: 20px;
+}
+
+.formulario {
+    max-width: 450px; /* Mantiene un tamaño cómodo para el formulario */
+    width: 100%;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 20px auto;
+}
+
+.formulario label {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #333;
+    font-size: 14px;
+}
+
+.formulario input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.formulario button {
+    padding: 12px;
+    width: 100%;
+    background-color: #3da07b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.formulario button:hover {
+    background-color: #2e7b5e;
+}
+
+.seccion-recordar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.seccion-recordar input {
+    margin-right: 5px;
+}
+
+.olvido-contrasena {
+    font-size: 12px;
+    color: #555;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.loading {
+    color: #888;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }

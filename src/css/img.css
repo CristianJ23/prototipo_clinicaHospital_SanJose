@@ -1,0 +1,19 @@
+/* Estilo para centrar y dar formato al contenedor */
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+  }
+  /* Estilo para la sección de la imagen */
+  .image-section {
+    flex: 1;
+    background: url('img/v2_10546.png') no-repeat center center;
+    background-size: cover;
+  }
+  /* Estilo para la sección del formulario */
+  .form-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
