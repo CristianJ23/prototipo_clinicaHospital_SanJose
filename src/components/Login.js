@@ -1,20 +1,20 @@
-import "../css/loggin.css"
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider"; // Importar el hook de autenticación
+import "../css/loggin.css"
 
-
-
-export const Login = ({setUser}) => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState(false)
+export const Login = ({ setUser }) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
     const navigate = useNavigate();
+    const { setIsAuthenticated } = useAuth();  // Acceder a setIsAuthenticated desde el contexto
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validateCredentials(email, password);
         if (isValid) {
+            setIsAuthenticated(true);  // Actualizar el estado de autenticación
             navigate("/inicio");
         } else {
             setError(true);
@@ -26,13 +26,11 @@ export const Login = ({setUser}) => {
     };
 
     const handleForgotPassword = () => {
-        // Navegar a la página de recuperación de contraseña
-        navigate("../components/recuperar.js");
+        navigate("/recuperar-contraseña");
     };
 
-    
     const handleGoToUsers = () => {
-        navigate("/users");  // Redirigir a la página de usuarios
+        navigate("/users");
     };
 
     return (
@@ -68,10 +66,14 @@ export const Login = ({setUser}) => {
                             </span>
                         </div>
                         <button type="submit">Iniciar sesión</button>
-                        <hr></hr>
-                        <button type="submit" onClick={handleGoToUsers}>users Created</button>
+                        <hr />
+                        <button type="button" onClick={handleGoToUsers}>
+                            Usuarios creados
+                        </button>
                     </form>
-                    {error && <p className="error">Credenciales incorrectas, intente nuevamente.</p>}
+                    {error && (
+                        <p className="error">Credenciales incorrectas, intente nuevamente.</p>
+                    )}
                 </div>
             </div>
         </div>

@@ -42,9 +42,10 @@ const CompShowUsers = () => {
                         <tbody>
                             {users.map((user) => (
                                 <tr key={user.id}>
-                                    <td>{user.name}</td>
+                                    <td>{user.nombre}</td>
                                     <td>{user.apellido}</td>
                                     <td>{user.correo}</td>
+                                    <td>{user.contraseña}</td>
                                     <td>{user.nombreRol}</td>
                                     <td>{user.Rol_idRol}</td>
                                     <td>
