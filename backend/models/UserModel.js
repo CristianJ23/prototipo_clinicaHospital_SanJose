@@ -7,11 +7,11 @@ import db from "../database/db.js";
 import { DataTypes } from "sequelize";
 
 const BlogModel = db.define('users', {
-    idUsuarios: {
+  id_paciente: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-      },    
+      },
     nombre: {type:DataTypes.STRING},
     apellido: {type:DataTypes.STRING},
     correo: {type:DataTypes.STRING},
@@ -19,7 +19,7 @@ const BlogModel = db.define('users', {
     nombreRol: {type:DataTypes.STRING},
     Roles_idRoles: {type:DataTypes.INTEGER},
 }, {
-  tableName: 'usuarios',  // Asegúrate de que el nombre de la tabla sea 'usuarios'
+  tableName: 'Paciente',  // Asegúrate de que el nombre de la tabla sea 'usuarios'
   timestamps: false        // Opcional: Si no tienes campos de timestamps como createdAt/updatedAt
 });
 

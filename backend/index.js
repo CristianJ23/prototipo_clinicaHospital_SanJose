@@ -2,8 +2,13 @@ import express from "express";
 import cors from 'cors';
 import db from "./database/db.js";
 import routes from "./routes/routes.js";
+import loggerMiddleware from "./controllers/middleware.js";
+import loadAssociations from "./models/associations.js";
 
 const app = express();
+
+//cargar asociaciones
+loadAssociations();
 
 
 // Configurar CORS para permitir solicitudes desde http://localhost:3000
@@ -11,10 +16,12 @@ app.use(cors({
   origin: 'http://localhost:3000',  // Aquí pones la URL de tu frontend
   methods: ['GET', 'POST'],        // Métodos permitidos
   allowedHeaders: ['Content-Type'],// Encabezados permitidos
-}));app.use(express.json());
+}));
 
 // Rutas
+app.use(express.json()); // Middleware para parsear JSON
 app.use('/kriss', routes);
+
 
 // Ruta raíz
 // app.get('/', (req, res) => {

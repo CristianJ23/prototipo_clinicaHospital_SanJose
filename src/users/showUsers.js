@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Referencia al endpoint de backend
-const URI = 'http://localhost:8000/kriss/';
+const URI = 'http://localhost:8000/kriss/persona';
 
 const CompShowUsers = () => {
+
     const [users, setUser] = useState([]);
 
     useEffect(() => {
@@ -41,9 +42,9 @@ const CompShowUsers = () => {
                         </thead>
                         <tbody>
                             {users.map((user) => (
-                                <tr key={user.id}>
-                                    <td>{user.name}</td>
-                                    <td>{user.apellido}</td>
+                                <tr key={user.id_persona}>
+                                    <td>{user.nombres}</td>
+                                    <td>{user.apellidos}</td>
                                     <td>{user.correo}</td>
                                     <td>{user.nombreRol}</td>
                                     <td>{user.Rol_idRol}</td>

@@ -1,9 +1,10 @@
+import PersonModel from "../models/PersonaModel.js";
 import BlogModel from "../models/UserModel.js";
 
 // Obtener todos los usuarios
 export const getUsers = async (req, res) => {
   try {
-    const users = await BlogModel.findAll();
+    const users = await PersonModel.findAll();
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -13,7 +14,7 @@ export const getUsers = async (req, res) => {
 // Obtener un usuario por ID
 export const getUserById = async (req, res) => {
   try {
-    const user = await BlogModel.findByPk(req.params.id);
+    const user = await PersonModel.findByPk(req.params.id);
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -26,7 +27,7 @@ export const getUserById = async (req, res) => {
 // Crear un nuevo usuario
 export const createUser = async (req, res) => {
   try {
-    const newUser = await BlogModel.create(req.body);
+    const newUser = await PersonModel.create(req.body);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -36,7 +37,7 @@ export const createUser = async (req, res) => {
 // Actualizar un usuario por ID
 export const updateUser = async (req, res) => {
   try {
-    const user = await BlogModel.findByPk(req.params.id);
+    const user = await PersonModel.findByPk(req.params.id);
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -50,7 +51,7 @@ export const updateUser = async (req, res) => {
 // Eliminar un usuario por ID
 export const deleteUser = async (req, res) => {
   try {
-    const user = await BlogModel.findByPk(req.params.id);
+    const user = await PersonModel.findByPk(req.params.id);
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
