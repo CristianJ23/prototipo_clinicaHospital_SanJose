@@ -1,0 +1,113 @@
+
+drop schema if exists clinica_san_jose;
+create schema if not exists clinica_san_jose;
+use clinica_san_jose;
+
+
+-- Crear tabla Area
+CREATE TABLE Area (
+    id_area INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_area VARCHAR(100),
+    ubicacion VARCHAR(100)
+);
+
+-- Crear tabla Persona (común para Médico, Enfermera, Tratante, Paciente)
+CREATE TABLE Persona (
+    id_persona INT AUTO_INCREMENT PRIMARY KEY,
+    nombres VARCHAR(100),
+    apellidos VARCHAR(100),
+    cedula VARCHAR(20) UNIQUE,
+    celular VARCHAR(15),
+    sexo ENUM('M', 'F'),
+    fecha_nacimiento DATE,
+    correo_electronico VARCHAR(100) UNIQUE,
+    edad INT
+);
+
+-- Crear tabla Especialidades
+CREATE TABLE Especialidades (
+    id_especialidad INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_especialidad VARCHAR(100)
+);
+
+-- Crear tabla Enfermera
+CREATE TABLE Enfermera (
+    id_enfermera INT PRIMARY KEY,
+    id_persona INT,
+    id_area INT,
+    id_especialidad INT,
+    FOREIGN KEY (id_persona) REFERENCES Persona(id_persona),
+    FOREIGN KEY (id_area) REFERENCES Area(id_area),
+    FOREIGN KEY (id_especialidad) REFERENCES Especialidades(id_especialidad)
+);
+
+-- Crear tabla Medico
+CREATE TABLE Medico (
+    id_medico INT PRIMARY KEY,
+    id_persona INT,
+    id_area INT,
+    id_especialidad INT,
+    FOREIGN KEY (id_persona) REFERENCES Persona(id_persona),
+    FOREIGN KEY (id_area) REFERENCES Area(id_area),
+    FOREIGN KEY (id_especialidad) REFERENCES Especialidades(id_especialidad)
+);
+
+-- Crear tabla Tratante
+CREATE TABLE Tratante (
+    id_tratante INT PRIMARY KEY,
+    id_persona INT,
+    FOREIGN KEY (id_persona) REFERENCES Persona(id_persona)
+);
+
+-- Crear tabla Paciente
+CREATE TABLE Paciente (
+    id_paciente INT PRIMARY KEY AUTO_INCREMENT,
+    id_persona INT,
+    contacto_de_emergencia VARCHAR(100),
+    alergias TEXT,
+    medicamentos_reaccion TEXT,
+    enfermedades_hereditarias TEXT,
+    FOREIGN KEY (id_persona) REFERENCES Persona(id_persona)
+);
+
+-- Crear tabla Tratamiento
+CREATE TABLE Tratamiento (
+    id_tratamiento INT AUTO_INCREMENT PRIMARY KEY,
+    medicamentos_prescritos TEXT,
+    indicaciones_administracion TEXT
+);
+
+-- Crear tabla HistoriaClinica
+CREATE TABLE HistoriaClinica (
+    id_historia INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT,
+    id_medico INT,
+    id_area INT,
+    observacion_medica TEXT,
+    id_tratamiento INT,
+    FOREIGN KEY (id_paciente) REFERENCES Paciente(id_paciente),
+    FOREIGN KEY (id_medico) REFERENCES Medico(id_medico),
+    FOREIGN KEY (id_area) REFERENCES Area(id_area),
+    FOREIGN KEY (id_tratamiento) REFERENCES Tratamiento(id_tratamiento)
+);
+
+-- Crear tabla Modificaciones
+CREATE TABLE Modificaciones (
+    id_modificacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_medico INT,
+    id_historia INT,
+    detalles VARCHAR(500),
+    FOREIGN KEY (id_medico) REFERENCES Medico(id_medico),
+    FOREIGN KEY (id_historia) REFERENCES HistoriaClinica(id_historia)
+);
+
+-- Crear tabla Credenciales
+CREATE TABLE Credenciales (
+    id_credencial INT AUTO_INCREMENT PRIMARY KEY,
+    id_persona INT,
+    correo_electronico VARCHAR(100),
+    contrasena VARCHAR(255),
+    rol ENUM('1', '2', '3'),  -- 1 = Médico, 2 = Enfermera, 3 = Tratante
+    FOREIGN KEY (id_persona) REFERENCES Persona(id_persona)
+);
+
