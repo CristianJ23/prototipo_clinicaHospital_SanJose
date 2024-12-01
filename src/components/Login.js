@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider"; // Importar el hook de autenticación
+import "../css/loggin.css"
 import { useAuth } from "../auth/AuthProvider"; // Importar el hook de autenticación
 import "../css/loggin.css"
 
@@ -81,3 +84,4 @@ export const Login = ({ setUser }) => {
 };
 
 export default Login;
+

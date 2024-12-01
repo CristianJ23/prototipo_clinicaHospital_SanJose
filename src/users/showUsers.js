@@ -46,6 +46,7 @@ const CompShowUsers = () => {
                                     <td>{user.nombres}</td>
                                     <td>{user.apellidos}</td>
                                     <td>{user.correo}</td>
+                                    <td>{user.contraseña}</td>
                                     <td>{user.nombreRol}</td>
                                     <td>{user.Rol_idRol}</td>
                                     <td>
