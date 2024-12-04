@@ -1,6 +1,9 @@
 import express from "express";
 import injectModel from "../controllers/middleware.js";
 import CrearPaciente from "../controllers/createPaciente.js";
+import { login } from "../credenciales/sesiones.js";
+import { logout } from "../credenciales/sesiones.js";
+import { verificarAdministrador } from "../credenciales/middlewareAutenticacion.js";
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
@@ -8,8 +11,16 @@ const router = express.Router();
 // Ruta para crear un paciente (sin depender del middleware injectModel)
 router.post('/crearPaciente', CrearPaciente);
 
+
 // Middleware para inyectar el modelo solo en rutas que usan :model
 router.use("/:model", injectModel);
+
+// ruta par iniciar sesion
+// router.post('/login', verificarAdministrador, login)
+router.post('/login', login)
+
+//ruta para cerrar la sesion
+router.post('logout', logout)
 
 // Rutas genéricas para manejar modelos
 router.get("/:model", async (req, res) => {

@@ -1,11 +1,22 @@
-import { useState } from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthProvider";
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthProvider'; // Asumiendo que tienes un hook useAuth para obtener el estado de autenticación y roles
 
-export default function ProtectedRoute(){
-    // const [isAuth, setIsAuth] = useState(false);
 
-    const auth = useAuth()
+const ProtectedRoute = ({ children, requiredRole }) => {
+  const { isAuthenticated, userRole } = useAuth(); // Asegúrate de que `useAuth` provea estos valores
 
-    return auth.isAuthenticated ? <Outlet/> : <Navigate to = "/" />;
-}
+  if (!isAuthenticated) {
+    // Si el usuario no está autenticado, redirigir a la página de login
+    return <Navigate to="/" />;
+  }
+
+  if (requiredRole && userRole !== requiredRole) {
+    // Si el usuario no tiene el rol necesario, redirigir a una página de acceso denegado o inicio
+    return <Navigate to="/" />;
+  }
+
+  // Si pasa ambas verificaciones, renderiza los componentes hijos
+  return children;
+};
+
+export default ProtectedRoute;

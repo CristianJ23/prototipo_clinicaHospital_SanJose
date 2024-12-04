@@ -1,7 +1,7 @@
 exports.login = (req, res) => {
     const { email, password } = req.body;
   
-    if (email === "admin@clinica.com" && password === "12345") {
+    if (email === "admin@utpl" && password === "1234566666") {
       res.status(200).json({ message: "Login successful" });
     } else {
       res.status(401).json({ message: "Invalid email or password" });

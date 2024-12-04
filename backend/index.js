@@ -5,11 +5,22 @@ import routes from "./routes/routes.js";
 import loggerMiddleware from "./controllers/middleware.js";
 import loadAssociations from "./models/associations.js";
 
+import session from 'express-session';
+
+
+
 const app = express();
 
 //cargar asociaciones
 loadAssociations();
 
+// Configura express-session
+app.use(session({
+  secret: 'tu-secreto-aqui',  // Asegúrate de usar un secreto fuerte
+  resave: false,              // No resguardar la sesión si no se ha modificado
+  saveUninitialized: true,    // Guardar sesiones nuevas, incluso si no han sido modificadas
+  cookie: { secure: true }   // En producción, deberías usar 'secure: true' con HTTPS
+}));
 
 // Configurar CORS para permitir solicitudes desde http://localhost:3000
 app.use(cors({
