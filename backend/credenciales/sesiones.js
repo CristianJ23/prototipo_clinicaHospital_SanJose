@@ -23,6 +23,8 @@ export const login = async (req, res) => {
     console.log('Contraseña del usuario:', password);
 
     console.log('Contraseña almacenada:', credencial.contrasena);
+    console.log('rol', credencial.rol)
+
 
 
     // Comparar la contraseña ingresada con la contraseña encriptada
@@ -32,20 +34,34 @@ export const login = async (req, res) => {
       return res.status(401).json({ mensaje: 'Contraseña incorrecta' });
     }
 
-    // Validar si el usuario tiene el rol de administrador
-    if (credencial.rol !== '1') {
-      return res.status(403).json({ mensaje: 'Acceso denegado: No es un administrador' });
-    }
+        // Mapeo de roles
+        const rolesPermitidos = {
+          '1': 'admin',
+          '2': 'medico',
+          '3': 'enfermera',
+          '4': 'tratante',
+        };
 
-    // Guardar el ID de la credencial en la sesión
-    req.session.usuarioId = credencial.id_credencial;
-    req.session.email = credencial.email_electronico;
-    req.session.rol = credencial.rol;
+        const rolNombre = rolesPermitidos[credencial.rol];
+        
+        // Validar si el usuario tiene el rol de administrador
+        if (!rolNombre) {
+          return res.status(403).json({ mensaje: 'Acceso denegado: Rol no permitido' });
+        }
+        
+        // Guardar el ID de la credencial en la sesión
+        req.session.usuarioId = credencial.id_credencial;
+        req.session.email = credencial.email_electronico;
+        req.session.rol = credencial.rol;
+        
+        console.log('rol', rolNombre)
 
+        
     // Devolver el rol en la respuesta si todo está bien
     return res.status(200).json({
       success: true,
-      role: credencial.rol,  // Enviamos el rol como parte de la respuesta
+      role: rolNombre,
+      // role: credencial.rol,  // Enviamos el rol como parte de la respuesta
       mensaje: 'Inicio de sesión exitoso',
     });  } catch (error) {
     console.error('Error al verificar las credenciales:', error);

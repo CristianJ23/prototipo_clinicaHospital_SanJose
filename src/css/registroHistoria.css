@@ -1,0 +1,174 @@
+/* Estilo general */
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #f7f8fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.registro-historia {
+  width: 90%;
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.registro-historia h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+  color: #555;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px 20px;
+  background-color: #f0f0f0;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.section-header:hover {
+  background-color: #e6e6e6;
+}
+
+.section-header span {
+  font-size: 18px;
+  transform: rotate(90deg);
+  transition: transform 0.3s ease;
+}
+
+.section-header span.v {
+  transform: rotate(0deg);
+}
+
+.section-content {
+  padding: 15px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  background-color: #fff;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #3da07b;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 500;
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+button:hover {
+  background-color: #3b8a68;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  background-color: #368a61;
+}
+
+button.cancel-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+button.cancel-button:hover {
+  background-color: #d6d6d6;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+button.cancel-button {
+  flex: 1;
+}
+
+button[type="submit"] {
+  flex: 1;
+}
+
+.radio-group {
+  margin-top: 12px;
+}
+
+.radio-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.radio-group input {
+  margin-right: 10px;
+}
+
+@media (max-width: 480px) {
+  .registro-historia {
+    padding: 20px;
+  }
+
+  .registro-historia h1 {
+    font-size: 20px;
+  }
+
+  input,
+  textarea,
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

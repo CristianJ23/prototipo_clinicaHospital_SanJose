@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import "../css/inicio.css";
-import Vista_medico from "../components/inicio_medico";
+import CrearPaciente from "../components/Crear_paciente";
 import CrearHistoria from "../components/Registro_historia";
+import Tratamiento from "../components/tratamientos";  // Importa el componente Tratamiento
 
 // Importar imágenes
-import crearPacienteImg from "../img2/medico.png";
-import gestionHistoriasImg from "../img2/enfermera.png";
+import crearPacienteImg from "../img2/usuario.png";
+import gestionHistoriasImg from "../img2/historia.png";
 import tratamientosImg from "../img2/tratamiento.png";
-import crearUsuarioImg from "../img2/usuario.png"; 
 import headerImage from "../img2/image.png";
 
-const Inicio = () => {
+const InicioMedico = () => {
   const [activeForm, setActiveForm] = useState(null); // Estado para controlar qué formulario mostrar
 
   // Renderizar el formulario según el estado activo
   const renderForm = () => {
     switch (activeForm) {
       case "crearPaciente":
-        return <Vista_medico onCancel={() => setActiveForm(null)} />;
+        return <CrearPaciente onCancel={() => setActiveForm(null)} />;
       case "crearHistoria":
         return <CrearHistoria onCancel={() => setActiveForm(null)} />;
+      case "tratamiento":  // Asegúrate de que este coincida con el valor usado en onClick
+        return <Tratamiento onCancel={() => setActiveForm(null)} />;
       default:
         return null;
     }
@@ -31,11 +33,10 @@ const Inicio = () => {
         <>
           <nav className="navbar">
             <ul className="nav-items">
-              <li><a href="#inicio">Inicio</a></li>
-              <li><a href="#Vista medico">Vista Medico</a></li>
-              <li><a href="#Registro de historia">Vista enfermera</a></li>
-              <li><a href="#crear-usuario">Vista tratante</a></li>
-              <li><a href="#crear-usuario">Crear Usuario</a></li>
+              <li><a href="#inicio">Inicio </a></li>
+              <li><a href="#registro-paciente">Registro Paciente</a></li>
+              <li><a href="#creacion-historia">Creación Historia</a></li>
+              <li><a href="#crear-usuario">Visualizar Tratamiento</a></li>
             </ul>
           </nav>
 
@@ -46,33 +47,32 @@ const Inicio = () => {
           <div className="modulos-container">
             <div
               className="modulo"
-              onClick={() => setActiveForm("crearPaciente")}
+              onClick={() => setActiveForm("crearPaciente")}  // Llama al formulario de Crear Paciente
             >
               <img src={crearPacienteImg} alt="Crear Paciente" />
-              <p>Vista Medico</p>
+              <p>Crear Paciente</p>
             </div>
             <div
               className="modulo"
-              onClick={() => setActiveForm("crearHistoria")}
+              onClick={() => setActiveForm("crearHistoria")}  // Llama al formulario de Gestión de Historias
             >
               <img src={gestionHistoriasImg} alt="Gestión Historias" />
-              <p>Vista Enfermera</p>
+              <p>Gestión de Historias</p>
             </div>
-            <div className="modulo">
+            <div
+              className="modulo"
+              onClick={() => setActiveForm("tratamiento")}  // Cambia el estado a "tratamiento" para llamar al componente Tratamiento
+            >
               <img src={tratamientosImg} alt="Tratamientos" />
               <p>Tratamientos</p>
-            </div>
-            <div className="modulo">
-              <img src={crearUsuarioImg} alt="Crear Usuario" />
-              <p>Crear Usuario</p>
             </div>
           </div>
         </>
       ) : (
-        renderForm()
+        renderForm()  // Renderiza el formulario según el estado actual
       )}
     </div>
   );
 };
 
-export default Inicio;
+export default InicioMedico;

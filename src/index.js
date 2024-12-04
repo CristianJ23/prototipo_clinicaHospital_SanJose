@@ -10,6 +10,9 @@ import CompShowUsers from './users/showUsers';
 import CrearPaciente from './components/Crear_paciente';
 import Inicio from './components/inicio';
 import Recuperar from './components/recuperar';
+import InicioMedico from './components/inicio_medico';
+import Tratamientos from './components/tratamientos';
+import RegistroHistoria from './components/Registro_historia';
 
 // Define el router
 const router = createBrowserRouter([
@@ -23,15 +26,27 @@ const router = createBrowserRouter([
     },
     {
         path: "/inicio",
-        element: <ProtectedRoute requiredRole="1"><Inicio /></ProtectedRoute>, // Ruta protegida para usuarios autenticados
+        element: <ProtectedRoute requiredRole={"admin"}><Inicio /></ProtectedRoute>,
+    },
+    {
+        path: "/inicio_medico",
+        element: <ProtectedRoute requiredRole={"admin"}><InicioMedico /></ProtectedRoute>,
+    },
+    {
+        path: "/registro_historia",
+        element: <ProtectedRoute requiredRole={"medico"}><RegistroHistoria /></ProtectedRoute>,
+    },
+    {
+        path: "/tratamiento",
+        element: <ProtectedRoute requiredRole="enfermera"><Tratamientos /></ProtectedRoute>, // Ruta protegida para usuarios autenticados
     },
     {
         path: "/users",
-        element: <ProtectedRoute requiredRole="doc"><CompShowUsers /></ProtectedRoute>, // Solo accesible para admins
+        element: <ProtectedRoute requiredRole="no definido"><CompShowUsers /></ProtectedRoute>, // Solo accesible para admins
     },
     {
-        path: "/pacientes",
-        element: <ProtectedRoute requiredRole="doc"><CrearPaciente /></ProtectedRoute>, // Solo accesible para admins
+        path: "/crear_paciente",
+        element: <ProtectedRoute requiredRole="tratante"><CrearPaciente /></ProtectedRoute>, // Solo accesible para admins
     },
 ]);
 

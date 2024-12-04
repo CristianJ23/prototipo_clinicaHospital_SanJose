@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../auth/AuthProvider'; // Asumiendo que tienes un hook useAuth para obtener el estado de autenticación y roles
-
+import { useAuth } from '../auth/AuthProvider';
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { isAuthenticated, userRole } = useAuth(); // Asegúrate de que `useAuth` provea estos valores
@@ -10,7 +9,12 @@ const ProtectedRoute = ({ children, requiredRole }) => {
     return <Navigate to="/" />;
   }
 
-  if (requiredRole && userRole !== requiredRole) {
+  // if (requiredRole && userRole !== requiredRole) {
+  //   // Si el usuario no tiene el rol necesario, redirigir a una página de acceso denegado o inicio
+  //   return <Navigate to="/" />;
+  // }
+
+  if (requiredRole !== userRole) {
     // Si el usuario no tiene el rol necesario, redirigir a una página de acceso denegado o inicio
     return <Navigate to="/" />;
   }

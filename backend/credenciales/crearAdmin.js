@@ -24,7 +24,7 @@ async function crearAdministrador(idPersona, correo, contrasena) {
     // Crear la consulta SQL para insertar el administrador en la tabla Credenciales
     const query = `
       INSERT INTO Credenciales (id_persona, correo_electronico, contrasena, rol)
-      VALUES (?, ?, ?, '1')`;  // '1' para el rol de administrador
+      VALUES (?, ?, ?, '4')`;  // '1' para el rol de administrador
 
     console.log("Ejecutando consulta con los valores:", [idPersona, correo, contrasenaEncriptada]);
 

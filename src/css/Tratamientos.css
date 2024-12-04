@@ -1,0 +1,148 @@
+/* General container styling */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 50px auto; /* Uniform margin for top and sides */
+  }
+  
+  /* Header styling */
+  .header {
+    flex-basis: 40%;
+  }
+  
+  .header h1 {
+    font-size: 28px;
+    color: #28a745; /* Green title */
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: left;
+  }
+  
+  /* Image container */
+  .imagen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .imagen-grande {
+    width: 100%;
+    height: auto;
+    max-width: 300px; /* Slightly smaller for balance */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Form styling */
+  .formulario {
+    flex-basis: 60%;
+    background-color: #f7f7f7;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .campo {
+    margin-bottom: 20px;
+  }
+  
+  .campo label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .campo input {
+    width: 100%;
+    padding: 12px 18px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    transition: border-color 0.3s, background-color 0.3s;
+  }
+  
+  .campo input:disabled {
+    background-color: #e9e9e9;
+  }
+  
+  .campo input:focus {
+    outline: none;
+    border-color: #28a745; /* Green focus */
+    background-color: #f9f9f9;
+  }
+  
+  .boton-container {
+    display: flex;
+    flex-direction: column; /* Cambia la dirección a columna */
+    align-items: flex-start; /* Alinea los botones al inicio */
+    gap: 10px; /* Espaciado entre los botones */
+    margin-top: 25px;
+  }
+  
+  .btn {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .btn-guardar {
+    background-color: #28a745; /* Green button */
+    color: white;
+  }
+  
+  .btn-volver {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .btn-editar {
+    background-color: #2196F3;
+    color: white;
+  }
+  
+  .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+  
+  .btn:active {
+    transform: translateY(0);
+  }
+  .btn-volver {
+    margin-bottom: 20px;
+    background-color: #f44336; /* Rojo */
+    color: white;
+  }
+  
+  
+  .btn-volver {
+    background-color: #e0e0e0; /* Gris suave */
+    color: #333;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .btn-volver:hover {
+    background-color: #d6d6d6; /* Gris más oscuro al pasar el cursor */
+  }
+  
