@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import "../css/inicio.css";
 import Vista_medico from "../components/inicio_medico";
-import CrearHistoria from "../components/Registro_historia";
+import Tratamientos from "./tratamientos";
+import CrearPaciente from "./Crear_paciente";
+import CreateRols from "./createRols";
+
 
 // Importar imágenes
 import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
 import tratamientosImg from "../img2/tratamiento.png";
-import crearUsuarioImg from "../img2/usuario.png"; 
+import crearUsuarioImg from "../img2/usuario.png";
 import headerImage from "../img2/image.png";
 
 const Inicio = () => {
@@ -18,10 +21,12 @@ const Inicio = () => {
     switch (activeForm) {
       case "crearPaciente":
         return <Vista_medico onCancel={() => setActiveForm(null)} />;
-      case "crearHistoria":
-        return <CrearHistoria onCancel={() => setActiveForm(null)} />;
-      default:
-        return null;
+      case "tratamiento":
+        return <Tratamientos onCancel={() => setActiveForm(null)} />;
+      case "tratante":
+        return <CrearPaciente onCancel={() => setActiveForm(null)} />;
+      case "createRols":
+        return <CreateRols onCancel={() => setActiveForm(null)} />;
     }
   };
 
@@ -33,16 +38,16 @@ const Inicio = () => {
             <ul className="nav-items">
               <li><a href="#inicio">Inicio</a></li>
               <li><a href="#Vista medico">Vista Medico</a></li>
-              <li><a href="#Registro de historia">Vista enfermera</a></li>
-              <li><a href="#crear-usuario">Vista tratante</a></li>
+              <li><a href="#tratamiento">Vista enfermera</a></li>
+              <li><a href="#tratante">Vista tratante</a></li>
               <li><a href="#crear-usuario">Crear Usuario</a></li>
+              <li><a href="#crear-roles">Crear roles</a></li>
             </ul>
           </nav>
 
           <div className="header">
             <img src={headerImage} alt="Header" className="header-image" />
           </div>
-
           <div className="modulos-container">
             <div
               className="modulo"
@@ -53,7 +58,7 @@ const Inicio = () => {
             </div>
             <div
               className="modulo"
-              onClick={() => setActiveForm("crearHistoria")}
+              onClick={() => setActiveForm("tratamiento")}
             >
               <img src={gestionHistoriasImg} alt="Gestión Historias" />
               <p>Vista Enfermera</p>
@@ -62,10 +67,22 @@ const Inicio = () => {
               <img src={tratamientosImg} alt="Tratamientos" />
               <p>Tratamientos</p>
             </div>
-            <div className="modulo">
+            <div className="modulo"
+              onClick={() => setActiveForm("tratante")}
+            >
               <img src={crearUsuarioImg} alt="Crear Usuario" />
               <p>Crear Usuario</p>
             </div>
+
+            {/* crear roles */}
+          <div className="modulo"
+            onClick={() => setActiveForm("createRols")}
+          >
+            <img src={crearUsuarioImg} alt="Crear Usuario" />
+            <p>Crear Roles</p>
+            </div>
+
+
           </div>
         </>
       ) : (

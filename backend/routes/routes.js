@@ -4,6 +4,9 @@ import CrearPaciente from "../controllers/createPaciente.js";
 import { login } from "../credenciales/sesiones.js";
 import { logout } from "../credenciales/sesiones.js";
 import { verificarAdministrador } from "../credenciales/middlewareAutenticacion.js";
+import BuscarPersona from "../credenciales/cedulaSearch.js";
+import CreateRolPrimeraVez from "../credenciales/createRolPrimeraVez.js";
+import CreateRolNoPrimeraVez from "../credenciales/createRolNoPrimeraVez.js";
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
@@ -11,6 +14,14 @@ const router = express.Router();
 // Ruta para crear un paciente (sin depender del middleware injectModel)
 router.post('/crearPaciente', CrearPaciente);
 
+//ruta para buscar persona por cedula
+router.get('/buscarPersonaPorCedula/:cedula', BuscarPersona);
+
+//ruta crear un rol si no existe en personas
+router.post('/createRolPrimeraVez', CreateRolPrimeraVez);
+
+//ruta crear un rol si existe en personas
+router.post('/createRolNoPrimeraVez', CreateRolNoPrimeraVez);
 
 // Middleware para inyectar el modelo solo en rutas que usan :model
 router.use("/:model", injectModel);
@@ -50,6 +61,7 @@ router.post("/:model", async (req, res) => {
     res.status(201).json(newRecord);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log("error:", error.message)
   }
 });
 
