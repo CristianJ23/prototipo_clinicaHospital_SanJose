@@ -25,7 +25,7 @@ app.use(session({
 // Configurar CORS para permitir solicitudes desde http://localhost:3000
 app.use(cors({
   origin: 'http://localhost:3000',  // Aquí pones la URL de tu frontend
-  methods: ['GET', 'POST'],        // Métodos permitidos
+  methods: ['GET', 'POST', 'DELETE'],        // Métodos permitidos
   allowedHeaders: ['Content-Type'],// Encabezados permitidos
 }));
 

@@ -1,8 +1,8 @@
 export const verificarAdministrador = (req, res, next) => {
-    const { correo } = req.body;  // Obtener correo del cuerpo de la solicitud
+    const { email, password } = req.body;  // Obtener correo del cuerpo de la solicitud
   
     // Ejemplo de validación de correo para restringir solo administradores
-    if (!correo || !correo.includes('@utpl.com')) {
+    if (!email || !email.includes('@utpl.com')) {
       return res.status(403).json({ mensaje: 'Acceso restringido: Solo administradores pueden iniciar sesión.' });
     }
   

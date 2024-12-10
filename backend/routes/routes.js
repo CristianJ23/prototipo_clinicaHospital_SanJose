@@ -7,9 +7,18 @@ import { verificarAdministrador } from "../credenciales/middlewareAutenticacion.
 import BuscarPersona from "../credenciales/cedulaSearch.js";
 import CreateRolPrimeraVez from "../credenciales/createRolPrimeraVez.js";
 import CreateRolNoPrimeraVez from "../credenciales/createRolNoPrimeraVez.js";
+import bucarCedencialPorCedula from "../credenciales/buscarCredencialPorCedula.js";
+import actualizarRol from '../credenciales/actualizarRol.js';
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
+
+//ruta para actualizar rol
+router.post('/actializarRol/', actualizarRol)
+
+
+//ruta par abucar un a credencial por el numero de cedula
+router.get('/buscarCredencialPorCedula/:cedula', bucarCedencialPorCedula)
 
 // Ruta para crear un paciente (sin depender del middleware injectModel)
 router.post('/crearPaciente', CrearPaciente);
@@ -27,8 +36,8 @@ router.post('/createRolNoPrimeraVez', CreateRolNoPrimeraVez);
 router.use("/:model", injectModel);
 
 // ruta par iniciar sesion
-// router.post('/login', verificarAdministrador, login)
-router.post('/login', login)
+router.post('/login', verificarAdministrador, login)
+// router.post('/login', login)
 
 //ruta para cerrar la sesion
 router.post('logout', logout)
