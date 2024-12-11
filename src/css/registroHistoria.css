@@ -1,174 +1,196 @@
-/* Estilo general */
-body {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  background-color: #f7f8fa;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  line-height: 1.5;
-}
-
+/* Contenedor principal */
 .registro-historia {
-  width: 90%;
-  max-width: 700px;
-  margin: 30px auto;
-  padding: 25px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.registro-historia h1 {
-  font-size: 26px;
-  margin-bottom: 20px;
-  text-align: center;
-  font-weight: 500;
-  color: #555;
-}
-
-.section-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  padding: 12px 20px;
-  background-color: #f0f0f0;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.section-header:hover {
-  background-color: #e6e6e6;
-}
-
-.section-header span {
-  font-size: 18px;
-  transform: rotate(90deg);
-  transition: transform 0.3s ease;
-}
-
-.section-header span.v {
-  transform: rotate(0deg);
-}
-
-.section-content {
-  padding: 15px;
-  margin-top: 5px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
   background-color: #f9f9f9;
 }
 
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 12px;
-  margin-top: 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 15px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-  background-color: #fff;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #aaa;
-  font-style: italic;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-button {
-  padding: 12px 20px;
-  font-size: 16px;
+/* Barra lateral */
+.registro-historia .sidebar {
+  width: 250px;
+  background-color: #3da07b; /* Verde oscuro para la barra lateral */
   color: white;
-  background-color: #3da07b;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  font-weight: 500;
-  margin-bottom: 10px;
-  white-space: nowrap;
-}
-
-button:hover {
-  background-color: #3b8a68;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-}
-
-button:active {
-  background-color: #368a61;
-}
-
-button.cancel-button {
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-button.cancel-button:hover {
-  background-color: #d6d6d6;
-}
-
-.button-group {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin-top: 20px;
-  gap: 10px;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-button.cancel-button {
-  flex: 1;
+.registro-historia .sidebar-title {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
 }
 
-button[type="submit"] {
-  flex: 1;
+.registro-historia .modulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  color: #3da07b;
+  padding: 15px;
+  border-radius: 10px;
+  width: 90%;
+  margin-bottom: 15px;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.radio-group {
-  margin-top: 12px;
-}
-
-.radio-group label {
-  display: block;
+.registro-historia .modulo img {
+  width: 50px;
+  height: 50px;
   margin-bottom: 10px;
-  font-size: 14px;
 }
 
-.radio-group input {
-  margin-right: 10px;
+.registro-historia .modulo p {
+  margin: 0;
+  font-size: 0.9em;
+  text-align: center;
 }
 
-@media (max-width: 480px) {
-  .registro-historia {
-    padding: 20px;
-  }
+.registro-historia .modulo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
 
-  .registro-historia h1 {
-    font-size: 20px;
-  }
+/* Contenedor del formulario */
+.registro-historia .form-container {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
 
-  input,
-  textarea,
-  button {
-    font-size: 14px;
-    padding: 10px;
-  }
+.registro-historia .form-container h1 {
+  text-align: center;
+  font-size: 2em;
+  color: #3da07b;
+  margin-bottom: 20px;
+}
+
+.registro-historia h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.2em;
+  border-bottom: 2px solid #3da07b;
+  padding-bottom: 5px;
+}
+
+/* Diseño del formulario con dos columnas */
+.registro-historia form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px; /* Espaciado entre campos */
+}
+
+/* Alinear campos que ocupen toda la fila */
+.registro-historia form h2 {
+  grid-column: span 2; /* Ocupa las dos columnas */
+}
+
+.registro-historia label {
+  display: flex;
+  flex-direction: column;
+  color: #555;
+  font-weight: bold;
+}
+
+.registro-historia input,
+.registro-historia select,
+.registro-historia textarea {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.registro-historia input:focus,
+.registro-historia select:focus,
+.registro-historia textarea:focus {
+  border-color: #3da07b;
+  outline: none;
+  box-shadow: 0 0 5px rgba(61, 160, 123, 0.5);
+}
+
+/* Estilo para campos solitarios */
+.registro-historia form label:only-child {
+  grid-column: span 2; /* Hace que el campo ocupe toda la fila */
+}
+
+/* Grupo de botones */
+.registro-historia .button-group {
+  grid-column: span 2; /* Abarca ambas columnas */
+  display: flex;
+  justify-content: space-between; /* Uno a la izquierda y otro a la derecha */
+  align-items: center; /* Asegura que estén centrados verticalmente */
+  margin-top: 20px;
+}
+
+/* Botones */
+.registro-historia button {
+  padding: 8px 16px; /* Tamaño compacto */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em; /* Texto ligeramente más pequeño */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 120px; /* Tamaño fijo para uniformidad */
+}
+
+.registro-historia button[type="submit"] {
+  background-color: #3da07b;
+  color: white;
+}
+
+.registro-historia button[type="button"] {
+  background-color: #f44336;
+  color: white;
+}
+
+.registro-historia button:hover {
+  transform: scale(1.05);
+}
+
+.registro-historia button:active {
+  transform: scale(0.98);
+}
+
+/* Estilo para los campos de texto (textarea) */
+.registro-historia textarea {
+  resize: vertical;
+  height: 150px;
+}
+
+/* Estilo para los módulos de selección (Checkbox) */
+.registro-historia .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.registro-historia .checkbox-group label {
+  font-size: 0.9em;
+}
+
+/* Estilo para las imágenes en los módulos */
+.registro-historia .modulo img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+}
+
+/* Barra de navegación activa */
+.registro-historia .modulo.active {
+  background-color: #2e8b57;
+  color: white;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }

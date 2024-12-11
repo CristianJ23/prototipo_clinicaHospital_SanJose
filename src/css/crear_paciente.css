@@ -1,78 +1,157 @@
+/* Contenedor principal */
+.main-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Barra lateral */
+.sidebar {
+  width: 250px;
+  background-color: #3da07b; /* Verde oscuro para la barra lateral */
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.modulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  color: #3da07b;
+  padding: 15px;
+  border-radius: 10px;
+  width: 90%;
+  margin-bottom: 15px;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modulo img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.modulo p {
+  margin: 0;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.modulo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor del formulario */
 .form-container {
-    width: 90%;
-    max-width: 800px;
-    position: relative; /* Cambiar para mover el formulario */
-    top: -2cm; /* Posición desde el borde superior */
-    margin: 0 auto 3rem auto; /* Centración horizontal */
-    background-color: #f9f9f9;
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    font-family: Arial, sans-serif;
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .form-container h2 {
-    text-align: center;
-    color: #3da07b;
-    margin-bottom: 2rem;
-    font-size: 2rem;
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: #3da07b;
 }
 
-.form-container label {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 1.5rem;
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.2em;
+  border-bottom: 2px solid #3da07b;
+  padding-bottom: 5px;
 }
 
-.form-container input,
-.form-container select {
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    width: 100%;
-    box-sizing: border-box;
+/* Diseño del formulario con dos columnas */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px; /* Espaciado entre campos */
 }
 
-.form-container input:focus,
-.form-container select:focus {
-    outline: none;
-    border-color: #3da07b;
-    box-shadow: 0 0 5px rgba(61, 160, 123, 0.5);
+label {
+  display: flex;
+  flex-direction: column;
+  color: #555;
+  font-weight: bold;
 }
 
+input,
+select {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input:focus,
+select:focus {
+  border-color: #3da07b;
+  outline: none;
+  box-shadow: 0 0 5px rgba(61, 160, 123, 0.5);
+}
+
+/* Alinear campos que ocupen toda la fila */
+form h3 {
+  grid-column: span 2; /* Ocupa las dos columnas */
+}
+
+/* Grupo de botones */
 .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-    gap: 2rem; /* Espacio adicional entre los botones */
+  grid-column: span 2; /* Abarca ambas columnas */
+  display: flex;
+  justify-content: space-between; /* Uno a la izquierda y otro a la derecha */
+  align-items: center; /* Asegura que estén centrados verticalmente */
+  margin-top: 20px;
 }
 
-.button-group button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+/* Botones */
+button {
+  padding: 8px 16px; /* Tamaño compacto */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em; /* Texto ligeramente más pequeño */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 120px; /* Tamaño fijo para uniformidad */
 }
 
-.button-group button[type="submit"] {
-    background-color: #3da07b;
-    color: white;
+button[type="submit"] {
+  background-color: #3da07b;
+  color: white;
 }
 
-.button-group button[type="submit"]:hover {
-    background-color: #2b855d;
+button[type="button"] {
+  background-color: #f44336;
+  color: white;
 }
 
-.button-group button[type="button"] {
-    background-color: #ccc;
-    color: #333;
+button:hover {
+  transform: scale(1.05);
 }
 
-.button-group button[type="button"]:hover {
-    background-color: #aaa;
+button:active {
+  transform: scale(0.98);
 }

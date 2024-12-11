@@ -1,66 +1,62 @@
 import React, { useState } from "react";
 import "../css/registroHistoria.css";
 
-const RegistroHistoria = ({ onCancel }) => {
-  const [tratamiento, setTratamiento] = useState({
-    medicamentos: "",
-    instruccionesSuministro: "",
-  });
+import Vista_medico from "../components/inicio_medico";
+// import CrearHistoria from "../components/inicio_enfermera";
+import Tratamiento from "../components/tratamientos";
+import Paci from "../img2/paciente_p.jpg";
+// Importar imágenes
+import crearPacienteImg from "../img2/medico.png";
+import gestionHistoriasImg from "../img2/enfermera.png";
+import tratamientosImg from "../img2/tratamiento.png";
 
-  const [pacienteData, setPacienteData] = useState({
+const RegistroHistoria = ({ onCancel }) => {
+  const [formData, setFormData] = useState({
+    cedula: "",
     nombres: "",
     apellidos: "",
-    cedula: "",
-    celular: "",
-    sexo: "",
-    fecha_nacimiento: "",
-    edad: "",
-  });
-
-  const [formData, setFormData] = useState({
     institucionSistema: "",
+    unicodigo: "",
+    establecimientoSalud: "",
     numeroHistoriaUnica: "",
     numeroArchivo: "",
     numeroHoja: "",
-    primerApellido: "",
-    segundoApellido: "",
-    primerNombre: "",
-    segundoNombre: "",
-    sexo: "",
-    edad: "",
-    motivoConsulta: {
-      tipo: "", // "Primera" o "Subsecuente"
-    },
+    motivoConsulta: "",
     antecedentesPatologicosPersonales: "",
-    establecimientoSalud: "",
-    enfermedadProblemaActual: "",
-    factoresAgravantes: "",
-    hora: "",
     constantesVitales: {
-      fecha: "",
+      hora: "",
       presionArterial: "",
       peso: "",
       talla: "",
-      temperatura: "",
-      pulso: "",
+      imc: "",
       perimetroAbdominal: "",
-      frecuencia: "",
       glucosaCapilar: "",
       hemoglobinaCapilar: "",
+      pulsioximetria: "",
+    },
+    examenFisico: {
+      seleccionados: [],
+      observacion: "",
     },
     revisionOrganosYSystems: {
-      organosSentidos: "",
-      respiratorio: "",
-      cardiovascular: "",
-      digestivo: "",
-      urinario: "",
-      musculoEsqueletico: "",
-      endocrino: "",
-      nervioso: "",
+      seleccionados: [],
+      observacion: "",
+    },
+    tratamiento: {
+      medicamentos: "",
+      metodoAdministracion: "",
+    },
+    datosProfesional: {
+      fechaAtencion: "",
+      horaAtencion: "",
+      nombresApellidosProfesional: "",
+      numeroDocumentoProfesional: "",
+      firma: "",
+      sello: "",
     },
   });
 
-  const [activeSection, setActiveSection] = useState("datosGenerales");
+  const [tratamientoId, setTratamientoId] = useState(null); // Para almacenar el ID del tratamiento
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -77,416 +73,369 @@ const RegistroHistoria = ({ onCancel }) => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleCheckboxChange = (section, value) => {
+    const currentSelection = formData[section].seleccionados;
+    const newSelection = currentSelection.includes(value)
+      ? currentSelection.filter((item) => item !== value)
+      : [...currentSelection, value];
 
-    const tratamientoData = {
-      medicamentos: tratamiento.medicamentos,
-      instruccionesSuministro: tratamiento.instruccionesSuministro,
-    };
-
-    try {
-      // Primero, enviar el tratamiento y obtener el ID
-      const tratamientoResponse = await fetch("http://localhost:8000/kriss/crearTratamiento", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(tratamientoData),
-      });
-
-      if (!tratamientoResponse.ok) {
-        console.error("Error al enviar tratamiento.");
-        return;
-      }
-
-      const tratamiento = await tratamientoResponse.json(); // Suponiendo que el ID viene en la respuesta
-      const tratamientoId = tratamiento.id;
-
-      // Ahora, enviar la historia clínica y asignar el ID del tratamiento
-      const historiaData = {
-        institucionSistema: formData.institucionSistema,
-        numeroHistoriaUnica: formData.numeroHistoriaUnica,
-        numeroArchivo: formData.numeroArchivo,
-        numeroHoja: formData.numeroHoja,
-        primerApellido: formData.primerApellido,
-        segundoApellido: formData.segundoApellido,
-        primerNombre: formData.primerNombre,
-        segundoNombre: formData.segundoNombre,
-        sexo: formData.sexo,
-        edad: formData.edad,
-        motivoConsulta: formData.motivoConsulta,
-        antecedentesPatologicosPersonales: formData.antecedentesPatologicosPersonales,
-        establecimientoSalud: formData.establecimientoSalud,
-        enfermedadProblemaActual: formData.enfermedadProblemaActual,
-        factoresAgravantes: formData.factoresAgravantes,
-        hora: formData.hora,
-        constantesVitales: formData.constantesVitales,
-        revisionOrganosYSystems: formData.revisionOrganosYSystems,
-        tratamientoId: tratamientoId, // Asignar el ID del tratamiento
-      };
-
-      const historiaResponse = await fetch("http://localhost:8000/kriss/crearHistoriaClinica", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(historiaData),
-      });
-
-      if (historiaResponse.ok) {
-        console.log("Historia clínica enviada correctamente.");
-      } else {
-        console.error("Error al enviar historia clínica.");
-      }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-  };
-
-  const handleCancel = () => {
     setFormData({
-      institucionSistema: "",
-      numeroHistoriaUnica: "",
-      numeroArchivo: "",
-      numeroHoja: "",
-      primerApellido: "",
-      segundoApellido: "",
-      primerNombre: "",
-      segundoNombre: "",
-      sexo: "",
-      edad: "",
-      motivoConsulta: { tipo: "" },
-      antecedentesPatologicosPersonales: "",
-      establecimientoSalud: "",
-      enfermedadProblemaActual: "",
-      factoresAgravantes: "",
-      hora: "",
-      constantesVitales: {
-        fecha: "",
-        presionArterial: "",
-        peso: "",
-        talla: "",
-        temperatura: "",
-        pulso: "",
-        perimetroAbdominal: "",
-        frecuencia: "",
-        glucosaCapilar: "",
-        hemoglobinaCapilar: "",
-      },
-      revisionOrganosYSystems: {
-        organosSentidos: false,
-        respiratorio: false,
-        cardiovascular: false,
-        digestivo: false,
-        urinario: false,
-        musculoEsqueletico: false,
-        endocrino: false,
-        nervioso: false,
+      ...formData,
+      [section]: {
+        ...formData[section],
+        seleccionados: newSelection,
       },
     });
-    alert("Formulario cancelado y datos borrados.");
   };
 
-  const handleCedulaSubmit = async () => {
-    const cedula = formData.cedula;
+  const handleSubmitTratamiento = async (e) => {
+    e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8000/kriss/crearPaciente?cedula=${cedula}`);
-      if (response.ok) {
-        const data = await response.json();
-        setPacienteData(data);
-      } else {
-        console.error("Error al obtener los datos del paciente.");
-      }
+      // Enviar el tratamiento a la API
+      const response = await fetch("http://localhost:8000/kriss/crearTratamiento", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData.tratamiento),
+      });
+      const result = await response.json();
+      setTratamientoId(result.id); // Asumimos que la API retorna el ID del tratamiento
     } catch (error) {
-      console.error("Error en la solicitud:", error);
+      console.error("Error al crear tratamiento:", error);
     }
   };
+
+  const handleSubmitHistoria = async (e) => {
+    e.preventDefault();
+    try {
+      // Enviar la historia clínica a la API, incluyendo el ID del tratamiento
+      const historiaConTratamiento = {
+        ...formData,
+        tratamientoId, // Agregar el ID del tratamiento a la historia clínica
+      };
+      const response = await fetch("http://localhost:8000/kriss/crearHistoria", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(historiaConTratamiento),
+      });
+      const result = await response.json();
+      console.log("Historia clínica guardada con éxito:", result);
+    } catch (error) {
+      console.error("Error al crear historia clínica:", error);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
+  const examenesFisicos = [
+    "Cabeza",
+    "Cuello",
+    "Tórax",
+    "Abdomen",
+    "Extremidades",
+    "Piel",
+    "Sistema Linfático",
+    "Sistema Nervioso",
+    "Cardiovascular",
+    "Respiratorio",
+  ];
+
+  const organosYSistemas = [
+    "Órganos de los Sentidos",
+    "Respiratorio",
+    "Cardiovascular",
+    "Digestivo",
+    "Urinario",
+    "Músculo Esquelético",
+    "Endocrino",
+    "Nervioso",
+  ];
 
   return (
     <div className="registro-historia">
-      <h1>Registro de Historia Clínica</h1>
+      <div className="sidebar">
+        <h2 className="sidebar-title">Menú</h2>
+        <a href="#" className="modulo">
+          <img src={crearPacienteImg} alt="Registro de Paciente" />
+          <p>Registro de Paciente</p>
+        </a>
+        {/* <a href={CrearHistoria} className="modulo">
+          <img src={gestionHistoriasImg} alt="Registro de Historia" />
+          <p>Registro de Historia</p>
+        </a> */}
+        <a href={Tratamiento} className="modulo">
+          <img src={tratamientosImg} alt="Tratamiento" />
+          <p>Tratamiento</p>
+        </a>
+      </div>
 
-      {/* Navegación por secciones */}
-      <nav className="form-nav">
-        <button onClick={() => setActiveSection("datosPaciente")}>Datos Generales</button>
-        <button onClick={() => setActiveSection("motivoConsulta")}>Motivo de Consulta</button>
-        <button onClick={() => setActiveSection("antecedentesPatologicos")}>Antecedentes Patológicos</button>
-        <button onClick={() => setActiveSection("enfermedadProblemaActual")}>Enfermedad o Problema Actual</button>
-        <button onClick={() => setActiveSection("constantesVitales")}>Constantes Vitales</button>
-        <button onClick={() => setActiveSection("revisionOrganos")}>Revisión de Órganos</button>
-        <button onClick={() => setActiveSection("tratamiento")}>Tratamiento</button>
-      </nav>
+      <div className="form-container">
+        <h1>Registro de Historia Clínica</h1>
+        <form onSubmit={handleSubmit}>
+          <h2>Datos del Paciente</h2>
+          <label>
+            Cédula:
+            <input type="text" name="cedula" value={formData.cedula} onChange={handleInputChange} />
+          </label>
+          <label>
+            Nombres:
+            <input type="text" name="nombres" value={formData.nombres} onChange={handleInputChange} />
+          </label>
+          <label>
+            Apellidos:
+            <input type="text" name="apellidos" value={formData.apellidos} onChange={handleInputChange} />
+          </label>
+          <label>
+            Institución del Sistema:
+            <input type="text" name="institucionSistema" value={formData.institucionSistema} onChange={handleInputChange} />
+          </label>
+          <label>
+            Unicódigo:
+            <input type="text" name="unicodigo" value={formData.unicodigo} onChange={handleInputChange} />
+          </label>
+          <label>
+            Establecimiento de Salud:
+            <input type="text" name="establecimientoSalud" value={formData.establecimientoSalud} onChange={handleInputChange} />
+          </label>
+          <label>
+            Número de Historia Clínica:
+            <input type="text" name="numeroHistoriaUnica" value={formData.numeroHistoriaUnica} onChange={handleInputChange} />
+          </label>
+          <label>
+            Número de Archivo:
+            <input type="text" name="numeroArchivo" value={formData.numeroArchivo} onChange={handleInputChange} />
+          </label>
+          <label>
+            Número de Hoja:
+            <input type="text" name="numeroHoja" value={formData.numeroHoja} onChange={handleInputChange} />
+          </label>
 
-      <form onSubmit={handleSubmit}>
-        {/* Sección A: Datos del Establecimiento y Usuario */}
-        {activeSection === "datosPaciente" && (
-          <section>
-            <h2>Datos del Establecimiento y Usuario</h2>
-            <label>
-            <label>
-              Cédula:
-              <input
-                type="text"
-                name="cedula"
-                value={formData.cedula}
-                onChange={handleInputChange}
-              />
-            </label>
-              Nombres:
-              <input
-                type="text"
-                name="nombres"
-                value={pacienteData.nombres}
-                disabled
-              />
-            </label>
-            <label>
-              Apellidos:
-              <input
-                type="text"
-                name="apellidos"
-                value={pacienteData.apellidos}
-                disabled
-              />
-            </label>
-            <button onClick={handleCedulaSubmit}>Obtener Datos</button>
-          </section>
-        )}
+          <h2>Motivo de Consulta</h2>
+          <label>
+            Tipo de Motivo de Consulta:
+            <input type="text" name="motivoConsulta" value={formData.motivoConsulta} onChange={handleInputChange} />
+          </label>
 
-        {/* Sección B: Motivo de Consulta */}
-        {activeSection === "motivoConsulta" && (
-          <section>
-            <h2>Motivo de Consulta</h2>
-            <label>
-              <input
-                type="radio"
-                name="tipoMotivo"
-                value="Primera"
-                checked={formData.motivoConsulta.tipo === "Primera"}
-                onChange={() => handleNestedChange("motivoConsulta", "tipo", "Primera")}
-              />
-              Primera
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="tipoMotivo"
-                value="Subsecuente"
-                checked={formData.motivoConsulta.tipo === "Subsecuente"}
-                onChange={() => handleNestedChange("motivoConsulta", "tipo", "Subsecuente")}
-              />
-              Subsecuente
-            </label>
-          </section>
-        )}
+          <h2>Antecedentes Patológicos Personales</h2>
+          <textarea
+            name="antecedentesPatologicosPersonales"
+            value={formData.antecedentesPatologicosPersonales}
+            onChange={handleInputChange}
+          ></textarea>
 
-        {/* Sección C: Antecedentes Patológicos Personales */}
-        {activeSection === "antecedentesPatologicos" && (
-          <section>
-            <h2>Antecedentes Patológicos Personales</h2>
-            <textarea
-              name="antecedentesPatologicosPersonales"
-              value={formData.antecedentesPatologicosPersonales}
-              onChange={handleInputChange}
+          <h2>Constantes Vitales</h2>
+          <label>
+            Hora:
+            <input
+              type="text"
+              name="hora"
+              value={formData.constantesVitales.hora}
+              onChange={(e) => handleNestedChange("constantesVitales", "hora", e.target.value)}
             />
-          </section>
-        )}
-
-        {/* Sección D: Enfermedad o Problema Actual */}
-        {activeSection === "enfermedadProblemaActual" && (
-          <section>
-            <h2>Enfermedad o Problema Actual</h2>
-            <textarea
-              name="enfermedadProblemaActual"
-              value={formData.enfermedadProblemaActual}
-              onChange={handleInputChange}
+          </label>
+          <label>
+            Presión Arterial:
+            <input
+              type="text"
+              name="presionArterial"
+              value={formData.constantesVitales.presionArterial}
+              onChange={(e) => handleNestedChange("constantesVitales", "presionArterial", e.target.value)}
             />
-          </section>
-        )}
-
-        {/* Sección E: Factores Aggravantes */}
-        {activeSection === "factoresAgravantes" && (
-          <section>
-            <h2>Factores Aggravantes</h2>
-            <textarea
-              name="factoresAgravantes"
-              value={formData.factoresAgravantes}
-              onChange={handleInputChange}
+          </label>
+          <label>
+            Peso:
+            <input
+              type="text"
+              name="peso"
+              value={formData.constantesVitales.peso}
+              onChange={(e) => handleNestedChange("constantesVitales", "peso", e.target.value)}
             />
-          </section>
-        )}
+          </label>
+          <label>
+            Talla:
+            <input
+              type="text"
+              name="talla"
+              value={formData.constantesVitales.talla}
+              onChange={(e) => handleNestedChange("constantesVitales", "talla", e.target.value)}
+            />
+          </label>
+          <label>
+            IMC:
+            <input
+              type="text"
+              name="imc"
+              value={formData.constantesVitales.imc}
+              onChange={(e) => handleNestedChange("constantesVitales", "imc", e.target.value)}
+            />
+          </label>
+          <label>
+            Perímetro Abdominal:
+            <input
+              type="text"
+              name="perimetroAbdominal"
+              value={formData.constantesVitales.perimetroAbdominal}
+              onChange={(e) => handleNestedChange("constantesVitales", "perimetroAbdominal", e.target.value)}
+            />
+          </label>
+          <label>
+            Glucosa Capilar:
+            <input
+              type="text"
+              name="glucosaCapilar"
+              value={formData.constantesVitales.glucosaCapilar}
+              onChange={(e) => handleNestedChange("constantesVitales", "glucosaCapilar", e.target.value)}
+            />
+          </label>
+          <label>
+            Hemoglobina Capilar:
+            <input
+              type="text"
+              name="hemoglobinaCapilar"
+              value={formData.constantesVitales.hemoglobinaCapilar}
+              onChange={(e) => handleNestedChange("constantesVitales", "hemoglobinaCapilar", e.target.value)}
+            />
+          </label>
+          <label>
+            Pulsioximetría:
+            <input
+              type="text"
+              name="pulsioximetria"
+              value={formData.constantesVitales.pulsioximetria}
+              onChange={(e) => handleNestedChange("constantesVitales", "pulsioximetria", e.target.value)}
+            />
+          </label>
 
-        {/* Sección F: Constantes Vitales y Antropometría */}
-        {activeSection === "constantesVitales" && (
-          <section>
-            <h2>Constantes Vitales y Antropometría</h2>
-            <label>
-              Hora:
-              <input type="text" name="hora" value={formData.hora} onChange={handleInputChange} />
-            </label>
-            <label>
-              Fecha:
-              <input type="date" name="fecha" value={formData.constantesVitales.fecha} onChange={(e) => handleNestedChange("constantesVitales", "fecha", e.target.value)} />
-            </label>
-            <label>
-              Presión Arterial:
-              <input type="text" name="presionArterial" value={formData.constantesVitales.presionArterial} onChange={(e) => handleNestedChange("constantesVitales", "presionArterial", e.target.value)} />
-            </label>
-            <label>
-              Peso (Kg):
-              <input type="text" name="peso" value={formData.constantesVitales.peso} onChange={(e) => handleNestedChange("constantesVitales", "peso", e.target.value)} />
-            </label>
-            <label>
-              Talla (cm):
-              <input type="text" name="talla" value={formData.constantesVitales.talla} onChange={(e) => handleNestedChange("constantesVitales", "talla", e.target.value)} />
-            </label>
-            <label>
-              Temperatura:
-              <input type="text" name="temperatura" value={formData.constantesVitales.temperatura} onChange={(e) => handleNestedChange("constantesVitales", "temperatura", e.target.value)} />
-            </label>
-            <label>
-              Pulso / min:
-              <input type="text" name="pulso" value={formData.constantesVitales.pulso} onChange={(e) => handleNestedChange("constantesVitales", "pulso", e.target.value)} />
-            </label>
-            <label>
-              Perímetro Abdominal:
-              <input type="text" name="perimetroAbdominal" value={formData.constantesVitales.perimetroAbdominal} onChange={(e) => handleNestedChange("constantesVitales", "perimetroAbdominal", e.target.value)} />
-            </label>
-            <label>
-              Frecuencia:
-              <input type="text" name="frecuencia" value={formData.constantesVitales.frecuencia} onChange={(e) => handleNestedChange("constantesVitales", "frecuencia", e.target.value)} />
-            </label>
-            <label>
-              Glucosa Capilar (mg):
-              <input type="text" name="glucosaCapilar" value={formData.constantesVitales.glucosaCapilar} onChange={(e) => handleNestedChange("constantesVitales", "glucosaCapilar", e.target.value)} />
-            </label>
-            <label>
-              Hemoglobina Capilar (g/dL):
-              <input type="text" name="hemoglobinaCapilar" value={formData.constantesVitales.hemoglobinaCapilar} onChange={(e) => handleNestedChange("constantesVitales", "hemoglobinaCapilar", e.target.value)} />
-            </label>
-          </section>
-        )}
-
-
-        {/* Sección G: Revisión Actual de Órganos y Sistemas */}
-{activeSection === "revisionOrganos" && (
-  <section>
-    <h2>Revisión Actual de Órganos y Sistemas</h2>
-    
-    <label>
-      Órganos de los Sentidos:
-      <textarea
-        name="organosSentidos"
-        value={formData.revisionOrganosYSystems.organosSentidos}
-        onChange={(e) => handleNestedChange("revisionOrganosYSystems", "organosSentidos", e.target.value)}
-        placeholder="Ingrese detalles sobre los órganos de los sentidos"
-      />
-    </label>
-    
-    <label>
-      Respiratorio:
-      <textarea
-        name="respiratorio"
-        value={formData.revisionOrganosYSystems.respiratorio}
-        onChange={(e) => handleNestedChange("revisionOrganosYSystems", "respiratorio", e.target.value)}
-        placeholder="Ingrese detalles sobre el sistema respiratorio"
-      />
-    </label>
-    
-    <label>
-      Cardiovascular:
-      <textarea
-        name="cardiovascular"
-        value={formData.revisionOrganosYSystems.cardiovascular}
-        onChange={(e) => handleNestedChange("revisionOrganosYSystems", "cardiovascular", e.target.value)}
-        placeholder="Ingrese detalles sobre el sistema cardiovascular"
-      />
-    </label>
-    
-    <label>
-      Digestivo:
-      <textarea
-        name="digestivo"
-        value={formData.revisionOrganosYSystems.digestivo}
-        onChange={(e) => handleNestedChange("revisionOrganosYSystems", "digestivo", e.target.value)}
-        placeholder="Ingrese detalles sobre el sistema digestivo"
-      />
-    </label>
-    
-    <label>
-      Urinario:
-      <textarea
-        name="urinario"
-        value={formData.revisionOrganosYSystems.urinario}
-        onChange={(e) => handleNestedChange("revisionOrganosYSystems", "urinario", e.target.value)}
-        placeholder="Ingrese detalles sobre el sistema urinario"
-      />
-    </label>
-    
-    <label>
-      Músculo Esquelético:
-      <textarea
-        name="musculoEsqueletico"
-        value={formData.revisionOrganosYSystems.musculoEsqueletico}
-        onChange={(e) => handleNestedChange("revisionOrganosYSystems", "musculoEsqueletico", e.target.value)}
-        placeholder="Ingrese detalles sobre el sistema músculo esquelético"
-      />
-    </label>
-    
-    <label>
-      Endocrino:
-      <textarea
-        name="endocrino"
-        value={formData.revisionOrganosYSystems.endocrino}
-        onChange={(e) => handleNestedChange("revisionOrganosYSystems", "endocrino", e.target.value)}
-        placeholder="Ingrese detalles sobre el sistema endocrino"
-      />
-    </label>
-    
-    <label>
-      Nervioso:
-      <textarea
-        name="nervioso"
-        value={formData.revisionOrganosYSystems.nervioso}
-        onChange={(e) => handleNestedChange("revisionOrganosYSystems", "nervioso", e.target.value)}
-        placeholder="Ingrese detalles sobre el sistema nervioso"
-      />
-    </label>
-    
-  </section>
-)}
-
-        {/* Sección G: Tratamiento */}
-        {activeSection === "tratamiento" && (
-          <section>
-            <h2>Tratamiento</h2>
-            <label>
-              Medicamentos:
+          <h2>Examen Físico</h2>
+          {examenesFisicos.map((examen) => (
+            <label key={examen}>
               <input
-                type="text"
-                name="medicamentos"
-                value={tratamiento.medicamentos}
-                onChange={(e) => setTratamiento({ ...tratamiento, medicamentos: e.target.value })}
+                type="checkbox"
+                checked={formData.examenFisico.seleccionados.includes(examen)}
+                onChange={() => handleCheckboxChange("examenFisico", examen)}
               />
+              {examen}
             </label>
-            <label>
-              Instrucciones de Suministro:
+          ))}
+          <label>
+            Observación:
+            <textarea
+              name="observacion"
+              value={formData.examenFisico.observacion}
+              onChange={(e) => handleNestedChange("examenFisico", "observacion", e.target.value)}
+            ></textarea>
+          </label>
+
+          <h2>Revisión de Órganos y Sistemas</h2>
+          {organosYSistemas.map((organo) => (
+            <label key={organo}>
               <input
-                type="text"
-                name="instruccionesSuministro"
-                value={tratamiento.instruccionesSuministro}
-                onChange={(e) => setTratamiento({ ...tratamiento, instruccionesSuministro: e.target.value })}
+                type="checkbox"
+                checked={formData.revisionOrganosYSystems.seleccionados.includes(organo)}
+                onChange={() => handleCheckboxChange("revisionOrganosYSystems", organo)}
               />
+              {organo}
             </label>
-          </section>
-        )}
+          ))}
+          <label>
+            Observación:
+            <textarea
+              name="observacion"
+              value={formData.revisionOrganosYSystems.observacion}
+              onChange={(e) => handleNestedChange("revisionOrganosYSystems", "observacion", e.target.value)}
+            ></textarea>
+          </label>
 
-        <button type="submit">Enviar</button>
-        <button type="button" onClick={onCancel}>Cancelar</button>
+          <h2>Tratamiento</h2>
+          <label>
+            Medicamentos:
+            <input
+              type="text"
+              name="medicamentos"
+              value={formData.tratamiento.medicamentos}
+              onChange={(e) => handleNestedChange("tratamiento", "medicamentos", e.target.value)}
+            />
+          </label>
+          <label>
+            Método de Administración:
+            <input
+              type="text"
+              name="metodoAdministracion"
+              value={formData.tratamiento.metodoAdministracion}
+              onChange={(e) => handleNestedChange("tratamiento", "metodoAdministracion", e.target.value)}
+            />
+          </label>
 
+          <h2>Datos del Profesional Responsable</h2>
+          <label>
+            Fecha de la Atención:
+            <input
+              type="date"
+              name="fechaAtencion"
+              value={formData.datosProfesional.fechaAtencion}
+              onChange={(e) => handleNestedChange("datosProfesional", "fechaAtencion", e.target.value)}
+            />
+          </label>
+          <label>
+            Hora de la Atención:
+            <input
+              type="time"
+              name="horaAtencion"
+              value={formData.datosProfesional.horaAtencion}
+              onChange={(e) => handleNestedChange("datosProfesional", "horaAtencion", e.target.value)}
+            />
+          </label>
+          <label>
+            Nombres y Apellidos del Profesional:
+            <input
+              type="text"
+              name="nombresApellidosProfesional"
+              value={formData.datosProfesional.nombresApellidosProfesional}
+              onChange={(e) => handleNestedChange("datosProfesional", "nombresApellidosProfesional", e.target.value)}
+            />
+          </label>
+          <label>
+            Número de Documento de Identificación:
+            <input
+              type="text"
+              name="numeroDocumentoProfesional"
+              value={formData.datosProfesional.numeroDocumentoProfesional}
+              onChange={(e) => handleNestedChange("datosProfesional", "numeroDocumentoProfesional", e.target.value)}
+            />
+          </label>
+          <label>
+            Firma:
+            <input
+              type="text"
+              name="firma"
+              value={formData.datosProfesional.firma}
+              onChange={(e) => handleNestedChange("datosProfesional", "firma", e.target.value)}
+            />
+          </label>
+          <label>
+            Sello:
+            <input
+              type="text"
+              name="sello"
+              value={formData.datosProfesional.sello}
+              onChange={(e) => handleNestedChange("datosProfesional", "sello", e.target.value)}
+            />
+          </label>
 
-      </form>
+          <div className="form-buttons">
+            <button type="submit">Guardar</button>
+            <button type="button" onClick={onCancel}>
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -121,7 +121,7 @@ const CreateRols = () => {
 
       if (response.data) {
         setCredenciales({
-          id_credenciales : response.data.id_credencial,
+          id_credenciales: response.data.id_credencial,
           email: response.data.correo_electronico || "",
           password: response.data.contrasena || "",
           role: response.data.rol || "",
@@ -140,8 +140,8 @@ const CreateRols = () => {
     try {
       const credencial =
         await axios.get(`http://localhost:8000/kriss/buscarCredencialPorCedula/${persona.cedula}`);
-        const credencial_id = credencial.data.id_credencial;
-        // console.log("credencial_id", credencial.data);
+      const credencial_id = credencial.data.id_credencial;
+      // console.log("credencial_id", credencial.data);
 
       await axios.delete(`http://localhost:8000/kriss/credenciales/${credencial_id}`);
       setMensaje("rol eliminado correctamente");
@@ -154,7 +154,7 @@ const CreateRols = () => {
   const actualizarRole = async () => {
     try {
       const payload = {
-        id_credenciales : credenciales.id_credenciales,
+        id_credenciales: credenciales.id_credenciales,
         email: credenciales.email,
         password: credenciales.password,
         role: credenciales.role,
@@ -175,6 +175,8 @@ const CreateRols = () => {
     setCredenciales({ id_credenciales: "", email: "", password: "", role: "" });
     setMensaje("");
   };
+
+
 
 
   return (
@@ -207,9 +209,22 @@ const CreateRols = () => {
                 type="text"
                 value={cedula}
                 onChange={(e) => setCedula(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    buscarPersona();
+                    buscarPersonaPorCedula();
+                  }
+                }}
               />
             </label>
-            <button onClick={() => { buscarPersona(); buscarPersonaPorCedula() }}>Buscar</button>
+            <button
+              onClick={() => {
+                buscarPersona();
+                buscarPersonaPorCedula();
+              }}
+            >
+              Buscar
+            </button>
           </div>
 
           {/* mostrar los datos de la persona encontrada */}
@@ -255,9 +270,22 @@ const CreateRols = () => {
                 type="text"
                 value={cedula}
                 onChange={(e) => setCedula(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    buscarPersona();
+                    buscarPersonaPorCedula();
+                  }
+                }}
               />
             </label>
-            <button onClick={buscarPersona}>Buscar</button>
+            <button
+              onClick={() => {
+                buscarPersona();
+                buscarPersonaPorCedula();
+              }}
+            >
+              Buscar
+            </button>
           </div>
 
           {persona && (
@@ -449,15 +477,57 @@ const CreateRols = () => {
           </label>
           <label>
             rol:
-            <input
-              type="text"
+            <select
               name="rol"
               value={nuevaPersona.rol}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
               }
-            />
+            >
+              <option value="">Seleccione un rol</option> {/* Opción por defecto */}
+              <option value="admin">Administrador</option>
+              <option value="medico">medico</option>
+              <option value="enfermera">enfermera</option>
+              <option value="tratante">tratante</option>
+            </select>
           </label>
+
+          {/* Campos condicionales para Médico o Enfermera */}
+          {(nuevaPersona.rol === "medico" || nuevaPersona.rol === "enfermera") && (
+            <>
+              <label>
+                Área:
+                <select
+                  name="area"
+                  value={nuevaPersona.area || ""} // Manejo de estado inicial vacío
+                  onChange={(e) =>
+                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                  }
+                >
+                  <option value="">Seleccione un área</option>
+                  <option value="cardiologia">Cardiología</option>
+                  <option value="pediatria">Pediatría</option>
+                  <option value="urgencias">Urgencias</option>
+                </select>
+              </label>
+
+              <label>
+                Especialidad:
+                <select
+                  name="especialidad"
+                  value={nuevaPersona.especialidad || ""} // Manejo de estado inicial vacío
+                  onChange={(e) =>
+                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                  }
+                >
+                  <option value="">Seleccione una especialidad</option>
+                  <option value="cirugia">Cirugía</option>
+                  <option value="dermatologia">Dermatología</option>
+                  <option value="neurologia">Neurología</option>
+                </select>
+              </label>
+            </>
+          )}
 
           <button onClick={guardarNuevaPersona}>Guardar Persona</button>
         </div>
