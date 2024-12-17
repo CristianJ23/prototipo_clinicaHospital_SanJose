@@ -8,7 +8,7 @@ const BuscarPersona = async (req, res) => {
 
 
         const query = `
-      SELECT * FROM persona WHERE cedula = ? ;
+      SELECT * FROM persona WHERE numero_documento = ? ;
         `
 
         const [result] = await db.query(query, {
@@ -18,7 +18,9 @@ const BuscarPersona = async (req, res) => {
         if (result.length > 0) {
             const persona = result[0]; // Obtiene el primer elemento del resultado.
             console.log(`persona encontrada: ${persona.id_persona}`);
+
             res.json(persona);
+            
         } else {
             console.log('No se encontró ninguna persona con esa cédula');
             res.status(404).json({ message: 'Persona no encontrada' });

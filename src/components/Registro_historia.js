@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/registroHistoria.css";
 
 import Vista_medico from "../components/inicio_medico";
@@ -9,8 +9,16 @@ import Paci from "../img2/paciente_p.jpg";
 import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
 import tratamientosImg from "../img2/tratamiento.png";
+import debounce from 'lodash.debounce';
+import axios from "axios";
+
+
 
 const RegistroHistoria = ({ onCancel }) => {
+  // const [cedula, setCedula] = useState("");
+  const [error, setError] = useState("");
+  const [mensaje, setMensaje] = useState("");
+  const [paciente, setPaciente] = useState(null);
   const [formData, setFormData] = useState({
     cedula: "",
     nombres: "",
@@ -61,6 +69,11 @@ const RegistroHistoria = ({ onCancel }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Si el campo es "cedula", llamar a la búsqueda con debounce
+    if (name === 'cedula') {
+      debouncedBuscarPacientePorCedula(value); // Llamada al debounced function
+    }
   };
 
   const handleNestedChange = (section, name, value) => {
@@ -87,6 +100,43 @@ const RegistroHistoria = ({ onCancel }) => {
       },
     });
   };
+
+  /*********************************************************** */
+  /* codigo para recibir los datos del paciente deacuerdo a su numero de cedula */
+  const buscarPacientePorCedula = async (cedula) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/kriss/buscarPersonaPorCedula/${cedula}`);
+
+      if (response.data) {
+        setPaciente(response.data);
+        setMensaje("");
+
+      } else {
+        setMensaje("Persona no encontrada.");
+        setPaciente(null);
+      }
+    } catch (error) {
+      setMensaje("Error al buscar la persona.");
+      setPaciente(null);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (paciente) {
+  //     console.log("paciente : ", paciente.primer_apellido); // Imprime el paciente cuando se actualiza el estado
+  //   }
+  // }, [paciente]); // Solo se ejecuta cuando paciente cambia
+
+  // Usar debounce para evitar múltiples peticiones rápidas al backend
+  const debouncedBuscarPacientePorCedula = debounce((cedula) => {
+    if (cedula) {
+      buscarPacientePorCedula(cedula); // Llamada al backend solo después del debounce
+    }
+  }, 500); // El tiempo de espera de 500 ms entre llamadas
+
+  /*fin codigo para busqueda por cedula*/
+
+
 
   const handleSubmitTratamiento = async (e) => {
     e.preventDefault();
@@ -181,15 +231,29 @@ const RegistroHistoria = ({ onCancel }) => {
           <h2>Datos del Paciente</h2>
           <label>
             Cédula:
-            <input type="text" name="cedula" value={formData.cedula} onChange={handleInputChange} />
+            <input
+              type="text"
+              name="cedula"
+              value={formData.cedula}
+              onChange={handleInputChange}
+            />
           </label>
+          {error && <p style={{ color: "red" }}>{error}</p>} {/* Muestra errores */}
+
           <label>
-            Nombres:
-            <input type="text" name="nombres" value={formData.nombres} onChange={handleInputChange} />
+          Nombres:
+          <input
+            type="text"
+            name="nombres"
+            value={paciente ? paciente.primer_nombre : ""}
+            onChange={handleInputChange}
+          />
           </label>
           <label>
             Apellidos:
-            <input type="text" name="apellidos" value={formData.apellidos} onChange={handleInputChange} />
+            <input type="text" name="apellidos" 
+            value={paciente ? paciente.primer_apellido : ""} 
+            onChange={handleInputChange} />
           </label>
           <label>
             Institución del Sistema:

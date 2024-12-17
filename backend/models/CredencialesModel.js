@@ -32,6 +32,9 @@ const CredencialesModel = db.define(
       allowNull: false,
       comment: "1 = Médico, 2 = Enfermera, 3 = Tratante", // Documentar los valores
     },
+    estado: {
+      type: DataTypes.STRING(10),
+    },
   },
   {
     tableName: "credenciales",

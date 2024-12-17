@@ -30,10 +30,6 @@ const HistoriaClinicaModel = db.define('historia_clinica', {
     type: DataTypes.TEXT,
     allowNull: true,  // Puede ser opcional
   },
-  id_tratamiento: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
 }, {
   tableName: 'HistoriaClinica', // Nombre exacto de la tabla en la base de datos
   timestamps: false,            // Opcional: deshabilitar createdAt y updatedAt si no se desean

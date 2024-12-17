@@ -16,6 +16,10 @@ const TratamientoModel = db.define('tratamientos',{
         type: DataTypes.TEXT,
         allowNull: true
     },
+    id_historia:{
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
 },
 {
     tableName: 'Tratamiento',

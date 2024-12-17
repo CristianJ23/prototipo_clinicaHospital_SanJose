@@ -87,11 +87,11 @@ HistoriaClinicaModel.belongsTo(PacienteModel, {
   //   onDelete: 'CASCADE', // Opcional: eliminar la historia clínica cuando se elimine el área
   });
   
-  HistoriaClinicaModel.belongsTo(TratamientoModel, {
-    foreignKey: 'id_tratamiento',
-    targetKey: 'id_tratamiento',
-  //   onDelete: 'CASCADE', // Opcional: eliminar la historia clínica cuando se elimine el tratamiento
-  });
+  // HistoriaClinicaModel.belongsTo(TratamientoModel, {
+  //   foreignKey: 'id_tratamiento',
+  //   targetKey: 'id_tratamiento',
+  // //   onDelete: 'CASCADE', // Opcional: eliminar la historia clínica cuando se elimine el tratamiento
+  // });
 
   // Definir relaciones (si es necesario)
 //una modificacion puede estar asociada a varios medicos
@@ -153,4 +153,9 @@ MedicoModel.belongsTo(PersonaModel, {
 
 }
 
+  //un tratamiento puede estar asociado con varias historias
+  TratamientoModel.hasMany(HistoriaClinicaModel,{
+    foreignKey: 'id_historia',
+    sourceKey: 'id_historia',
+})
 export default loadAssociations;

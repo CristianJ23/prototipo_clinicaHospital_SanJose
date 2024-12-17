@@ -4,10 +4,10 @@ import PersonaModel from "../models/PersonaModel.js";
 //funcion  par encontrar la credencial por la cedula
 const bucarCedencialPorCedula = async (req, res) => {
     try {
-        const { cedula } = req.params;
-        console.log(cedula);
+        const { numero_documento } = req.params;
+        // console.log(numero_documento);
 
-        const persona = await PersonaModel.findOne({ where: { cedula } });
+        const persona = await PersonaModel.findOne({ where: { numero_documento } });
 
         if (!persona) {
             // Si no se encuentra la persona, devolver un mensaje 404
@@ -29,6 +29,7 @@ const bucarCedencialPorCedula = async (req, res) => {
         // console.log("credencial encontrada: ", credencial.id_credencial)
 
         if (credencial) {
+            console.log(credencial.id_credencial);
             res.json({
                 id_credencial: credencial.id_credencial, 
                 correo_electronico: credencial.correo_electronico, 

@@ -9,6 +9,8 @@ import CreateRolPrimeraVez from "../credenciales/createRolPrimeraVez.js";
 import CreateRolNoPrimeraVez from "../credenciales/createRolNoPrimeraVez.js";
 import bucarCedencialPorCedula from "../credenciales/buscarCredencialPorCedula.js";
 import actualizarRol from '../credenciales/actualizarRol.js';
+import buscarPeacientePoCedula from "../controllers/buscarPacientePorCedula.js";
+import eliminarRol from "../controllers/eliminarRol.js";
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
@@ -16,9 +18,14 @@ const router = express.Router();
 //ruta para actualizar rol
 router.post('/actializarRol/', actualizarRol)
 
+//ruta para eliminar credencial
+router.post('/deleteRol/:idCredencial', eliminarRol)
+
+//buscar paciente por numero de cedula
+router.get("buscarPacientePorCedula/:cedula", buscarPeacientePoCedula)
 
 //ruta par abucar un a credencial por el numero de cedula
-router.get('/buscarCredencialPorCedula/:cedula', bucarCedencialPorCedula)
+router.get('/buscarCredencialPorCedula/:numero_documento', bucarCedencialPorCedula)
 
 // Ruta para crear un paciente (sin depender del middleware injectModel)
 router.post('/crearPaciente', CrearPaciente);

@@ -8,10 +8,9 @@ import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
 import tratamientosImg from "../img2/tratamiento.png";
 
-const CrearPaciente = ({ onCancel }) => {
+const CrearPaciente = ({ onCancel = () => console.log("Cancelación predeterminada") }) => {
   const [formData, setFormData] = useState({
-    fecha_admision: "",
-    admisionista: "",
+    // informacion de la persona
     primer_apellido: "",
     segundo_apellido: "",
     primer_nombre: "",
@@ -20,13 +19,14 @@ const CrearPaciente = ({ onCancel }) => {
     numero_documento: "",
     estado_civil: "",
     sexo: "",
-    telefono_fijo: "",
     celular: "",
     correo_electronico: "",
     fecha_nacimiento: "",
     lugar_nacimiento: "",
-    nacionalidad: "",
-    edad: "",
+    nacionalidad: "", //se llena si existe provincia al autocompletarse
+    // informacion de el paciente
+    // fecha_admision: "", /*se llena con la fecha en que se crea automatico */
+    admisionista: "", /* se llena con el id de quien ingreso al sistema*/
     condicion_edad: "",
     autoidentificacion_etnica: "",
     nacionalidad_etnica: "",
@@ -37,8 +37,8 @@ const CrearPaciente = ({ onCancel }) => {
     tipo_empresa: "",
     seguro_salud: "",
     tipo_bono: "",
-    provincia: "",
-    canton: "",
+    provincia: "",//se llena automaticmaente con la parroquia
+    canton: "", //se llena automaticmaente con la parroquia
     parroquia: "",
     barrio: "",
     calle_principal: "",
@@ -76,6 +76,7 @@ const CrearPaciente = ({ onCancel }) => {
           response.json().then((data) => {
             console.error("Error en respuesta del servidor:", data);
             alert("Error al guardar los datos.");
+            onCancel();
           });
         }
       });
@@ -103,7 +104,7 @@ const CrearPaciente = ({ onCancel }) => {
         <h2>Formulario de Registro de Paciente</h2>
         <form onSubmit={handleSubmit}>
           <h3>Registro de Admisión</h3>
-          <label>
+          {/* <label>
             Fecha de Admisión:
             <input
               type="date"
@@ -112,7 +113,7 @@ const CrearPaciente = ({ onCancel }) => {
               onChange={handleChange}
               required
             />
-          </label>
+          </label> */}
           <label>
             Nombre del Admisionista:
             <input
@@ -253,15 +254,6 @@ const CrearPaciente = ({ onCancel }) => {
             <input
               name="nacionalidad"
               value={formData.nacionalidad}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Edad:
-            <input
-              type="number"
-              name="edad"
-              value={formData.edad}
               onChange={handleChange}
             />
           </label>

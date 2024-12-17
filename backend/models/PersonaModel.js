@@ -1,4 +1,3 @@
-// Importar la conexión a la base de datos
 import db from "../database/db.js";
 import { DataTypes } from "sequelize";
 
@@ -9,45 +8,63 @@ const PersonaModel = db.define('personas', {
     primaryKey: true,
     autoIncrement: true,
   },
-  nombres: {
+  primer_apellido: {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
-  apellidos: {
+  segundo_apellido: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  primer_nombre: {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
-  cedula: {
+  segundo_nombre: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  tipo_documento: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+  },
+  numero_documento: {
     type: DataTypes.STRING(20),
     unique: true,
+    allowNull: false,
+  },
+  estado_civil: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+  },
+  sexo: {
+    type: DataTypes.ENUM('M', 'F'),
     allowNull: false,
   },
   celular: {
     type: DataTypes.STRING(15),
     allowNull: true,
   },
-  sexo: {
-    type: DataTypes.ENUM('M', 'F'),
+  correo_electronico: {
+    type: DataTypes.STRING(100),
+    unique: true,
     allowNull: false,
   },
   fecha_nacimiento: {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
-  correo_electronico: {
-    type: DataTypes.STRING(100),
-    unique: true,
+  lugar_nacimiento: {
+    type: DataTypes.STRING(150),
     allowNull: false,
   },
-  edad: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
+  nacionalidad: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+  }
 }, {
   tableName: 'Persona', // Nombre exacto de la tabla en la base de datos
-  timestamps: false,    // Opcional: deshabilitar createdAt y updatedAt
+  timestamps: false,    // Deshabilitar createdAt y updatedAt si no son necesarios
 });
-
-
 
 export default PersonaModel;

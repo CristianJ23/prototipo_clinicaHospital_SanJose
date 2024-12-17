@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../css/CreateRols.css"; // Importar estilos CSS
 import doctorImage from '../../img2/doctorConFormulario.jpg';
-
+import debounce from 'lodash.debounce';
 
 
 const CreateRols = () => {
@@ -17,31 +17,64 @@ const CreateRols = () => {
     role: "",
   });
   const [nuevaPersona, setNuevaPersona] = useState({
-    nombres: "",
-    apellidos: "",
-    cedula: "",
-    celular: "",
+    primer_apellido: "",
+    segundo_apellido: "",
+    primer_nombre: "",
+    segundo_nombre: "",
+    tipo_documento: "",
+    numero_documento: "",
+    estado_civil: "",
     sexo: "",
-    fecha_nacimiento: "",
+    celular: "",
     correo_electronico: "",
-    edad: "",
+    fecha_nacimiento: "",
+    lugar_nacimiento: "",
+    nacionalidad: "",
     contrasena: "",
-    rol: ""
+    rol: "",
+    area: "",
+    especialidad: ""
   });
+
+  /* hacer llamadas para buscar al escribir */
+  const debouncedBuscarPersonaPorCedula = debounce(async (cedula) => {
+    if (cedula) {
+      try {
+        await buscarPersona(cedula); // Ejecutar buscarPersona primero
+        await buscarPersonaPorCedula(cedula); // Luego ejecutar buscarPersonaPorCedula
+        if (buscarPersonaPorCedula.length > 0) {
+          // setMensaje("");
+          // eliminarDatos();
+        }
+      } catch (error) {
+        console.error("Error al buscar la persona:", error);
+      }
+    }
+  }, 500);
+
+  // Manejar el input para la cédula
+  const handleCedulaChange = (e) => {
+    const value = e.target.value;
+    setCedula(value); // Actualizar estado de cédula
+    debouncedBuscarPersonaPorCedula(value); // Llamar al debounce
+  };
 
 
   // Manejar cambios en los inputs
   const handleInputChange = (e, setState, state) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
+
+    // // Si el campo es "cedula", llamar a la búsqueda con debounce
+    // if (name === 'cedula') {
+    //   debouncedBuscarPersonaPorCedula(value); // Llamada al debounced function
+    // }
   };
 
   // Función para buscar persona por cédula
-  const buscarPersona = async () => {
+  const buscarPersona = async (cedula) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/kriss/buscarPersonaPorCedula/${cedula}`
-      );
+      const response = await axios.get(`http://localhost:8000/kriss/buscarPersonaPorCedula/${cedula}`);
       if (response.data) {
         setPersona(response.data);
         setMensaje("");
@@ -50,17 +83,18 @@ const CreateRols = () => {
         setPersona(null);
       }
     } catch (error) {
+      console.error("Error al buscar persona:", error);
       setMensaje("Error al buscar la persona.");
       setPersona(null);
     }
   };
 
   // comprobar datos en la consola
-  // React.useEffect(() => {
-  //   if (credenciales) {
-  //     console.log("Persona actualizada:", credenciales);
-  //   }
-  // }, [credenciales]);
+  React.useEffect(() => {
+    if (credenciales) {
+      console.log("Persona actualizada:", credenciales);
+    }
+  }, [credenciales]);
 
 
   // Función para guardar credenciales
@@ -93,14 +127,22 @@ const CreateRols = () => {
       await axios.post("http://localhost:8000/kriss/createRolPrimeraVez", nuevaPersona);
       setMensaje("Persona creada exitosamente.");
       setNuevaPersona({
-        nombres: "",
-        apellidos: "",
-        cedula: "",
-        celular: "",
+        primer_apellido: "",
+        segundo_apellido: "",
+        primer_nombre: "",
+        segundo_nombre: "",
+        tipo_documento: "",
+        numero_documento: "",
+        estado_civil: "",
         sexo: "",
-        fecha_nacimiento: "",
+        celular: "",
         correo_electronico: "",
-        edad: '',
+        fecha_nacimiento: "",
+        lugar_nacimiento: "",
+        nacionalidad: "",
+        correo_electronico: "",
+        contraseña: "",
+        rol: "",
       });
       setVista("inicio");
     } catch (error) {
@@ -108,17 +150,9 @@ const CreateRols = () => {
     }
   };
 
-  const buscarPersonaPorCedula = async () => {
+  const buscarPersonaPorCedula = async (cedula) => {
     try {
-      if (!persona || !persona.cedula) {
-        setMensaje("Por favor busca una persona primero.");
-        return;
-      }
-
-      const response = await axios.get(
-        `http://localhost:8000/kriss/buscarCredencialPorCedula/${persona.cedula}`
-      );
-
+      const response = await axios.get(`http://localhost:8000/kriss/buscarCredencialPorCedula/${cedula}`);
       if (response.data) {
         setCredenciales({
           id_credenciales: response.data.id_credencial,
@@ -130,8 +164,8 @@ const CreateRols = () => {
         setMensaje("No se encontraron credenciales.");
       }
     } catch (error) {
+      console.error("Error al buscar credenciales:", error);
       setMensaje("Error al buscar credenciales.");
-      console.error(error);
     }
   };
 
@@ -139,11 +173,12 @@ const CreateRols = () => {
   const eliminarRol = async () => {
     try {
       const credencial =
-        await axios.get(`http://localhost:8000/kriss/buscarCredencialPorCedula/${persona.cedula}`);
+      // console.log(persona.numero_documento)
+        await axios.get(`http://localhost:8000/kriss/buscarCredencialPorCedula/${persona.numero_documento}`);
+        console.log("credencial_id", credencial.data.id);
       const credencial_id = credencial.data.id_credencial;
-      // console.log("credencial_id", credencial.data);
 
-      await axios.delete(`http://localhost:8000/kriss/credenciales/${credencial_id}`);
+      await axios.post(`http://localhost:8000/kriss/deleteRol/${credencial_id}`);
       setMensaje("rol eliminado correctamente");
 
     } catch (error) {
@@ -208,31 +243,34 @@ const CreateRols = () => {
               <input
                 type="text"
                 value={cedula}
-                onChange={(e) => setCedula(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    buscarPersona();
-                    buscarPersonaPorCedula();
-                  }
-                }}
+                onChange={handleCedulaChange} // Solo actualiza el estado y llama a debounce
+              // onChange={(e) => setCedula(e.target.value)}
+              // onKeyDown={(e) => {
+              //   if (e.key === "Enter") {
+              //     buscarPersona();
+              //     // buscarPersonaPorCedula();
+              //     debouncedBuscarPersonaPorCedula();
+              //   }
+              // }}
               />
             </label>
-            <button
+            {/* <button
               onClick={() => {
                 buscarPersona();
-                buscarPersonaPorCedula();
+                // buscarPersonaPorCedula();
+                debouncedBuscarPersonaPorCedula();
               }}
             >
               Buscar
-            </button>
+            </button> */}
           </div>
 
           {/* mostrar los datos de la persona encontrada */}
           {persona && (
             <div>
               <h3>Información de la Persona</h3>
-              <p><strong>Nombre:</strong> {persona.nombres}</p>
-              <p><strong>Correo:</strong> {credenciales.email}</p>
+              <p><strong>Nombres:</strong> {persona.primer_nombre + " " + persona.segundo_nombre}</p>
+              <p><strong>Apellidos:</strong> {persona.primer_apellido + " " + persona.segundo_apellido}</p>
             </div>
           )}
 
@@ -269,30 +307,16 @@ const CreateRols = () => {
               <input
                 type="text"
                 value={cedula}
-                onChange={(e) => setCedula(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    buscarPersona();
-                    buscarPersonaPorCedula();
-                  }
-                }}
+                onChange={handleCedulaChange}
               />
             </label>
-            <button
-              onClick={() => {
-                buscarPersona();
-                buscarPersonaPorCedula();
-              }}
-            >
-              Buscar
-            </button>
           </div>
 
           {persona && (
             <div>
               <h3>Información de la Persona</h3>
-              <p><strong>Nombre:</strong> {persona.nombres}</p>
-              <p><strong>Correo:</strong> {persona.correo_electronico}</p>
+              <p><strong>Nombres:</strong> {persona.primer_nombre + " " + persona.segundo_nombre}</p>
+              <p><strong>Apellidos:</strong> {persona.primer_apellido + " " + persona.segundo_apellido}</p>
             </div>
           )}
 
@@ -312,17 +336,16 @@ const CreateRols = () => {
               <input
                 type="text"
                 value={cedula}
-                onChange={(e) => setCedula(e.target.value)}
+                onChange={handleCedulaChange}
               />
             </label>
-            <button onClick={buscarPersona}>Buscar</button>
           </div>
 
           {persona && (
             <div>
               <h3>Información de la Persona</h3>
-              <p><strong>Nombre:</strong> {persona.nombres}</p>
-              <p><strong>Cédula:</strong> {persona.cedula}</p>
+              <p><strong>Nombres:</strong> {persona.primer_nombre + " " + persona.segundo_nombre}</p>
+              <p><strong>Apellidos:</strong> {persona.primer_apellido + " " + persona.segundo_apellido}</p>
             </div>
           )}
 
@@ -374,48 +397,88 @@ const CreateRols = () => {
           <h2>Crear Nueva Persona</h2>
           <button onClick={() => setVista("inicio")}>Atrás</button>
           <label>
-            Nombres:
+            primer nombre:
             <input
               type="text"
-              name="nombres"
-              value={nuevaPersona.nombres}
+              name="primer_nombre"
+              value={nuevaPersona.primer_nombre}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
               }
             />
           </label>
           <label>
-            Apellidos:
+            segundo nombre:
             <input
               type="text"
-              name="apellidos"
-              value={nuevaPersona.apellidos}
+              name="segundo_nombre"
+              value={nuevaPersona.segundo_nombre}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
               }
             />
           </label>
           <label>
-            Cédula:
+            primer apellido:
             <input
               type="text"
-              name="cedula"
-              value={nuevaPersona.cedula}
+              name="primer_apellido"
+              value={nuevaPersona.primer_apellido}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
               }
             />
           </label>
           <label>
-            Celular:
+            segundo apellido:
             <input
               type="text"
-              name="celular"
-              value={nuevaPersona.celular}
+              name="segundo_apellido"
+              value={nuevaPersona.segundo_apellido}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
               }
             />
+          </label>
+          <label>
+            Tipo de Documento:
+            <select
+              name="tipo_documento"
+              value={nuevaPersona.tipo_documento}
+              onChange={(e) =>
+                handleInputChange(e, setNuevaPersona, nuevaPersona)
+              }
+              require
+            >
+              <option value="">Seleccione</option>
+              <option value="cc">Cédula de Ciudadanía</option>
+              <option value="ci">Cédula de Identidad</option>
+              <option value="pasaporte">Pasaporte</option>
+              <option value="refugiado">Carné de Refugiado</option>
+              <option value="sd">Sin Dato</option>
+            </select>
+          </label>
+          {nuevaPersona.tipo_documento && (
+            <label>
+              Número de Documento:
+              <input
+                name="numero_documento"
+                value={nuevaPersona.numero_documento}
+                onChange={(e) =>
+                  handleInputChange(e, setNuevaPersona, nuevaPersona)
+                }
+                required
+              />
+            </label>
+          )}
+          <label>
+            Estado Civil:
+            <input
+              name="estado_civil"
+              value={nuevaPersona.estado_civil}
+              onChange={(e) =>
+                handleInputChange(e, setNuevaPersona, nuevaPersona)
+              } />
           </label>
           <label>
             Sexo:
@@ -424,23 +487,21 @@ const CreateRols = () => {
               value={nuevaPersona.sexo}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
-              }
+              } required
             >
               <option value="">Seleccione</option>
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
+              <option value="masculino">Masculino</option>
+              <option value="femenino">Femenino</option>
             </select>
           </label>
           <label>
-            Fecha de Nacimiento:
+            Celular:
             <input
-              type="date"
-              name="fecha_nacimiento"
-              value={nuevaPersona.fecha_nacimiento}
+              name="celular"
+              value={nuevaPersona.celular}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
-              }
-            />
+              } />
           </label>
           <label>
             Correo Electrónico:
@@ -450,19 +511,35 @@ const CreateRols = () => {
               value={nuevaPersona.correo_electronico}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
-              }
-            />
+              } />
           </label>
           <label>
-            Edad:
+            Fecha de Nacimiento:
             <input
-              type="number"
-              name="edad"
-              value={nuevaPersona.edad}
+              type="date"
+              name="fecha_nacimiento"
+              value={nuevaPersona.fecha_nacimiento}
               onChange={(e) =>
                 handleInputChange(e, setNuevaPersona, nuevaPersona)
-              }
-            />
+              } />
+          </label>
+          <label>
+            Lugar de Nacimiento:
+            <input
+              name="lugar_nacimiento"
+              value={nuevaPersona.lugar_nacimiento}
+              onChange={(e) =>
+                handleInputChange(e, setNuevaPersona, nuevaPersona)
+              } />
+          </label>
+          <label>
+            Nacionalidad:
+            <input
+              name="nacionalidad"
+              value={nuevaPersona.nacionalidad}
+              onChange={(e) =>
+                handleInputChange(e, setNuevaPersona, nuevaPersona)
+              } />
           </label>
           <label>
             contraseña:
@@ -499,10 +576,8 @@ const CreateRols = () => {
                 Área:
                 <select
                   name="area"
-                  value={nuevaPersona.area || ""} // Manejo de estado inicial vacío
-                  onChange={(e) =>
-                    handleInputChange(e, setNuevaPersona, nuevaPersona)
-                  }
+                  value={nuevaPersona.area}
+                  onChange={(e) => handleInputChange(e, setNuevaPersona, nuevaPersona)}
                 >
                   <option value="">Seleccione un área</option>
                   <option value="cardiologia">Cardiología</option>
@@ -515,19 +590,17 @@ const CreateRols = () => {
                 Especialidad:
                 <select
                   name="especialidad"
-                  value={nuevaPersona.especialidad || ""} // Manejo de estado inicial vacío
-                  onChange={(e) =>
-                    handleInputChange(e, setNuevaPersona, nuevaPersona)
-                  }
+                  value={nuevaPersona.especialidad}
+                  onChange={(e) => handleInputChange(e, setNuevaPersona, nuevaPersona)}
                 >
                   <option value="">Seleccione una especialidad</option>
                   <option value="cirugia">Cirugía</option>
-                  <option value="dermatologia">Dermatología</option>
                   <option value="neurologia">Neurología</option>
                 </select>
               </label>
             </>
           )}
+
 
           <button onClick={guardarNuevaPersona}>Guardar Persona</button>
         </div>

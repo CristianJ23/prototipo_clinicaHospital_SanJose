@@ -115,9 +115,9 @@ export const Login = ({ setUser }) => {
                         </div>
                         <button type="submit">Iniciar sesión</button>
                         <hr />
-                        <button type="button" onClick={handleGoToUsers}>
+                        {/* <button type="button" onClick={handleGoToUsers}>
                             Usuarios creados
-                        </button>
+                        </button> */}
                     </form>
                     {error && (
                         <p className="error">Credenciales incorrectas, intente nuevamente.</p>
