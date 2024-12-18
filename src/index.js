@@ -9,11 +9,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 import CompShowUsers from './users/showUsers';
 import CrearPaciente from './components/Crear_paciente';
 import Inicio from './components/inicio';
-import Recuperar from './components/recuperar';
 import InicioMedico from './components/inicio_medico';
 import Tratamientos from './components/tratamientos';
 import RegistroHistoria from './components/Registro_historia';
 import CreateRols from './components/crearRoles/createRols';
+import RequestPasswordReset from './components/RequestPasswordReset';
+import ResetPassword from './components/Reset';
 
 // Define el router
 const router = createBrowserRouter([
@@ -23,8 +24,12 @@ const router = createBrowserRouter([
     },
     {
         path: "/recuperar",
-        element: <Recuperar />,
+        element: <RequestPasswordReset />,
     },
+    {
+        path: "/reset-password/:token",
+        element: <ResetPassword />,
+    },    
     {
         path: "/inicio",
         element: <ProtectedRoute requiredRole={["admin"]}><Inicio /></ProtectedRoute>,

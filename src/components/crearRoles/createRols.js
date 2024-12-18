@@ -92,7 +92,7 @@ const CreateRols = () => {
   // comprobar datos en la consola
   React.useEffect(() => {
     if (credenciales) {
-      console.log("Persona actualizada:", credenciales);
+      console.log("credenciales actualizada:", credenciales);
     }
   }, [credenciales]);
 
@@ -175,10 +175,10 @@ const CreateRols = () => {
       const credencial =
       // console.log(persona.numero_documento)
         await axios.get(`http://localhost:8000/kriss/buscarCredencialPorCedula/${persona.numero_documento}`);
-        console.log("credencial_id", credencial.data.id);
-      const credencial_id = credencial.data.id_credencial;
+        console.log("credencial_id", credencial.data.id_credencial);
+      // const credencial_id = credencial.data.id_credencial;
 
-      await axios.post(`http://localhost:8000/kriss/deleteRol/${credencial_id}`);
+      await axios.post(`http://localhost:8000/kriss/deleteRol/${credencial.data.id_credencial}`);
       setMensaje("rol eliminado correctamente");
 
     } catch (error) {

@@ -11,12 +11,19 @@ import bucarCedencialPorCedula from "../credenciales/buscarCredencialPorCedula.j
 import actualizarRol from '../credenciales/actualizarRol.js';
 import buscarPeacientePoCedula from "../controllers/buscarPacientePorCedula.js";
 import eliminarRol from "../controllers/eliminarRol.js";
+import { requestPasswordReset } from "../controllers/requestPasswordreset.js";
+import ResetPassword from "../controllers/ResetPassword.js";
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
 
 //ruta para actualizar rol
 router.post('/actializarRol/', actualizarRol)
+
+
+// Ruta para solicitar restablecimiento de contraseña
+router.post('/request-password-reset', requestPasswordReset);
+router.post("/reset-password/", ResetPassword);
 
 //ruta para eliminar credencial
 router.post('/deleteRol/:idCredencial', eliminarRol)

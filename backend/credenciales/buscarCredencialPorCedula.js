@@ -5,7 +5,7 @@ import PersonaModel from "../models/PersonaModel.js";
 const bucarCedencialPorCedula = async (req, res) => {
     try {
         const { numero_documento } = req.params;
-        // console.log(numero_documento);
+        console.log(numero_documento);
 
         const persona = await PersonaModel.findOne({ where: { numero_documento } });
 

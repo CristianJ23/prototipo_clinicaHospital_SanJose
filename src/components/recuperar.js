@@ -23,7 +23,12 @@ const Recuperar = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
-                    <button type="submit">ENVIAR</button>
+                    <button
+                        type="submit"
+                        onClick={() => alert("su contraseña es 123")}
+                    >
+                        ENVIAR
+                    </button>
                 </form>
                 <p>
                     <a href="/">Volver al inicio</a>

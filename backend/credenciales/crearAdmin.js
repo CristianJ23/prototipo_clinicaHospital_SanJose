@@ -28,7 +28,7 @@ async function crearAdministrador(idPersona, correo, contrasena) {
 
     console.log("Ejecutando consulta con los valores:", [idPersona, correo, contrasenaEncriptada]);
 
-    // Ejecutar la consulta para insertar el administrador utilizando Sequelize
+    // Ejecutar la consulta para insertar l administrador utilizando Sequelize
     const [results] = await db.query(query, {
       replacements: [idPersona, correo, contrasenaEncriptada], // Reemplazar los valores en el query
       type: db.QueryTypes.INSERT // Asegurarte de que se trata de una inserción
