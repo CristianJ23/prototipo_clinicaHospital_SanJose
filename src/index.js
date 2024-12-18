@@ -13,6 +13,8 @@ import InicioMedico from './components/inicio_medico';
 import Tratamientos from './components/tratamientos';
 import RegistroHistoria from './components/Registro_historia';
 import CreateRols from './components/crearRoles/createRols';
+import Gestion from './components/Gestión'; 
+import Mostrar from './components/Mostrar'; 
 import RequestPasswordReset from './components/RequestPasswordReset';
 import ResetPassword from './components/Reset';
 
@@ -35,28 +37,36 @@ const router = createBrowserRouter([
         element: <ProtectedRoute requiredRole={["admin"]}><Inicio /></ProtectedRoute>,
     },
     {
-        path: "/inicio_medico",
-        element: <ProtectedRoute requiredRole={["admin", "medico"]}><InicioMedico /></ProtectedRoute>,
+        path: "/vista-medico", // Ruta para la vista del médico
+        element: <InicioMedico />, // Asegúrate de que este componente exista
     },
     {
-        path: "/registro_historia",
-        element: <ProtectedRoute requiredRole={["medico", "admin"]}><RegistroHistoria /></ProtectedRoute>,
+        path: "/tratamientos", // Ruta para gestionar tratamientos
+        element: <Tratamientos />,
     },
     {
-        path: "/tratamiento",
-        element: <ProtectedRoute requiredRole={["enfermera", "admin", "medico"]}><Tratamientos /></ProtectedRoute>, // Ruta protegida para usuarios autenticados
+        path: "/gestion-historias", // Ruta para gestionar tratamientos
+        element: <RegistroHistoria />,
     },
     {
         path: "/users",
         element: <ProtectedRoute requiredRole="no definido"><CompShowUsers /></ProtectedRoute>, // Solo accesible para admins
     },
     {
-        path: "/crear_paciente",
-        element: <ProtectedRoute requiredRole={["tratante", "admin", "medico"]}><CrearPaciente /></ProtectedRoute>, // Solo accesible para admins
+        path: "/mostrar", // Ruta para gestionar tratamientos
+        element: <Mostrar />,
+    },
+    {
+        path: "/crear-paciente", // Ruta para gestionar pacientes
+        element: <CrearPaciente />,
     },
     {
         path: "/crear_rol",
         element: <ProtectedRoute requiredRole={["admin"]}><CreateRols /></ProtectedRoute>, // Solo accesible para admins
+    },
+    {
+        path: "/gestion", // Ruta para gestionar tratamientos
+        element: <Gestion />,
     },
 ]);
 
