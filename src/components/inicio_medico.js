@@ -1,80 +1,74 @@
-import React, { useState } from "react";
-import "../css/inicio.css";
-import CrearPaciente from "../components/Crear_paciente";
-import CrearHistoria from "../components/Registro_historia";
-import Tratamiento from "../components/tratamientos";  // Importa el componente Tratamiento
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../css/inicio2.css";
 
 // Importar imágenes
 import crearPacienteImg from "../img2/usuario.png";
 import gestionHistoriasImg from "../img2/historia.png";
 import tratamientosImg from "../img2/tratamiento.png";
-import headerImage from "../img2/image.png";
-import { useNavigate } from "react-router-dom";
+import gestion from "../img2/gestion.png";
+
 
 const InicioMedico = () => {
-  const [activeForm, setActiveForm] = useState(null); // Estado para controlar qué formulario mostrar
   const navigate = useNavigate();
-
-  // Renderizar el formulario según el estado activo
-  // const renderForm = () => {
-  //   switch (activeForm) {
-  //     case "crearPaciente":
-  //       return <CrearPaciente onCancel={() => setActiveForm(null)} />;
-  //     case "crearHistoria":
-  //       return <CrearHistoria onCancel={() => setActiveForm(null)} />;
-  //     case "tratamiento":  // Asegúrate de que este coincida con el valor usado en onClick
-  //       return <Tratamiento onCancel={() => setActiveForm(null)} />;
-  //     default:
-  //       return null;
-  //   };
 
   return (
     <div className="inicio-container">
-      {/* {!activeForm ? ( */}
-      <>
-        <nav className="navbar">
-          <ul className="nav-items">
-            <li><a href="#inicio">Inicio </a></li>
-            <li><a href="#registro-paciente">Registro Paciente</a></li>
-            <li><a href="#creacion-historia">Creación Historia</a></li>
-            <li><a href="#crear-usuario">Visualizar Tratamiento</a></li>
-          </ul>
-        </nav>
+      {/* Barra de navegación */}
+      <nav className="navbar">
+        <div className="logo">Clínica Profesional</div>
+        <ul className="nav-links">
+          {/* Opciones en la barra de navegación, cada una redirige a una ruta */}
+          <li onClick={() => navigate("/inicio")}>Inicio</li> {/* Regresar al inicio */}
+          <li onClick={() => navigate("/crear-paciente")}>Crear Paciente</li>
+          <li onClick={() => navigate("/gestion-historias")}>Registro Historias</li>
+          <li onClick={() => navigate("/gestion")}>Gestión Historias</li>
+          <li onClick={() => navigate("/tratamientos")}>Tratamientos</li>
+        </ul>
+      </nav>
 
-        <div className="header">
-          <img src={headerImage} alt="Header" className="header-image" />
+      {/* Contenido principal */}
+      <div className="content">
+        <div className="welcome-container">
+          <div className="text-box">
+            <h1>Bienvenido al portal del médico</h1>
+            <p>Seleccione una opción para gestionar los pacientes y sus tratamientos.</p>
+          </div>
         </div>
 
+        {/* Modulos de navegación */}
         <div className="modulos-container">
           <div
             className="modulo"
-            // onClick={() => setActiveForm("crearPaciente")}  // Llama al formulario de Crear Paciente
-            on onClick={() => navigate('/crear_paciente')}
+            onClick={() => navigate("/crear-paciente")}  // Redirige a la vista de Crear Paciente
           >
             <img src={crearPacienteImg} alt="Crear Paciente" />
             <p>Crear Paciente</p>
           </div>
           <div
             className="modulo"
-            // onClick={() => setActiveForm("crearHistoria")}  // Llama al formulario de Gestión de Historias
-            on onClick={() => navigate('/registro_historia')}
+            onClick={() => navigate("/gestion-historias")}  // Redirige a la vista de registro de Historias
           >
             <img src={gestionHistoriasImg} alt="Gestión Historias" />
+            <p> Registro de Historias</p>
+          </div>
+          <div
+            className="modulo"
+            onClick={() => navigate("/gestion")}  // Redirige a la vista de Gestión de Historias
+          >
+            <img src={gestion} alt="Gestión Historias" />
             <p>Gestión de Historias</p>
           </div>
           <div
             className="modulo"
-            // onClick={() => setActiveForm("tratamiento")}  // Cambia el estado a "tratamiento" para llamar al componente Tratamiento
-            on onClick={() => navigate('/tratamiento')}
+            onClick={() => navigate("/tratamientos")}  // Redirige a la vista de Tratamientos
           >
             <img src={tratamientosImg} alt="Tratamientos" />
             <p>Tratamientos</p>
           </div>
+          
         </div>
-      </>
-      {/* // ) : (
-      //   renderForm()  // Renderiza el formulario según el estado actual
-      // )} */}
+      </div>
     </div>
   );
 };

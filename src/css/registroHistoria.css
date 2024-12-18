@@ -194,3 +194,145 @@
   color: white;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+/* Estilo general para el formulario */
+label {
+  display: block;
+  margin-bottom: 15px; /* Espacio entre cada campo del formulario */
+}
+
+/* Estilo para el input */
+input[type="text"] {
+  width: 100%; /* Hace que el campo de texto ocupe todo el ancho disponible */
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px; /* Espacio entre el campo y el botón */
+}
+
+/* Estilo para el botón */
+button {
+  padding: 8px 16px;
+  background-color: #4CAF50; /* Color verde */
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px; /* Espacio entre el input y el botón */
+}
+
+/* Estilo del contenedor de los medicamentos seleccionados */
+.medicamentos-seleccionados {
+  margin-top: 20px;
+}
+
+/* Estilo de la lista de medicamentos seleccionados */
+.medicamentos-lista {
+  margin-top: 10px;
+  padding: 0;
+}
+
+/* Estilo de cada medicamento en la lista */
+.medicamento-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background-color: #f9f9f9;
+  margin-bottom: 5px;
+  border-radius: 4px;
+}
+
+/* Estilo del botón de eliminar dentro de cada item */
+.medicamento-item button {
+  background-color: #e74c3c; /* Color rojo para el botón de eliminar */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Estilos generales */
+.sugerencias-lista {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  margin-top: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.sugerencia-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sugerencia-item:hover {
+  background-color: #f0f0f0;
+}
+
+.sugerencia-item:active {
+  background-color: #e0e0e0;
+}
+
+/* Estilos para el input de búsqueda */
+input[type="text"] {
+  padding: 8px;
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #4b8fd4;
+}
+
+/* Estilos para la lista de medicamentos seleccionados */
+.medicamentos-seleccionados {
+  margin-top: 20px;
+}
+
+.medicamentos-lista {
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.medicamento-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.medicamento-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.medicamento-item button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.medicamento-item button:hover {
+  background-color: #c0392b;
+}
+
+/* Asegurar que el contenedor de los inputs esté en una posición relativa para que las sugerencias se posicionen correctamente */
+label {
+  position: relative;
+  display: block;
+  margin-bottom: 20px;
+}
+

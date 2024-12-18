@@ -4,34 +4,40 @@
   height: 100vh;
   font-family: 'Arial', sans-serif;
   background-color: #f9f9f9;
+  overflow: hidden;
 }
-
 /* Barra lateral */
-.sidebar {
+.main-container .sidebar {
   width: 250px;
   background-color: #3da07b; /* Verde oscuro para la barra lateral */
   color: white;
   height: 100vh;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
-.sidebar-title {
+/* Título de la barra lateral */
+.main-container .sidebar-title {
   font-size: 1.5em;
   margin-bottom: 20px;
   text-align: center;
   font-weight: bold;
 }
 
-.modulo {
+/* Módulos dentro de la barra lateral */
+.main-container .modulo {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #ffffff;
-  color: #3da07b;
+  color: #3da07b; /* Verde claro para los textos */
   padding: 15px;
   border-radius: 10px;
   width: 90%;
@@ -41,40 +47,45 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.modulo img {
+.main-container .modulo img {
   width: 50px;
   height: 50px;
   margin-bottom: 10px;
 }
 
-.modulo p {
+.main-container .modulo p {
   margin: 0;
   font-size: 0.9em;
   text-align: center;
 }
 
-.modulo:hover {
+.main-container .modulo:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Contenedor del formulario */
-.form-container {
+.main-container .form-container {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
   background-color: #ffffff;
+  margin-left: 250px; /* Asegura que el formulario se coloque al lado de la barra lateral */
+  height: 100vh; /* Hace que el contenedor ocupe toda la altura de la pantalla */
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* Asegura que el contenido se apile verticalmente */
 }
 
-.form-container h2 {
+/* Títulos en el formulario */
+.main-container .form-container h2 {
   text-align: center;
   font-size: 1.8em;
   margin-bottom: 20px;
   color: #3da07b;
 }
 
-h3 {
+.main-container h3 {
   margin-top: 20px;
   margin-bottom: 10px;
   color: #333;
@@ -84,21 +95,22 @@ h3 {
 }
 
 /* Diseño del formulario con dos columnas */
-form {
+.main-container form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px; /* Espaciado entre campos */
+  gap: 20px;
+  width: 100%; /* Asegura que el formulario ocupe todo el ancho disponible */
 }
 
-label {
+.main-container label {
   display: flex;
   flex-direction: column;
   color: #555;
   font-weight: bold;
 }
 
-input,
-select {
+.main-container input,
+.main-container select {
   padding: 10px;
   margin-top: 5px;
   border: 1px solid #ccc;
@@ -106,52 +118,52 @@ select {
   box-sizing: border-box;
 }
 
-input:focus,
-select:focus {
+.main-container input:focus,
+.main-container select:focus {
   border-color: #3da07b;
   outline: none;
   box-shadow: 0 0 5px rgba(61, 160, 123, 0.5);
 }
 
 /* Alinear campos que ocupen toda la fila */
-form h3 {
-  grid-column: span 2; /* Ocupa las dos columnas */
+.main-container form h3 {
+  grid-column: span 2;
 }
 
 /* Grupo de botones */
-.button-group {
-  grid-column: span 2; /* Abarca ambas columnas */
+.main-container .button-group {
+  grid-column: span 2;
   display: flex;
-  justify-content: space-between; /* Uno a la izquierda y otro a la derecha */
-  align-items: center; /* Asegura que estén centrados verticalmente */
+  justify-content: space-between;
+  align-items: center;
   margin-top: 20px;
 }
 
 /* Botones */
-button {
-  padding: 8px 16px; /* Tamaño compacto */
+.main-container button {
+  padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9em; /* Texto ligeramente más pequeño */
+  font-size: 0.9em;
   transition: background-color 0.3s ease, transform 0.3s ease;
-  width: 120px; /* Tamaño fijo para uniformidad */
+  width: 120px;
 }
 
-button[type="submit"] {
+.main-container button[type="submit"] {
   background-color: #3da07b;
   color: white;
 }
 
-button[type="button"] {
+.main-container button[type="button"] {
   background-color: #f44336;
   color: white;
 }
 
-button:hover {
+.main-container button:hover {
   transform: scale(1.05);
 }
 
-button:active {
+.main-container button:active {
   transform: scale(0.98);
 }

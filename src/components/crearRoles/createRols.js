@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../css/CreateRols.css"; // Importar estilos CSS
 import doctorImage from '../../img2/doctorConFormulario.jpg';
@@ -7,6 +8,7 @@ import debounce from 'lodash.debounce';
 
 const CreateRols = () => {
   const [vista, setVista] = useState("inicio"); // Estados: "inicio", "crearPersona", "darAcceso"
+  const navigate = useNavigate();  // Hook para navegación programática
   const [cedula, setCedula] = useState("");
   const [persona, setPersona] = useState(null);
   const [mensaje, setMensaje] = useState("");
@@ -216,27 +218,35 @@ const CreateRols = () => {
 
   return (
     <div className="container">
-      <h1 className="title">Administración de roles</h1>
-
       {vista === "inicio" && (
         <div className="content-container">
+        <h1 className="title">Administración de roles</h1>
+        <div className="button-container">
+  <div className="button-module">
+    <button onClick={() => setVista("crearPersona")}>Crear Nueva Persona</button>
+  </div>
+  <div className="button-module">
+    <button onClick={() => setVista("darAcceso")}>Dar Acceso a Persona Existente</button>
+  </div>
+  <div className="button-module">
+    <button onClick={() => setVista("eliminarRol")}>Eliminar rol</button>
+  </div>
+  <div className="button-module">
+    <button onClick={() => setVista("editarRol")}>Editar rol</button>
+  </div>
+  
+</div>
+<button onClick={() => navigate("/inicio")}>
+              Volver
+   </button>
 
-          <div className="button-container">
-            <button onClick={() => setVista("crearPersona")}>Crear Nueva Persona</button>
-            <button onClick={() => setVista("darAcceso")}>Dar Acceso a Persona Existente</button>
-            <button onClick={() => setVista("eliminarRol")}>Eliminar rol</button>
-            <button onClick={() => setVista("editarRol")}>Editar rol</button>
-          </div>
-          <div className="image-container">
-            <img src={doctorImage} alt="Imagen doctor con formulario" />
-          </div>
+          
         </div>
       )}
 
       {vista === "editarRol" && (
         <div className="editar-container">
           <h2> Editar rol</h2>
-          <button onClick={() => { setVista("inicio"); eliminarDatos() }}>Atrás</button>
           <div>
             <label>
               Buscar por Cédula:
@@ -263,6 +273,7 @@ const CreateRols = () => {
             >
               Buscar
             </button> */}
+            <button onClick={() => { setVista("inicio"); eliminarDatos() }}>Atrás</button>
           </div>
 
           {/* mostrar los datos de la persona encontrada */}
@@ -299,7 +310,6 @@ const CreateRols = () => {
       {vista === "eliminarRol" && (
         <div className="eliminar-container">
           <h2>Eliminar Rol</h2>
-          <button onClick={() => { setVista("inicio"); eliminarDatos() }}>Atrás</button>
 
           <div>
             <label>
@@ -321,15 +331,15 @@ const CreateRols = () => {
           )}
 
           <button onClick={() => eliminarRol(persona.cedula)}>Eliminar rol </button>
+          <button onClick={() => { setVista("inicio"); eliminarDatos() }}>Atrás</button>
 
         </div>
       )}
 
       {vista === "darAcceso" && (
-        <div className="form-container">
+        <div className="form-container-2">
           <h2>Dar Acceso a Persona Existente</h2>
-          <button onClick={() => { setVista("inicio"); eliminarDatos(); }}>Atrás</button>
-
+          
           <div>
             <label>
               Buscar por Cédula:
@@ -340,6 +350,8 @@ const CreateRols = () => {
               />
             </label>
           </div>
+          <button onClick={() => { setVista("inicio"); eliminarDatos(); }}>Atrás</button>
+
 
           {persona && (
             <div>
@@ -395,7 +407,6 @@ const CreateRols = () => {
         <div className="form-container">
           {/* <button onClick={() => setVista("inicio")}>Atrás</button> */}
           <h2>Crear Nueva Persona</h2>
-          <button onClick={() => setVista("inicio")}>Atrás</button>
           <label>
             primer nombre:
             <input
@@ -603,11 +614,16 @@ const CreateRols = () => {
 
 
           <button onClick={guardarNuevaPersona}>Guardar Persona</button>
+          <button onClick={() => setVista("inicio")}>Atrás</button>
         </div>
       )}
 
+
       {mensaje && <p className="mensaje">{mensaje}</p>}
     </div>
+
+    
+    
   );
 };
 

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
 import "../css/crear_paciente.css";
 
-import Vista_medico from "../components/inicio_medico";
-// import CrearHistoria from "../components/inicio_enfermera";
-import Tratamiento from "../components/tratamientos";
 import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
 import tratamientosImg from "../img2/tratamiento.png";
 
 const CrearPaciente = ({ onCancel = () => console.log("Cancelación predeterminada") }) => {
+  const navigate = useNavigate(); // Initialize the navigate function
   const [formData, setFormData] = useState({
     // informacion de la persona
     primer_apellido: "",
@@ -52,10 +51,189 @@ const CrearPaciente = ({ onCancel = () => console.log("Cancelación predetermina
     contacto_emergencia_relacion: "",
   });
 
+  const ubicaciones = {
+    "Azuay": {
+      cantones: {
+        "Cuenca": ["Azogues", "Baños", "Chantaco", "Cuenca", "Jadán", "El Valle", "Nulti", "Sinincay", "Turi", "Victoria del Portete"],
+        "Girón": ["Girón", "San Fernando", "La Asunción", "Verde Loma", "San Gerardo", "Chumblin", "San Juan", "Loma de Girón", "Capillapamba", "El Plateado"],
+        "Gualaceo": ["Gualaceo", "Chordeleg", "San Juan", "Mariano Moreno", "Luis Cordero", "San Juan de Gualaceo", "Bulán", "Remigio Crespo", "San Juan de Pamba", "Gabriel Moscoso"],
+        "Paute": ["Paute", "Guachapala", "Amaluza", "Bulán", "Pan", "San Cristóbal", "El Cabo", "La Merced", "Chican", "Uzhupud"],
+        "Santa Isabel": ["Santa Isabel", "Zhaglli", "La Victoria", "Gima", "Shagli", "San Salvador", "Canaan", "Nabón", "El Chorro", "Catarama"],
+        "Sigsig": ["Sigsig", "Cochapamba", "San Bartolomé", "Ludo", "Jadan", "Pucara", "Chigchig", "La Punta", "Chaucha", "El Progreso"],
+        "Nabón": ["Nabón", "Cochapamba", "Oña", "Quera", "Pucacocha", "Gualel", "Guapán", "El Progreso", "Yavi", "Cuchil"],
+        "Chordeleg": ["Chordeleg", "San Martín", "Luis Cordero", "La Unión", "Principal", "Pindilig", "El Valle", "Remigio Crespo", "Turi", "Sinincay"],
+        "Gualaceo": ["Gualaceo", "San Juan", "Luis Cordero", "Mariano Moreno", "Bulán", "Chordeleg", "Sinincay", "Jadán", "La Unión", "El Valle"],
+        "Camilo Ponce Enríquez": ["Camilo Ponce Enríquez", "El Carmen", "La Libertad", "Molleturo", "Chorrillos", "San Gerardo", "Victoria", "El Cisne", "San Miguel", "El Pan"]
+      }
+    },
+    "Bolívar": {
+      cantones: {
+        "Guaranda": ["Guaranda", "Angochagua", "Salinas", "San Luis", "Simiatug", "San Simón", "Facundo Vela", "Guanujo", "Chimbo", "Echeandía"],
+        "Chillanes": ["Chillanes", "San José", "San Pablo", "San Pedro", "Guayabal", "Tushin", "Chimbo", "San Simón", "Angochagua", "Echeandía"],
+        "Echeandía": ["Echeandía", "San Simón", "San Pablo", "Salinas", "Simiatug", "San Luis", "Chimbo", "Guanujo", "Angochagua", "Facundo Vela"],
+        "San Miguel": ["San Miguel", "Chimbo", "San Pedro", "San Pablo", "Angochagua", "Salinas", "Simiatug", "San Simón", "Facundo Vela", "San Luis"],
+        "Chimbo": ["Chimbo", "San Pablo", "Angochagua", "Salinas", "Simiatug", "San Simón", "Guanujo", "Facundo Vela", "San Luis", "Echeandía"],
+        "Las Naves": ["Las Naves", "San Luis", "Angochagua", "Guanujo", "Facundo Vela", "Chimbo", "Salinas", "Simiatug", "San Simón", "San Pablo"],
+        "San José de Chimbo": ["San José de Chimbo", "Guaranda", "Salinas", "San Luis", "Simiatug", "Angochagua", "San Simón", "Facundo Vela", "Guanujo", "San Pablo"],
+        "Salinas": ["Salinas", "San Pablo", "San Pedro", "San Simón", "Facundo Vela", "Guanujo", "Angochagua", "San Luis", "Simiatug", "Chimbo"],
+        "Simiatug": ["Simiatug", "San Luis", "Angochagua", "Guanujo", "Facundo Vela", "Chimbo", "Salinas", "San Pablo", "San Pedro", "Echeandía"],
+        "Facundo Vela": ["Facundo Vela", "Guaranda", "Angochagua", "Salinas", "San Luis", "San Pablo", "San Simón", "Guanujo", "Simiatug", "Chimbo"]
+      }
+    },
+    "Carchi": {
+      cantones: {
+        "Tulcán": ["Tulcán", "Maldonado", "Chical", "El Playón", "La Libertad", "El Carmelo", "Cristóbal Colón", "Santa Martha", "San Gabriel", "Julio Andrade"],
+        "Mira": ["Mira", "El Playón", "La Libertad", "El Carmelo", "Chical", "Cristóbal Colón", "Julio Andrade", "Maldonado", "Santa Martha", "San Gabriel"],
+        "Montúfar": ["Montúfar", "San Gabriel", "La Libertad", "El Carmelo", "Cristóbal Colón", "Mira", "Maldonado", "El Playón", "Chical", "Santa Martha"],
+        "San Pedro de Huaca": ["San Pedro de Huaca", "Tulcán", "Mira", "Montúfar", "Julio Andrade", "El Carmelo", "Santa Martha", "Cristóbal Colón", "San Gabriel", "El Playón"],
+        "Espejo": ["Espejo", "Tulcán", "Montúfar", "San Pedro de Huaca", "Cristóbal Colón", "La Libertad", "El Carmelo", "Santa Martha", "Mira", "Julio Andrade"],
+        "Bolívar": ["Bolívar", "San Gabriel", "Cristóbal Colón", "Santa Martha", "Montúfar", "Mira", "El Playón", "Tulcán", "Chical", "Julio Andrade"],
+        "Julio Andrade": ["Julio Andrade", "San Pedro de Huaca", "Tulcán", "Espejo", "Santa Martha", "Montúfar", "Cristóbal Colón", "Mira", "El Carmelo", "La Libertad"],
+        "Chical": ["Chical", "Tulcán", "El Playón", "La Libertad", "El Carmelo", "Cristóbal Colón", "Mira", "Julio Andrade", "San Gabriel", "Santa Martha"],
+        "La Libertad": ["La Libertad", "Tulcán", "Montúfar", "Mira", "Cristóbal Colón", "San Pedro de Huaca", "Santa Martha", "Espejo", "El Playón", "Chical"]
+      }
+    },
+      "Loja": {
+      cantones: {
+        "Loja": ["El Sagrario", "San Sebastián", "Sucre", "Carigán", "Vilcabamba", "Malacatos", "Quinara", "Chantaco", "San Lucas", "Chuquiribamba"],
+        "Catamayo": ["San José", "La Toma", "Zambi", "El Tambo", "San Pedro", "Trapichillo", "San Antonio", "Gonzanamá", "Cera", "Uzhcurrumi"],
+        "Macará": ["General Eloy Alfaro", "Catacocha", "Bellavista", "Sabiango", "La Victoria", "Larama", "Lalama", "Sauces", "Paletillas", "Obando"],
+        "Calvas": ["Cariamanga", "Colaisaca", "El Lucero", "Jimbura", "Nambacola", "San Vicente", "Gonzanamá", "Yangana", "San Antonio", "El Tablón"],
+        "Puyango": ["Alamor", "El Limo", "Ciano", "Vicentino", "Pindal", "Paletillas", "Mercadillo", "Cazaderos", "Garrapata", "Zapallal"],
+        "Saraguro": ["Saraguro", "San Pablo de Tenta", "San Lucas", "El Valle", "Yuluc", "El Cisne", "Urdaneta", "Las Cochas", "Manú", "Silla"],
+        "Paltas": ["Catacocha", "Cangonamá", "Colaisaca", "El Arenal", "Guachanamá", "Lauro Guerrero", "Orobo", "San Antonio", "Yuracruz", "Catazacon"],
+        "Espíndola": ["Amaluza", "El Ingenio", "Jimbura", "Santa Teresita", "Bellavista", "El Airo", "Zapotillo", "Pózul", "Garzareal", "Mangahurco"],
+        "Zapotillo": ["Zapotillo", "Paletillas", "Bolaspamba", "Cazaderos", "Limones", "El Tambo", "Celica", "Mangahurco", "Pindal", "Salinas"],
+        "Celica": ["Celica", "Cruzpamba", "Garza", "Sabanilla", "Pindal", "Bolívar", "Mercadillo", "Paletillas", "La Victoria", "Pózul"],
+      },
+    },
+    "Pichincha": {
+      cantones: {
+        "Quito": ["Centro Histórico", "La Mariscal", "La Floresta", "El Condado", "La Carolina", "Cotocollao", "Chillogallo", "Tumbaco", "Conocoto", "Cumbayá"],
+        "Cayambe": ["Cayambe", "Tabacundo", "Olmedo", "San José", "Santa Rosa", "Cangahua", "El Quinche", "Oyambarillo", "Zámbiza", "Guayllabamba"],
+        "Rumiñahui": ["Sangolquí", "San Rafael", "San Pedro de Taboada", "Cotogchoa", "Conocoto", "El Triángulo", "Amaguaña", "Píntag", "Guangopolo", "Chillos"],
+        "Mejía": ["Machachi", "Aloasí", "Cutuglahua", "El Chaupi", "Tandapi", "Tandacatu", "Pastocalle", "Uyumbicho", "Rumipamba", "Lasso"],
+        "Pedro Moncayo": ["Tabacundo", "La Esperanza", "Tocachi", "Malchinguí", "Santa Marianita", "San Pablo", "Gualea", "Guayllabamba", "Oyambarillo", "Cangahua"],
+        "Pedro Vicente Maldonado": ["Pedro Vicente Maldonado", "Puerto Quito", "La Celica", "Santa Rosa", "Las Tolas", "Mashpi", "Chontal", "Nanegalito", "Pacto", "Nono"],
+        "Puerto Quito": ["Puerto Quito", "La Celica", "Nanegalito", "Mashpi", "Las Golondrinas", "San Pedro de Manglaralto", "La Esperanza", "El Cristal", "Pacto", "Gualea"],
+        "San Miguel de los Bancos": ["San Miguel", "Mindo", "Los Bancos", "Nanegalito", "Pacto", "Las Tolas", "Santa Marianita", "La Esperanza", "Nono", "Chontal"],
+        "Nanegal": ["Nanegal", "Nanegalito", "Pacto", "Gualea", "Nono", "Mindo", "Santa Marianita", "Las Tolas", "El Cedral", "La Esperanza"],
+        "Tababela": ["Tababela", "Puembo", "Pifo", "Cumbayá", "Tumbaco", "Checa", "Yaruquí", "Chaupi", "Conocoto", "El Quinche"],
+      },
+    },
+    "Guayas": {
+      cantones: {
+        "Guayaquil": ["Tarqui", "Ximena", "Febres Cordero", "Sucre", "Garay", "Rocafuerte", "Puerto Hondo", "Posorja", "Progreso", "Chongón"],
+        "Daule": ["Daule", "La Aurora", "El Limonal", "Isidro Ayora", "Juan Bautista Aguirre", "Magro", "Banife", "Los Lojas", "Santa Clara", "Bucay"],
+        "Samborondón": ["Samborondón", "La Puntilla", "Tarifa", "La Aurora", "Santa Rosa de Flandes", "San Miguel", "Marcelino Maridueña", "Progreso", "Jujan", "Los Lojas"],
+        "Durán": ["Durán", "El Recreo", "Oramas González", "Pancho Jiménez", "Las Lomas", "Los Vergeles", "San Jacinto", "La Toma", "Bellavista", "Victoria"],
+        "Milagro": ["Milagro", "Roberto Astudillo", "Chobo", "Mariscal Sucre", "El Progreso", "Virginia", "Narcisa", "Santa Lucía", "Mariscal", "Augusto Martínez"],
+        "Naranjal": ["Naranjal", "Santa Rosa", "Taura", "Jesús María", "San Carlos", "San Isidro", "Puerto Inca", "Molleturo", "Chacayacu", "San Nicolás"],
+        "Balao": ["Balao", "Guasmo Sur", "Tres Cerritos", "San Ignacio", "Puerto Cañaveral", "Las Mercedes", "Santa Ana", "San Marcos", "Santa Clara", "Chupadores"],
+        "Playas": ["General Villamil", "Posorja", "Puerto El Morro", "Data de Villamil", "Progreso", "Chongón", "El Morro", "Engabao", "Las Balsas", "El Arenal"],
+        "Balzar": ["Balzar", "Santa Rita", "Los Andes", "San Jacinto", "Sabanilla", "Progreso", "El Laurel", "Balsalito", "Santa Clara", "Colimes"],
+        "El Empalme": ["El Empalme", "El Triunfo", "San Jacinto", "Santa María", "El Arenal", "El Salitre", "Cuchilla", "General Vernaza", "Los Ángeles", "Santa Lucía"],
+      },
+    },
+    "Imbabura": {
+        cantones: {
+          "Ibarra": ["Ibarra", "Otavalo", "Antonio Borrero", "Cruzpamba"],
+          "Cotacachi": ["Cotacachi", "Mojanda", "La Calera"],
+        },
+      },
+    "Manabí": {
+        cantones: {
+          "Portoviejo": ["Portoviejo", "Manta", "Jipijapa"],
+          "Manta": ["Manta", "Montecristi", "Puerto López"],
+          "Jipijapa": ["Jipijapa", "Pichincha", "San Sebastián"],
+        },
+      },
+      "Morona Santiago": {
+        cantones: {
+          "Macas": ["Macas", "Limón", "Santiago"],
+          "Gualaquiza": ["Gualaquiza", "Nangaritza"],
+        },
+      },
+      "Napo": {
+        cantones: {
+          "Tena": ["Tena", "Archidona", "Pano", "Misahuallí"],
+          "Ahuano": ["Ahuano", "La Chonta", "Santa Clara"],
+        },
+      },
+      "Pastaza": {
+        cantones: {
+          "Puyo": ["Puyo", "Mera", "Baños de Agua Santa"],
+          "Mera": ["Mera", "Baños"],
+        },
+      },
+    "Tungurahua": {
+        cantones: {
+          "Ambato": ["Ambato", "Baños", "Cevallos", "Pelileo", "Patate"],
+          "Baños de Agua Santa": ["Baños de Agua Santa", "Pillaro", "Santiago"],
+        },
+      },
+      "Zamora-Chinchipe": {
+        cantones: {
+          "Zamora": ["Zamora", "Chinchipe", "Yacuambi", "Loja", "El Pangui"],
+          "Chinchipe": ["Chinchipe", "Yacuambi", "Loja", "El Pangui"],
+        },
+      },
+  };
+  
+
+  const [cantonesDisponibles, setCantonesDisponibles] = useState([]);
+const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
+
+  const handleProvinciaChange = (e) => {
+    const provinciaSeleccionada = e.target.value;
+    setFormData((prev) => ({ ...prev, provincia: provinciaSeleccionada, canton: "", parroquia: "" }));
+  
+    if (ubicaciones[provinciaSeleccionada]) {
+      setCantonesDisponibles(Object.keys(ubicaciones[provinciaSeleccionada].cantones));
+    } else {
+      setCantonesDisponibles([]);
+    }
+    setParroquiasDisponibles([]);
+  };
+  
+  const handleCantonChange = (e) => {
+    const cantonSeleccionado = e.target.value;
+    setFormData((prev) => ({ ...prev, canton: cantonSeleccionado, parroquia: "" }));
+  
+    const provincia = formData.provincia;
+    if (ubicaciones[provincia]?.cantones[cantonSeleccionado]) {
+      setParroquiasDisponibles(ubicaciones[provincia].cantones[cantonSeleccionado]);
+    } else {
+      setParroquiasDisponibles([]);
+    }
+  };
+
+  //metodo para calculara la edad 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  
+    // Actualización general del estado
+    setFormData((prev) => {
+      const updatedForm = { ...prev, [name]: value };
+  
+      // Cálculo de edad si se cambia la fecha de nacimiento
+      if (name === "fecha_nacimiento") {
+        const fechaNacimiento = new Date(value);
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+        const mesDiferencia = hoy.getMonth() - fechaNacimiento.getMonth();
+  
+        if (mesDiferencia < 0 || (mesDiferencia === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+          edad--; // Restar un año si no ha cumplido en el mes actual
+        }
+  
+        updatedForm.edad = edad; // Actualizar el campo de edad
+      }
+  
+      return updatedForm;
+    });
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -86,25 +264,25 @@ const CrearPaciente = ({ onCancel = () => console.log("Cancelación predetermina
     <div className="main-container">
       <div className="sidebar">
         <h2 className="sidebar-title">Menú</h2>
-        <a href="#" className="modulo">
+        <div className="modulo" onClick={() => navigate("/crear-paciente")}>
           <img src={crearPacienteImg} alt="Registro de Paciente" />
           <p>Registro de Paciente</p>
-        </a>
-        {/* <a href={CrearHistoria} className="modulo">
+        </div>
+        <div className="modulo" onClick={() => navigate("/gestion-historias")}>
           <img src={gestionHistoriasImg} alt="Registro de Historia" />
           <p>Registro de Historia</p>
-        </a> */}
-        <a href={Tratamiento} className="modulo">
+        </div>
+        <div className="modulo" onClick={() => navigate("/tratamientos")}>
           <img src={tratamientosImg} alt="Tratamiento" />
           <p>Tratamiento</p>
-        </a>
+        </div>
       </div>
 
       <div className="form-container">
         <h2>Formulario de Registro de Paciente</h2>
         <form onSubmit={handleSubmit}>
           <h3>Registro de Admisión</h3>
-          {/* <label>
+          <label>
             Fecha de Admisión:
             <input
               type="date"
@@ -113,7 +291,7 @@ const CrearPaciente = ({ onCancel = () => console.log("Cancelación predetermina
               onChange={handleChange}
               required
             />
-          </label> */}
+          </label>
           <label>
             Nombre del Admisionista:
             <input
@@ -258,6 +436,16 @@ const CrearPaciente = ({ onCancel = () => console.log("Cancelación predetermina
             />
           </label>
           <label>
+  Edad:
+  <input
+    type="number"
+    name="edad"
+    value={formData.edad}
+    readOnly
+  />
+</label>
+
+          <label>
             Condición de Edad:
             <input
               name="condicion_edad"
@@ -340,29 +528,58 @@ const CrearPaciente = ({ onCancel = () => console.log("Cancelación predetermina
 
           <h3>Datos de Residencia</h3>
           <label>
-            Provincia:
-            <input
-              name="provincia"
-              value={formData.provincia}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Cantón:
-            <input
-              name="canton"
-              value={formData.canton}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Parroquia:
-            <input
-              name="parroquia"
-              value={formData.parroquia}
-              onChange={handleChange}
-            />
-          </label>
+  Provincia:
+  <select
+    name="provincia"
+    value={formData.provincia}
+    onChange={handleProvinciaChange}
+    required
+  >
+    <option value="">Seleccione</option>
+    {Object.keys(ubicaciones).map((provincia) => (
+      <option key={provincia} value={provincia}>
+        {provincia}
+      </option>
+    ))}
+  </select>
+</label>
+<label>
+  Cantón:
+  <select
+    name="canton"
+    value={formData.canton}
+    onChange={handleCantonChange}
+    required
+    disabled={!cantonesDisponibles.length}
+  >
+    <option value="">Seleccione</option>
+    {cantonesDisponibles.map((canton) => (
+      <option key={canton} value={canton}>
+        {canton}
+      </option>
+    ))}
+  </select>
+</label>
+<label>
+  Parroquia:
+  <select
+    name="parroquia"
+    value={formData.parroquia}
+    onChange={(e) =>
+      setFormData((prev) => ({ ...prev, parroquia: e.target.value }))
+    }
+    required
+    disabled={!parroquiasDisponibles.length}
+  >
+    <option value="">Seleccione</option>
+    {parroquiasDisponibles.map((parroquia) => (
+      <option key={parroquia} value={parroquia}>
+        {parroquia}
+      </option>
+    ))}
+  </select>
+</label>
+
           <label>
             Barrio o Sector:
             <input
@@ -454,7 +671,7 @@ const CrearPaciente = ({ onCancel = () => console.log("Cancelación predetermina
 
           <div className="button-group">
             <button type="submit">Guardar</button>
-            <button type="button" onClick={onCancel}>
+            <button type="button" onClick={() => navigate("/vista-medico")}>
               Cancelar
             </button>
           </div>
