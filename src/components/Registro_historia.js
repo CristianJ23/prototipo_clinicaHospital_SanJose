@@ -337,14 +337,14 @@ const RegistroHistoria = ({ onCancel }) => {
             <input
               type="text"
               name="nombres"
-              value={paciente ? paciente.primer_nombre : ""}
+              value={paciente ? paciente.primer_nombre + " " + paciente.segundo_nombre : ""}
               onChange={handleInputChange}
             />
           </label>
           <label>
             Apellidos:
             <input type="text" name="apellidos"
-              value={paciente ? paciente.primer_apellido : ""}
+              value={paciente ? paciente.primer_apellido + " " + paciente.segundo_apellido: ""}
               onChange={handleInputChange} />
           </label>
           <label>
