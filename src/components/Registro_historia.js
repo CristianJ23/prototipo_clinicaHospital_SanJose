@@ -18,12 +18,16 @@ const RegistroHistoria = ({ onCancel }) => {
     cedula: "",
     nombres: "",
     apellidos: "",
+    id_paciente: "",
+    /**datos de la clinica */
+    /**los datos de la institucion se llenan con un json guardado */
     institucionSistema: "",
     establecimientoSalud: "",
+    /**datos historia clinica */
     motivoConsulta: "",
     antecedentesPatologicosPersonales: "",
     constantesVitales: {
-      hora: "",
+      // hora: "",
       presionArterial: "",
       peso: "",
       talla: "",
@@ -234,10 +238,15 @@ const RegistroHistoria = ({ onCancel }) => {
   }, 500); // El tiempo de espera de 500 ms entre llamadas
 
   /*fin codigo para busqueda por cedula*/
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      //prueba para ver datos que se envian al tratamineto
+      console.log("datos de tratmeinto: ", formData.tratamiento);
       // Primero, enviar el tratamiento
       const tratamientoResponse = await fetch("http://localhost:8000/kriss/crearTratamiento", {
         method: "POST",
@@ -252,6 +261,7 @@ const RegistroHistoria = ({ onCancel }) => {
       }
       const tratamientoResult = await tratamientoResponse.json();
       const tratamientoId = tratamientoResult.id;
+      console.log("id del tratamineto recibido", tratamientoId)
 
       // Luego, crear la historia clínica con el ID del tratamiento
       const historiaConTratamiento = {
@@ -259,7 +269,7 @@ const RegistroHistoria = ({ onCancel }) => {
         tratamientoId, // Agregar el ID del tratamiento a la historia clínica
       };
 
-      const historiaResponse = await fetch("http://localhost:8000/kriss/crearHistoria", {
+      const historiaResponse = await fetch("http://localhost:8000/kriss/crear_historia_clinica", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -281,28 +291,36 @@ const RegistroHistoria = ({ onCancel }) => {
 
 
   const examenesFisicos = [
-    "Cabeza",
-    "Cuello",
-    "Tórax",
-    "Abdomen",
-    "Extremidades",
-    "Piel",
-    "Sistema Linfático",
-    "Sistema Nervioso",
-    "Cardiovascular",
-    "Respiratorio",
+    "cabeza",
+    "cuello",
+    "torax",
+    "abdomen",
+    "axtremidades",
+    "piel",
+    "sistema_linfatico",
+    "sistema_nervioso",
+    "fisico_cardiovascular",
+    "fisico_respiratorio",
   ];
 
   const organosYSistemas = [
-    "Órganos de los Sentidos",
-    "Respiratorio",
-    "Cardiovascular",
-    "Digestivo",
-    "Urinario",
-    "Músculo Esquelético",
-    "Endocrino",
-    "Nervioso",
+    "organos_sentidos",
+    "respiratorio",
+    "cardiovascular",
+    "digestivo",
+    "urinario",
+    "musculo_esqueletico",
+    "endocrino",
+    "nervioso",
   ];
+
+  /*funcion para enviar datos asociados a la hisotria clinica */
+  const datosAsociados = async (cedula) => {
+    try {
+      formData.id_paciente = paciente.id_paciente;
+
+    } catch (error) { }
+  }
 
   return (
     <div className="registro-historia">
@@ -344,7 +362,7 @@ const RegistroHistoria = ({ onCancel }) => {
           <label>
             Apellidos:
             <input type="text" name="apellidos"
-              value={paciente ? paciente.primer_apellido + " " + paciente.segundo_apellido: ""}
+              value={paciente ? paciente.primer_apellido + " " + paciente.segundo_apellido : ""}
               onChange={handleInputChange} />
           </label>
           <label>
@@ -371,7 +389,7 @@ const RegistroHistoria = ({ onCancel }) => {
           ></textarea>
 
           <h2>Constantes Vitales</h2>
-          <label>
+          {/* <label>
             Hora:
             <input
               type="text"
@@ -379,7 +397,7 @@ const RegistroHistoria = ({ onCancel }) => {
               value={formData.constantesVitales.hora}
               onChange={(e) => handleNestedChange("constantesVitales", "hora", e.target.value)}
             />
-          </label>
+          </label> */}
           <label>
             Presión Arterial:
             <input

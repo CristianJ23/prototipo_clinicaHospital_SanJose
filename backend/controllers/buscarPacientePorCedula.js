@@ -1,5 +1,5 @@
-import { AssociationError } from "sequelize";
 import PacienteModel from "../models/PacienteModel.js";
+import PersonaModel from "../models/PersonaModel.js";
 
 
 //funcion para buscar un paciente por su numero de cedula

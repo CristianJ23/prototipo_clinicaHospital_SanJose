@@ -33,7 +33,7 @@ export const Login = ({ setUser }) => {
                         navigate("/inicio"); // Página para administradores
                         break;
                     case "medico":
-                        navigate("/inicio_medico"); // Página para médicos
+                        navigate("/vista-medico"); // Página para médicos
                         break;
                     case "enfermera":
                         navigate("/tratamiento"); // Página para enfermeras

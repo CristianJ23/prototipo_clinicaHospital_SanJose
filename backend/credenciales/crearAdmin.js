@@ -16,7 +16,7 @@ async function encriptarContrasena(contrasena) {
 }
 
 // Función para insertar un administrador en la base de datos
-async function crearAdministrador(idPersona, correo, contrasena) {
+export async function crearAdministrador(idPersona, correo, contrasena) {
   try {
     // Encriptar la contraseña
     const contrasenaEncriptada = await encriptarContrasena(contrasena);
@@ -51,18 +51,23 @@ async function verificarConexion() {
 }
 
 // Tomar los argumentos de la línea de comandos
-const args = process.argv.slice(2);
-console.log("Argumentos recibidos:", args);
+// const args = process.argv.slice(2);
+// console.log("Argumentos recibidos:", args);
 
-// Verificar que se hayan proporcionado todos los argumentos necesarios
-if (args.length < 3) {
-  console.log('Por favor, ingresa el ID de la persona, el correo y la contraseña como argumentos.');
-  process.exit(1);
-}
+// // Verificar que se hayan proporcionado todos los argumentos necesarios
+// if (args.length < 3) {
+//   console.log('Por favor, ingresa el ID de la persona, el correo y la contraseña como argumentos.');
+//   process.exit(1);
+// }
 
-const idPersona = args[0];    // ID de la persona
-const correo = args[1];       // Correo electrónico del administrador
-const contrasena = args[2];   // Contraseña en texto plano
+// const idPersona = args[0];    // ID de la persona
+// const correo = args[1];       // Correo electrónico del administrador
+// const contrasena = args[2];   // Contraseña en texto plano
+
+
+const idPersona = "1";   
+const correo = "kriss@utpl.com";
+const contrasena = "123";
 
 // Verificar la conexión a la base de datos y luego crear el administrador
 verificarConexion()

@@ -33,7 +33,9 @@ const bucarCedencialPorCedula = async (req, res) => {
             res.json({
                 id_credencial: credencial.id_credencial, 
                 correo_electronico: credencial.correo_electronico, 
-                rol: credencial.rol});
+                rol: credencial.rol,
+                estado: credencial.estado,
+            });
         } else {
             console.log('No se encontró ninguna credencial con esa cédula');
             res.status(404).json({ message: 'credencial no encontrada' });

@@ -4,7 +4,6 @@ import db from "./database/db.js";
 import routes from "./routes/routes.js";
 import loggerMiddleware from "./controllers/middleware.js";
 import loadAssociations from "./models/associations.js";
-
 import session from 'express-session';
 
 

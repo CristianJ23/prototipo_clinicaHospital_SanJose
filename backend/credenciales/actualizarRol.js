@@ -2,8 +2,8 @@ import CredencialesModel from "../models/CredencialesModel.js";
 
 const actualizarRol = async (req, res) => {
     try {
-        const { id_credenciales, email, pasword, role } = req.body;
-        console.log("", { id_credenciales, email, pasword, role });
+        const { id_credenciales, email, pasword, role, estado } = req.body;
+        console.log("", { id_credenciales, email, pasword, role, estado });
 
         // Verificar que los datos necesarios estén presentes
         if (!id_credenciales || !email || !role) {
@@ -15,6 +15,7 @@ const actualizarRol = async (req, res) => {
             {
                 correo_electronico: email,
                 rol: role,
+                estado: estado,
             },
             { where: { id_credencial: id_credenciales } }
         );
