@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import db from '../database/db.js';  // Conexión a la base de datos
-import HistoriaClinicaModel from '../models/HistoriaClinicaModel.js';
 import MedicoModel from '../models/MedicoModel.js';
 import EnfermeraModel from '../models/EnfermeraModel.js';
 import TratanteModel from '../models/TratanteModel.js';
@@ -77,8 +76,8 @@ export const login = async (req, res) => {
       return tratante;
     }
 
-    async function buscarAdmin(){
-      const admin = await PersonaModel.findOne({ where:{id_persona: credencial.id_persona}})
+    async function buscarAdmin() {
+      const admin = await PersonaModel.findOne({ where: { id_persona: credencial.id_persona } })
       return admin;
     }
 
@@ -91,8 +90,8 @@ export const login = async (req, res) => {
           return await buscarEnfermera(idPersona);
         case "tratante":
           return await buscarTratante(idPersona);
-          case "admin":
-            return await buscarAdmin(idPersona);
+        case "admin":
+          return await buscarAdmin(idPersona);
         default:
           console.log("No hay coincidencias con los roles");
           return null;
@@ -102,14 +101,22 @@ export const login = async (req, res) => {
     const rol = await buscarRolEnTablas(rolNombre, credencial.id_persona);
 
 
-
     // Guardar el ID de la credencial en la sesión
     req.session.usuarioId = credencial.id_credencial;
-    req.session.email = credencial.email_electronico;
+    req.session.email = credencial.correo_electronico;
     req.session.rol = credencial.rol;
     req.session.person = rol;
-    
-    // console.log(req.session.person);
+
+    // Guarda la sesión explícitamente
+    req.session.save((err) => {
+      if (err) {
+        console.error("Error al guardar la sesión:", err);
+      } else {
+        console.log("Sesión guardada exitosamente:", req.session);
+      }
+    });
+
+    console.log("perosna que esta ingresando: ", req.session.person);
 
     // console.log('rol', rolNombre)
 

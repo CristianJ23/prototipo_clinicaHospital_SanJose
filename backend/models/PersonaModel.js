@@ -63,7 +63,7 @@ const PersonaModel = db.define('personas', {
     allowNull: false,
   }
 }, {
-  tableName: 'Persona', // Nombre exacto de la tabla en la base de datos
+  tableName: 'persona', // Nombre exacto de la tabla en la base de datos
   timestamps: false,    // Deshabilitar createdAt y updatedAt si no son necesarios
 });
 

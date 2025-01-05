@@ -29,14 +29,14 @@ const HistoriaClinicaModel = db.define('HistoriaClinica', {
       key: 'id_medico',
     },
   },
-  id_area: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: AreaModel,
-      key: 'id_area',
-    },
-  },
+  // id_area: {
+  //   type: DataTypes.INTEGER,
+  //   allowNull: false,
+  //   references: {
+  //     model: AreaModel,
+  //     key: 'id_area',
+  //   },
+  // },
   motivoConsulta: {
     type: DataTypes.TEXT,
     allowNull: true,

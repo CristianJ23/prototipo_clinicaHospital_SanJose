@@ -110,50 +110,51 @@ CREATE TABLE Paciente (
 );
 
 
-	-- Crear tabla HistoriaClinica
-	CREATE TABLE HistoriaClinica (
-		id_historia INT AUTO_INCREMENT PRIMARY KEY,
-		id_paciente INT,
-		id_medico INT,
-		id_area INT,
-		motivoConsulta TEXT,
-		antecedentesPatologicosPersonales TEXT,
-		-- constatnes vitales
-		presionArterial VARCHAR(255),
-		peso VARCHAR(20),
-		talla VARCHAR(20),
-		imc VARCHAR(255),
-		perimetroAbdominal VARCHAR(255),
-		glucosaCapilar VARCHAR(255),
-		hemoglobinaCapilar VARCHAR(255),
-		pulsioximetria VARCHAR(255),
-		-- examen fisico
-		cabeza bit(1),
-		cuello bit(1),
-		torax bit(1),
-		abdomen bit(1),
-		extremidades bit(1),
-		piel bit(1),
-		sistema_linfatico bit(1),
-		sistema_nervioso bit(1),
-		fisico_cardiovascular bit(1),
-		fisico_respiratorio bit(1), 
-		observacion_fisica text,
-		-- organos y sistemas
-		organos_sentidos bit(1),
-		respiratorio bit(1),
-		cardiovascular bit(1),
-		digestivo bit(1),
-		urinario bit(1),
-		musculo_esqueletico bit(1),
-		endocrino bit(1),
-		nervioso bit(1),
-		observacion_organos text,
-		  
-		FOREIGN KEY (id_paciente) REFERENCES Paciente(id_paciente),
-		FOREIGN KEY (id_medico) REFERENCES Medico(id_medico),
-		FOREIGN KEY (id_area) REFERENCES Area(id_area)
-	);
+-- Crear tabla HistoriaClinica
+CREATE TABLE HistoriaClinica (
+    id_historia INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT,
+    id_medico INT, 
+    -- id_area INT, -- no hay area es admin
+    motivoConsulta TEXT,
+    antecedentesPatologicosPersonales TEXT,
+    -- constantes vitales
+    presionArterial VARCHAR(255),
+    peso VARCHAR(20),
+    talla VARCHAR(20),
+    imc VARCHAR(255),
+    perimetroAbdominal VARCHAR(255),
+    glucosaCapilar VARCHAR(255),
+    hemoglobinaCapilar VARCHAR(255),
+    pulsioximetria VARCHAR(255),
+    -- examen fisico
+    cabeza BIT(1) DEFAULT 0,
+    cuello BIT(1) DEFAULT 0,
+    torax BIT(1) DEFAULT 0,
+    abdomen BIT(1) DEFAULT 0,
+    extremidades BIT(1) DEFAULT 0,
+    piel BIT(1) DEFAULT 0,
+    sistema_linfatico BIT(1) DEFAULT 0,
+    sistema_nervioso BIT(1) DEFAULT 0,
+    fisico_cardiovascular BIT(1) DEFAULT 0,
+    fisico_respiratorio BIT(1) DEFAULT 0, 
+    observacion_fisica TEXT,
+    -- organos y sistemas
+    organos_sentidos BIT(1) DEFAULT 0,
+    respiratorio BIT(1) DEFAULT 0,
+    cardiovascular BIT(1) DEFAULT 0,
+    digestivo BIT(1) DEFAULT 0,
+    urinario BIT(1) DEFAULT 0,
+    musculo_esqueletico BIT(1) DEFAULT 0,
+    endocrino BIT(1) DEFAULT 0,
+    nervioso BIT(1) DEFAULT 0,
+    observacion_organos TEXT,
+  
+    FOREIGN KEY (id_paciente) REFERENCES Paciente(id_paciente),
+    FOREIGN KEY (id_medico) REFERENCES Medico(id_medico)
+    -- FOREIGN KEY (id_area) REFERENCES Area(id_area)
+);
+
 
 -- Crear tabla Tratamiento
 CREATE TABLE Tratamiento (

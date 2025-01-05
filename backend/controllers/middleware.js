@@ -8,10 +8,9 @@ import TratanteModel from "../models/TratanteModel.js";
 import PacienteModel from "../models/PacienteModel.js";
 import HistoriaClinicaModel from "../models/HistoriaClinicaModel.js";
 import ModificacionModel from "../models/Modificaciones.js";
-import CredencialesModel from "../models/CredencialesModel.js";
 
 const models = {
-    tratamineto: TratamientoModel,
+    tratamiento: TratamientoModel,
     especialidades: EspecialidadModel,
     persona: PersonaModel,
     enfermera: EnfermeraModel,
@@ -20,7 +19,6 @@ const models = {
     paciente: PacienteModel,
     historiaClinica: HistoriaClinicaModel,
     modificaciones: ModificacionModel,
-    credenciales: CredencialesModel,
     area: AreaModel,
 }
 
@@ -30,8 +28,8 @@ const injectModel = (req, res, next) => {
 
     // Si no es una ruta que requiera un modelo, continuar sin hacer nada
     if (!modelName || !model) {
-      return next();
-    }
+      return res.status(400).json({ message: `El modelo '${modelName}' no es válido.` });
+    }    
 
     req.model = model; // Inyectar el modelo en el objeto req
     next();            // Continuar con el siguiente middleware o controlador

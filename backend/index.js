@@ -18,7 +18,12 @@ app.use(session({
   secret: 'tu-secreto-aqui',  // Asegúrate de usar un secreto fuerte
   resave: false,              // No resguardar la sesión si no se ha modificado
   saveUninitialized: true,    // Guardar sesiones nuevas, incluso si no han sido modificadas
-  cookie: { secure: true }   // En producción, deberías usar 'secure: true' con HTTPS
+  cookie: {
+    secure: false,
+    // secure: process.env.NODE_ENV === 'production',
+    // httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 1 día en milisegundos
+  },  // En producción, deberías usar 'secure: true' con HTTPS
 }));
 
 // Configurar CORS para permitir solicitudes desde http://localhost:3000
@@ -26,17 +31,13 @@ app.use(cors({
   origin: 'http://localhost:3000',  // Aquí pones la URL de tu frontend
   methods: ['GET', 'POST', 'DELETE'],        // Métodos permitidos
   allowedHeaders: ['Content-Type'],// Encabezados permitidos
+  credentials: true,  // Permite el envío de cookies
 }));
 
 // Rutas
 app.use(express.json()); // Middleware para parsear JSON
 app.use('/kriss', routes);
 
-
-// Ruta raíz
-// app.get('/', (req, res) => {
-//   res.send("hola mundo");
-// });
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {

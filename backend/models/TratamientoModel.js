@@ -8,17 +8,17 @@ const TratamientoModel = db.define('tratamientos',{
         autoIncrement: true,
         allowNull: false,
     },
-    medicamentos_prescritos:{
+    medicamentos:{
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: false
     },
-    indicaciones_administracion:{
+    metodoAdministracion:{
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: false
     },
     id_historia:{
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false
     },
 },
 {

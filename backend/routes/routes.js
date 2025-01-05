@@ -2,14 +2,13 @@ import express from "express";
 import injectModel from "../controllers/middleware.js";
 import CrearPaciente from "../controllers/createPaciente.js";
 import { login } from "../credenciales/sesiones.js";
-import { logout } from "../credenciales/sesiones.js";
 import { verificarAdministrador } from "../credenciales/middlewareAutenticacion.js";
 import BuscarPersona from "../credenciales/cedulaSearch.js";
 import CreateRolPrimeraVez from "../credenciales/createRolPrimeraVez.js";
 import CreateRolNoPrimeraVez from "../credenciales/createRolNoPrimeraVez.js";
 import bucarCedencialPorCedula from "../credenciales/buscarCredencialPorCedula.js";
 import actualizarRol from '../credenciales/actualizarRol.js';
-import buscarPeacientePoCedula from "../controllers/buscarPacientePorCedula.js";
+import buscarPacientePorCedula from "../controllers/buscarPacientePorCedula.js";
 import eliminarRol from "../controllers/eliminarRol.js";
 import { requestPasswordReset } from "../controllers/requestPasswordreset.js";
 import ResetPassword from "../controllers/ResetPassword.js";
@@ -26,7 +25,7 @@ router.post('/actializarRol/', actualizarRol)
 router.post("/crear_historia_clinica", CrearHistoriaClinica)
 
 //ruta para crear el historial de un paciente
-router.post("/crearTratamiento", CrearTratamiento)
+router.post("/crear_tratamiento", CrearTratamiento)
 
 // Ruta para solicitar restablecimiento de contraseña
 router.post('/request-password-reset', requestPasswordReset);
@@ -36,7 +35,7 @@ router.post("/reset-password/", ResetPassword);
 router.post('/deleteRol/:idCredencial', eliminarRol)
 
 //buscar paciente por numero de cedula
-router.get("buscarPacientePorCedula/:cedula", buscarPeacientePoCedula)
+router.get("/buscarPacientePorCedula/:cedula", buscarPacientePorCedula)
 
 //ruta par abucar un a credencial por el numero de cedula
 router.get('/buscarCredencialPorCedula/:numero_documento', bucarCedencialPorCedula)
@@ -53,15 +52,12 @@ router.post('/createRolPrimeraVez', CreateRolPrimeraVez);
 //ruta crear un rol si existe en personas
 router.post('/createRolNoPrimeraVez', CreateRolNoPrimeraVez);
 
-// Middleware para inyectar el modelo solo en rutas que usan :model
-router.use("/:model", injectModel);
-
 // ruta par iniciar sesion
 router.post('/login', verificarAdministrador, login)
 // router.post('/login', login)
 
-//ruta para cerrar la sesion
-router.post('logout', logout)
+// Middleware para inyectar el modelo solo en rutas que usan :model
+router.use("/:model", injectModel);
 
 // Rutas genéricas para manejar modelos
 router.get("/:model", async (req, res) => {

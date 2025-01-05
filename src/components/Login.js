@@ -1,4 +1,3 @@
-/*comment!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 import React, { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import "../css/loggin.css"
@@ -21,7 +20,11 @@ export const Login = ({ setUser }) => {
             const response = await axios.post("http://localhost:8000/kriss/login", {
                 email: email,
                 password: password,
-            });
+            },
+                {
+                    withCredentials: true,  // Esto asegura que las cookies se envíen junto con la solicitud 
+                }
+            );
 
             if (response.data.success) {
                 // Si las credenciales son correctas, recibimos el rol

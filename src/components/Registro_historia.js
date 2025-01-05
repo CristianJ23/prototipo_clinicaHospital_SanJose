@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../css/registroHistoria.css";
 
 // Importar imágenes
-import crearPacienteImg from "../img2/medico.png";
+import crearpersonaImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
 import tratamientosImg from "../img2/tratamiento.png";
 import debounce from 'lodash.debounce';
@@ -12,12 +12,14 @@ import axios from "axios";
 const RegistroHistoria = ({ onCancel }) => {
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [persona, setpersona] = useState(null);
   const [paciente, setPaciente] = useState(null);
   const navigate = useNavigate();  // Hook para navegación programática
   const [formData, setFormData] = useState({
     cedula: "",
     nombres: "",
     apellidos: "",
+    // id_persona: "",
     id_paciente: "",
     /**datos de la clinica */
     /**los datos de la institucion se llenan con un json guardado */
@@ -175,7 +177,7 @@ const RegistroHistoria = ({ onCancel }) => {
     setFormData({ ...formData, [name]: value });
     // Si el campo es "cedula", llamar a la búsqueda con debounce
     if (name === 'cedula') {
-      debouncedBuscarPacientePorCedula(value); // Llamada al debounced function
+      debouncedBuscarpersonaPorCedula(value); // Llamada al debounced function
     }
   };
 
@@ -205,89 +207,113 @@ const RegistroHistoria = ({ onCancel }) => {
   };
 
   /*********************************************************** */
-  /* codigo para recibir los datos del paciente deacuerdo a su numero de cedula */
-  const buscarPacientePorCedula = async (cedula) => {
+  /* codigo para recibir los datos del persona deacuerdo a su numero de cedula */
+  const buscarpersonaPorCedula = async (cedula) => {
     try {
       const response = await axios.get(`http://localhost:8000/kriss/buscarPersonaPorCedula/${cedula}`);
+      const pacienteNew = await axios.get(`http://localhost:8000/kriss/buscarPacientePorCedula/${cedula}`);
 
-      if (response.data) {
-        setPaciente(response.data);
+      if ( pacienteNew.data) {
+        setpersona(response.data);
+        setPaciente(pacienteNew.data);
         setMensaje("");
 
       } else {
         setMensaje("Persona no encontrada.");
+        setpersona(null);
         setPaciente(null);
       }
     } catch (error) {
       setMensaje("Error al buscar la persona.");
+      setpersona(null);
       setPaciente(null);
     }
   };
 
   // useEffect(() => {
-  //   if (paciente) {
-  //     console.log("paciente : ", paciente.primer_apellido); // Imprime el paciente cuando se actualiza el estado
+  //   if (persona) {
+  //     console.log("persona : ", persona.primer_apellido); // Imprime el persona cuando se actualiza el estado
   //   }
-  // }, [paciente]); // Solo se ejecuta cuando paciente cambia
+  // }, [persona]); // Solo se ejecuta cuando persona cambia
 
   // Usar debounce para evitar múltiples peticiones rápidas al backend
-  const debouncedBuscarPacientePorCedula = debounce((cedula) => {
+  const debouncedBuscarpersonaPorCedula = debounce((cedula) => {
     if (cedula) {
-      buscarPacientePorCedula(cedula); // Llamada al backend solo después del debounce
+      buscarpersonaPorCedula(cedula); // Llamada al backend solo después del debounce
     }
   }, 500); // El tiempo de espera de 500 ms entre llamadas
 
   /*fin codigo para busqueda por cedula*/
 
 
+ /*CODIGP DE ENVIO DE LA HISTORIA*/
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  try {
+    // ID de la historia clínica
+    let historiaClinicaId = null;
 
-    try {
-      //prueba para ver datos que se envian al tratamineto
-      console.log("datos de tratmeinto: ", formData.tratamiento);
-      // Primero, enviar el tratamiento
-      const tratamientoResponse = await fetch("http://localhost:8000/kriss/crearTratamiento", {
+    const updatedFormData = {
+      ...formData,
+      id_paciente: paciente.id_paciente,
+    };
+
+    console.log("id del paciene", paciente.id_paciente);
+    console.log(updatedFormData)
+
+    // 1. Crear la Historia Clínica (primero se necesita para obtener su ID)
+    const historiaResponse = await fetch("http://localhost:8000/kriss/crear_historia_clinica", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: 'include',  // Asegura que se envíen cookies
+      body: JSON.stringify({
+        ...updatedFormData,
+        tratamiento: undefined, // No incluir el tratamiento aún
+      }),
+    });
+
+    if (!historiaResponse.ok) {
+      throw new Error("Error al crear historia clínica");
+    }
+    const historiaResult = await historiaResponse.json();
+    historiaClinicaId = historiaResult.id_historia; // Asegúrate de recibir este campo del backend
+    
+
+    // 2. Crear Tratamientos asociados a la historia
+    for (const medicamento of medicamentosSeleccionados) {
+      const tratamientoData = {
+        medicamentos: medicamento.nombre, // Nombre del medicamento
+        metodoAdministracion: medicamento.metodoAdministracion,
+        id_historia: historiaClinicaId, // ID de la historia clínica recién creada
+      };
+
+      const tratamientoResponse = await fetch("http://localhost:8000/kriss/tratamiento", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData.tratamiento),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tratamientoData),
       });
 
       if (!tratamientoResponse.ok) {
-        throw new Error("Error al crear tratamiento");
+        throw new Error("Error al guardar tratamiento: " + medicamento.nombre);
       }
-      const tratamientoResult = await tratamientoResponse.json();
-      const tratamientoId = tratamientoResult.id;
-      console.log("id del tratamineto recibido", tratamientoId)
-
-      // Luego, crear la historia clínica con el ID del tratamiento
-      const historiaConTratamiento = {
-        ...formData,
-        tratamientoId, // Agregar el ID del tratamiento a la historia clínica
-      };
-
-      const historiaResponse = await fetch("http://localhost:8000/kriss/crear_historia_clinica", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(historiaConTratamiento),
-      });
-
-      if (!historiaResponse.ok) {
-        throw new Error("Error al crear historia clínica");
-      }
-
-      const historiaResult = await historiaResponse.json();
-      console.log("Historia clínica guardada con éxito:", historiaResult);
-
-    } catch (error) {
-      console.error("Error en el proceso:", error);
     }
-  };
+
+    console.log("Historia clínica y tratamientos guardados con éxito.");
+    alert("Historia clínica y tratamientos registrados exitosamente.");
+
+    // Reiniciar el formulario
+    setFormData({
+      ...formData,
+      tratamiento: { medicamentos: [], metodoAdministracion: "" },
+    });
+    setMedicamentosSeleccionados([]);
+
+  } catch (error) {
+    console.error("Error en el proceso:", error);
+    alert("Ocurrió un error al guardar los datos.");
+  }
+};
 
 
   const examenesFisicos = [
@@ -317,7 +343,7 @@ const RegistroHistoria = ({ onCancel }) => {
   /*funcion para enviar datos asociados a la hisotria clinica */
   const datosAsociados = async (cedula) => {
     try {
-      formData.id_paciente = paciente.id_paciente;
+      formData.id_persona = persona.id_persona;
 
     } catch (error) { }
   }
@@ -326,9 +352,9 @@ const RegistroHistoria = ({ onCancel }) => {
     <div className="registro-historia">
       <div className="sidebar">
         <h2 className="sidebar-title">Menú</h2>
-        <div className="modulo" onClick={() => navigate("/crear-paciente")}>
-          <img src={crearPacienteImg} alt="Registro de Paciente" />
-          <p>Registro de Paciente</p>
+        <div className="modulo" onClick={() => navigate("/crear-persona")}>
+          <img src={crearpersonaImg} alt="Registro de persona" />
+          <p>Registro de persona</p>
         </div>
         <div className="modulo" onClick={() => navigate("/gestion-historias")}>
           <img src={gestionHistoriasImg} alt="Registro de Historia" />
@@ -343,7 +369,7 @@ const RegistroHistoria = ({ onCancel }) => {
       <div className="form-container">
         <h1>Registro de Historia Clínica</h1>
         <form onSubmit={handleSubmit}>
-          <h2>Datos del Paciente</h2>
+          <h2>Datos del persona</h2>
           <label>
             Cédula:
             <input type="text" name="cedula" value={formData.cedula} onChange={handleInputChange} />
@@ -355,14 +381,14 @@ const RegistroHistoria = ({ onCancel }) => {
             <input
               type="text"
               name="nombres"
-              value={paciente ? paciente.primer_nombre + " " + paciente.segundo_nombre : ""}
+              value={persona ? persona.primer_nombre + " " + persona.segundo_nombre : ""}
               onChange={handleInputChange}
             />
           </label>
           <label>
             Apellidos:
             <input type="text" name="apellidos"
-              value={paciente ? paciente.primer_apellido + " " + paciente.segundo_apellido : ""}
+              value={persona ? persona.primer_apellido + " " + persona.segundo_apellido : ""}
               onChange={handleInputChange} />
           </label>
           <label>
