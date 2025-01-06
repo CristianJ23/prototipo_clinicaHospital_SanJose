@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Gestion.css";
+import axios from "axios";
 
 // Importar imágenes
 import crearPacienteImg from "../img2/medico.png";
@@ -10,22 +11,38 @@ import tratamientosImg from "../img2/tratamiento.png";
 const Gestion = () => {
   const navigate = useNavigate();
   const [cedula, setCedula] = useState("");
+  const [persona, setPersona] = useState(null); // Para almacenar la persona encontrada
+  const [paciente, setPaciente] = useState(null); // Para almacenar el paciente encontrado
   const [historias, setHistorias] = useState([]);
+  const [mensaje, setMensaje] = useState("");
 
-  // Función para buscar las historias clínicas
-  const buscarHistorias = async (e) => {
-    e.preventDefault();
-    
+  // Función para buscar la persona, paciente y sus historias clínicas con una sola API
+  const buscarHistoria = async (cedula) => {
     try {
-      const response = await fetch(`http://localhost:8000/kriss/buscarHistorias/${cedula}`);
-      const result = await response.json();
-      if (response.ok) {
-        setHistorias(result);
+      // Llamada a la API que busca la persona, el paciente y las historias clínicas
+      const response = await axios.get(`http://localhost:8000/kriss/buscarHistoria/${cedula}`);
+
+      if (response.data) {
+        setPersona(response.data.persona);
+        setPaciente(response.data.paciente);
+        setHistorias(response.data.historiasClinicas);
+        setMensaje(""); // Limpiar el mensaje de error
+
+        if (response.data.historiasClinicas.length === 0) {
+          setMensaje("No se encontraron historias clínicas para este paciente.");
+        }
       } else {
-        alert("No se encontraron historias para esta cédula.");
+        setMensaje("No se encontraron datos para esta cédula.");
+        setPersona(null);
+        setPaciente(null);
+        setHistorias([]);
       }
     } catch (error) {
-      console.error("Error al buscar historias:", error);
+      console.error("Error al buscar la información:", error);
+      setMensaje("Hubo un error al realizar la búsqueda. Por favor, inténtelo de nuevo.");
+      setPersona(null);
+      setPaciente(null);
+      setHistorias([]);
     }
   };
 
@@ -51,7 +68,7 @@ const Gestion = () => {
       {/* Contenedor para el contenido */}
       <div className="content">
         <h1>Gestión de Historias Clínicas</h1>
-        <form onSubmit={buscarHistorias}>
+        <form onSubmit={(e) => { e.preventDefault(); buscarHistoria(cedula); }}>
           <label>
             Cédula:
             <input
@@ -64,6 +81,26 @@ const Gestion = () => {
           <button type="submit">Buscar</button>
         </form>
 
+        {/* Mensaje de error o informativo */}
+        {mensaje && <p className="mensaje">{mensaje}</p>}
+
+        {/* Mostrar la persona y el paciente encontrados */}
+        {persona && (
+          <div className="persona-info">
+            <h2>Persona Encontrada:</h2>
+            <p><strong>Nombre:</strong> {persona.nombre} {persona.apellido}</p>
+            <p><strong>Cédula:</strong> {persona.numero_documento}</p>
+          </div>
+        )}
+
+        {paciente && (
+          <div className="paciente-info">
+            <h2>Paciente Encontrado:</h2>
+            <p><strong>Id Paciente:</strong> {paciente.id_paciente}</p>
+          </div>
+        )}
+
+        {/* Lista de historias clínicas */}
         <div className="historias-lista">
           {historias.map((historia) => (
             <div
