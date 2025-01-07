@@ -13,7 +13,7 @@ const CrearHistoriaClinica = async (req, res) => {
         historial.id_medico = id_medico;
         console.log("medico", historial.id_medico);
         // historial.id_area = 0;
-        // historial.id_area = req.session.person.id_area ? req.session.person.id_area : 0;
+        historial.id_area = req.session.person.id_area ? req.session.person.id_area : 0;
         // console.log(historial);
 
         const newHistory = await HistoriaClinicaModel.create(historial);

@@ -3,7 +3,6 @@ import db from "../database/db.js";
 import { DataTypes } from "sequelize";
 import PacienteModel from './PacienteModel.js';       // Importar el modelo de Paciente
 import MedicoModel from './MedicoModel.js';           // Importar el modelo de Medico
-import AreaModel from './AreaModel.js';               // Importar el modelo de Area
 
 // Definir el modelo HistoriaClinica
 const HistoriaClinicaModel = db.define('HistoriaClinica', {

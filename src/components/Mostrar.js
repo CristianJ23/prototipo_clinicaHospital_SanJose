@@ -12,7 +12,7 @@ const Mostrar = () => {
   useEffect(() => {
     const fetchHistoria = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/kriss/obtenerHistoria/${id}`);
+        const response = await fetch(`http://localhost:8000/kriss/buscarHistoriaPorCedula/${id}`);
         const result = await response.json();
         setHistoria(result);
         setMedicamentosSeleccionados(result.tratamiento.medicamentos || []);

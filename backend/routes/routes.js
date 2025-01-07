@@ -15,6 +15,8 @@ import ResetPassword from "../controllers/ResetPassword.js";
 import CrearHistoriaClinica from "../controllers/crearHistoriaClinica.js";
 import CrearTratamiento from "../controllers/CrearTratamiento.js";
 import buscarHistoria from "../controllers/buscarHistoria.js";
+import buscarHistoriaPorCedula from "../controllers/buscarHistoriasPorCedula.js";
+import buscarTratamientosPorHistoria from "../controllers/buscarTratamientosPorHistoria.js";
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
@@ -22,6 +24,12 @@ const router = express.Router();
 
 //ruta para actualizar rol
 router.post('/actializarRol/', actualizarRol)
+
+//ruata para buscar trataminetos para la historia
+router.get('/buscarTratamientosPorHistoria/:historia', buscarTratamientosPorHistoria)
+
+//ruta para buscar historiales clinicos por numero de cedula
+router.get("/buscarHistoriaPorCedula/:cedula", buscarHistoriaPorCedula)
 
 //ruta para crear el historial de un paciente
 router.post("/crear_historia_clinica", CrearHistoriaClinica)

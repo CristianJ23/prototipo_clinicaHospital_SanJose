@@ -81,11 +81,11 @@ HistoriaClinicaModel.belongsTo(PacienteModel, {
   //   onDelete: 'CASCADE', // Opcional: eliminar la historia clínica cuando se elimine el médico
   });
   
-  HistoriaClinicaModel.belongsTo(AreaModel, {
-    foreignKey: 'id_area',
-    targetKey: 'id_area',
-  //   onDelete: 'CASCADE', // Opcional: eliminar la historia clínica cuando se elimine el área
-  });
+  // HistoriaClinicaModel.belongsTo(AreaModel, {
+  //   foreignKey: 'id_area',
+  //   targetKey: 'id_area',
+  // //   onDelete: 'CASCADE', // Opcional: eliminar la historia clínica cuando se elimine el área
+  // });
   
   // HistoriaClinicaModel.belongsTo(TratamientoModel, {
   //   foreignKey: 'id_tratamiento',
