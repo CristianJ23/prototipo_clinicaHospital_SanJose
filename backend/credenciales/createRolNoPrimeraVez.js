@@ -19,8 +19,8 @@ const CreateRolNoPrimeraVez = async (req, res) => {
         const correo = persona.email;
         const contrasena = persona.password; // Contraseña proporcionada en el body de la solicitud
         const rol = persona.role;
-        const area = persona.area;
-        const especialidad = persona.especialidad;
+        const area = persona.area || "";
+        const especialidad = persona.especialidad  || "";
 
         console.log(id_persona)
         console.log(correo)

@@ -7,8 +7,11 @@ import axios from "axios";
 import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
 import tratamientosImg from "../img2/tratamiento.png";
+import PersonalTable from "./PersonalTable";
+
 
 const Gestion = () => {
+  
   const navigate = useNavigate();
   const [cedula, setCedula] = useState("");
   const [persona, setPersona] = useState(null); // Para almacenar la persona encontrada
@@ -45,6 +48,29 @@ const Gestion = () => {
       setHistorias([]);
     }
   };
+
+  /**informacion para la tabla */
+  const columns = [
+    {
+        Header: 'ID Historia',
+        accessorKey: 'id_historia', // Esta es la clave que viene del backend
+    },
+    {
+        Header: 'Motivo de Consulta',
+        accessorKey: 'motivoConsulta',
+    },
+    {
+        Header: 'motivo consulta',
+        accessorKey: 'motivoConsulta',
+    },
+    {
+        Header: 'Fecha',
+        accessorKey: 'fecha_creacion',
+    },
+    // Añadir más columnas según sea necesario
+];
+
+  
 
   return (
     <div className="gestion">
@@ -95,25 +121,29 @@ const Gestion = () => {
 
         {paciente && (
           <div className="paciente-info">
-            <h2>Paciente Encontrado:</h2>
-            <p><strong>Id Paciente:</strong> {paciente.id_paciente}</p>
+            <h2>Historias Encontradas:</h2>
           </div>
         )}
 
+                {/* Mostrar las historias clínicas en la tabla */}
+                <PersonalTable data={historias} columns={columns} />
+      </div>
+
         {/* Lista de historias clínicas */}
-        <div className="historias-lista">
+        {/* <div className="historias-lista">
           {historias.map((historia) => (
             <div
               key={historia.id}
               className="modulo"
-              onClick={() => navigate(`/mostrar/${historia.id}`)}
+              onClick={() => navigate(`/mostrar/${historia.id_historia}`)}
             >
-              <h3>{`Historia Clínica - Cédula: ${historia.cedula}`}</h3>
+              <h3>{`Numero de historia: ${historia.id_historia}`}</h3>
+              <p>{`Antecedentes: ${historia.antecedentesPatologicosPersonales}`}</p>
               <p>{`Motivo de Consulta: ${historia.motivoConsulta}`}</p>
             </div>
           ))}
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </div>
   );
 };

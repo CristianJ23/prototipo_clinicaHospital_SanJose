@@ -4,84 +4,121 @@ import "../css/Mostrar.css";
 
 const Mostrar = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id } = useParams(); // ID de la historia clínica
   const [historia, setHistoria] = useState(null);
-  const [medicamentosSeleccionados, setMedicamentosSeleccionados] = useState([]);
-  
-  // Obtener los detalles de la historia clínica
+  const [tratamientos, setTratamientos] = useState([]);
+  const [nuevoMedicamento, setNuevoMedicamento] = useState("");
+  const [cargando, setCargando] = useState(true);
+
+  // Obtener los detalles de la historia clínica y tratamientos asociados
   useEffect(() => {
-    const fetchHistoria = async () => {
+    const fetchDatos = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/kriss/buscarHistoriaPorCedula/${id}`);
-        const result = await response.json();
-        setHistoria(result);
-        setMedicamentosSeleccionados(result.tratamiento.medicamentos || []);
+        const response = await fetch(
+          `http://localhost:8000/kriss/buscarTratamientosPorHistoria/${id}`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          const { tratamientos, historia } = data; // Estructura recibida del backend
+          setHistoria(historia);
+          setTratamientos(tratamientos);
+        } else {
+          console.error("Error en la respuesta de la API");
+        }
       } catch (error) {
-        console.error("Error al obtener la historia clínica:", error);
+        console.error("Error al obtener los datos:", error);
+      } finally {
+        setCargando(false);
       }
     };
-    fetchHistoria();
+
+    fetchDatos();
   }, [id]);
 
-  // Función para modificar el tratamiento
-  const modificarTratamiento = async () => {
+  // Función para agregar un nuevo tratamiento
+  const agregarTratamiento = async () => {
+    if (!nuevoMedicamento.trim()) return;
+
     try {
-      const response = await fetch(`http://localhost:8000/kriss/actualizarTratamiento/${historia.tratamientoId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...historia.tratamiento,
-          medicamentos: medicamentosSeleccionados,
-        }),
-      });
+      const response = await fetch(
+        `http://localhost:8000/kriss/tratamiento/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ nombre: nuevoMedicamento.trim() }),
+        }
+      );
 
       if (response.ok) {
-        alert("Tratamiento actualizado");
+        const nuevoTratamiento = await response.json();
+        setTratamientos([...tratamientos, nuevoTratamiento]);
+        setNuevoMedicamento("");
       } else {
-        alert("Error al actualizar tratamiento");
+        alert("Error al agregar el tratamiento.");
       }
     } catch (error) {
-      console.error("Error al modificar tratamiento:", error);
+      console.error("Error al agregar el tratamiento:", error);
     }
   };
 
-  // Función para agregar un medicamento al tratamiento
-  const agregarMedicamento = (medicamento) => {
-    setMedicamentosSeleccionados([...medicamentosSeleccionados, medicamento]);
+  // Función para modificar un tratamiento
+  const modificarTratamiento = (tratamiento) => {
+    navigate(`/modificar-tratamiento/${tratamiento.id}`);
   };
 
-  // Función para eliminar un medicamento del tratamiento
-  const eliminarMedicamento = (medicamento) => {
-    setMedicamentosSeleccionados(
-      medicamentosSeleccionados.filter((item) => item.nombre !== medicamento.nombre)
-    );
-  };
-
-  if (!historia) return <div>Cargando...</div>;
+  if (cargando) return <div>Cargando...</div>;
 
   return (
     <div className="mostrar">
       <h1>Detalles de la Historia Clínica</h1>
-      <div className="detalle">
-        <p><strong>Cédula:</strong> {historia.cedula}</p>
-        <p><strong>Motivo de Consulta:</strong> {historia.motivoConsulta}</p>
-        <p><strong>Antecedentes Patológicos:</strong> {historia.antecedentesPatologicosPersonales}</p>
-        <h2>Tratamiento</h2>
+      {historia ? (
+        <div className="detalle">
+          {Object.entries(historia).map(([key, value]) => (
+            <p key={key}>
+              <strong>{key}:</strong> {value !== null ? value : "No especificado"}
+            </p>
+          ))}
+        </div>
+      ) : (
+        <p>No se encontraron detalles para esta historia clínica.</p>
+      )}
+
+      <h2>Tratamientos</h2>
+      {tratamientos.length > 0 ? (
         <ul>
-          {medicamentosSeleccionados.map((medicamento, index) => (
-            <li key={index}>
-              {medicamento.nombre} - {medicamento.dosis}
-              <button onClick={() => eliminarMedicamento(medicamento)}>Eliminar</button>
+          {tratamientos.map((tratamiento) => (
+            <li key={tratamiento.id_tratamiento}>
+              {Object.entries(tratamiento).map(([key, value]) => (
+                <p key={key}>
+                  <strong>{key}:</strong> {value !== null ? value : "No especificado"}
+                </p>
+              ))}
+              <button onClick={() => modificarTratamiento(tratamiento)}>
+                Modificar
+              </button>
             </li>
           ))}
         </ul>
-        <button onClick={modificarTratamiento}>Modificar Tratamiento</button>
+      ) : (
+        <p>No hay tratamientos registrados para esta historia clínica.</p>
+      )}
+
+      <div className="nuevo-tratamiento">
+        <h3>Agregar Nuevo Tratamiento</h3>
+        <input
+          type="text"
+          value={nuevoMedicamento}
+          onChange={(e) => setNuevoMedicamento(e.target.value)}
+          placeholder="Nombre del medicamento"
+        />
+        <button onClick={agregarTratamiento}>Agregar</button>
       </div>
 
       <div className="acciones">
-        <button onClick={() => navigate("/gestion")}>Cancelar</button>
+        <button onClick={() => navigate("/gestion")}>Regresar</button>
       </div>
     </div>
   );

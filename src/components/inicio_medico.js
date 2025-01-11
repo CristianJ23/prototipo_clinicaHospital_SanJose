@@ -59,13 +59,13 @@ const InicioMedico = () => {
             <img src={gestion} alt="Gestión Historias" />
             <p>Gestión de Historias</p>
           </div>
-          <div
+          {/* <div
             className="modulo"
             onClick={() => navigate("/tratamientos")}  // Redirige a la vista de Tratamientos
           >
             <img src={tratamientosImg} alt="Tratamientos" />
             <p>Tratamientos</p>
-          </div>
+          </div> */}
           
         </div>
       </div>

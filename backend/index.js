@@ -5,6 +5,7 @@ import routes from "./routes/routes.js";
 import loggerMiddleware from "./controllers/middleware.js";
 import loadAssociations from "./models/associations.js";
 import session from 'express-session';
+import mysqlInstance from "./database/db.js";
 
 
 
@@ -48,12 +49,17 @@ app.use((err, req, res, next) => {
 // Prueba la conexión a la base de datos
 (async () => {
   try {
-    await db.authenticate();
+    // Importar la instancia Singleton
+    const sequelize = mysqlInstance; // Singleton ya maneja la conexión
+
+    // Probar la conexión
+    await sequelize.authenticate();
     console.log("Conexión exitosa a la base de datos");
   } catch (error) {
     console.error("Error al conectar a la base de datos:", error);
   }
 })();
+
 
 // Manejo de rutas no existentes
 app.use((req, res) => {

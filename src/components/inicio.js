@@ -21,6 +21,7 @@ const Inicio = () => {
           <li onClick={() => navigate("/vista-enfermera")}>Vista Enfermera</li>
           <li onClick={() => navigate("/tratamientos")}>Tratamientos</li>
           <li onClick={() => navigate("/crear-usuario")}>Crear Usuario</li>
+          <li onClick={() => navigate("/")}>cerrar sesion</li> // el cierre de sesion deberia ser eliminando la sesion desde el backend
         </ul>
       </nav>
 
@@ -34,23 +35,29 @@ const Inicio = () => {
         </div>
 
         <div className="modulos-container">
-          <div className="modulo" onClick={() => navigate("/vista-medico")}>  
+          <div className="modulo" onClick={() => navigate("/vista-medico")}>
             <img src={crearPacienteImg} alt="Vista Médico" />
             <p>Vista Médico</p>
           </div>
-          <div className="modulo" onClick={() => navigate("/vista-enfermera")}>  
+          <div className="modulo" onClick={() => navigate("/vista-enfermera")}>
             <img src={gestionHistoriasImg} alt="Vista Enfermera" />
             <p>Vista Enfermera</p>
           </div>
-          <div className="modulo" onClick={() => navigate("/tratamientos")}>  
+          {/* <div className="modulo" onClick={() => navigate("/tratamientos")}>  
             <img src={tratamientosImg} alt="Tratamientos" />
             <p>Tratamientos</p>
+          </div> */}
+          <div className="modulo"
+            onClick={() => navigate('/personal')} // Redirige a la página 'tratamiento'
+            >
+            <img src={crearUsuarioImg} alt="Crear Usuario" />
+            <p>Personal</p>
           </div>
           <div className="modulo"
-            onClick={() => navigate('/crear_rol')} // Redirige a la página 'tratamiento'
+            onClick={() => navigate('/personal')} // Redirige a la página 'personal'
           >
-            <img src={crearUsuarioImg} alt="Crear Usuario" />
-            <p>Crear Roles</p>
+            <img src={crearUsuarioImg} alt="Personal" />
+            <p>Exportacion</p>
           </div>
         </div>
       </div>

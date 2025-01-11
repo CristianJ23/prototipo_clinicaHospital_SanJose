@@ -17,6 +17,7 @@ import Gestion from './components/Gestión';
 import Mostrar from './components/Mostrar'; 
 import RequestPasswordReset from './components/RequestPasswordReset';
 import ResetPassword from './components/Reset';
+import Personal from './components/Personal';
 
 // Define el router
 const router = createBrowserRouter([
@@ -53,9 +54,9 @@ const router = createBrowserRouter([
         element: <ProtectedRoute requiredRole="no definido"><CompShowUsers /></ProtectedRoute>, // Solo accesible para admins
     },
     {
-        path: "/mostrar", // Ruta para gestionar tratamientos
-        element: <Mostrar />,
-    },
+        path: "/mostrar/:id", // Ruta dinámica para Mostrar
+        element: <Mostrar />,
+    },
     {
         path: "/crear-paciente", // Ruta para gestionar pacientes
         element: <CrearPaciente />,
@@ -66,7 +67,11 @@ const router = createBrowserRouter([
     },
     {
         path: "/gestion", // Ruta para gestionar tratamientos
-        element: <Gestion />,
+        element: <ProtectedRoute requiredRole={["admin"]}><Gestion /></ProtectedRoute>, // Solo accesible para admins
+    },
+    {
+        path: "/personal", // Ruta para gestionar personal
+        element: <ProtectedRoute requiredRole={["admin"]}><Personal /></ProtectedRoute>, // Solo accesible para admins
     },
 ]);
 

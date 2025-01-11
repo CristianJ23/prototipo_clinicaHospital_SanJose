@@ -667,66 +667,6 @@ const CreateRols = () => {
                   handleInputChange(e, setNuevaPersona, nuevaPersona)
                 } />
             </label>
-            {/* <label>
-              contraseña:
-              <input
-                type="text"
-                name="contrasena"
-                value={nuevaPersona.contrasena}
-                onChange={(e) =>
-                  handleInputChange(e, setNuevaPersona, nuevaPersona)
-                }
-              />
-            </label>
-            <label>
-              rol:
-              <select
-                name="rol"
-                value={nuevaPersona.rol}
-                onChange={(e) =>
-                  handleInputChange(e, setNuevaPersona, nuevaPersona)
-                }
-              >
-                <option value="">Seleccione un rol</option> {/* Opción por defecto */}
-            {/* <option value="admin">Administrador</option>
-                <option value="medico">medico</option>
-                <option value="enfermera">enfermera</option>
-                <option value="tratante">tratante</option>
-              </select> */}
-            {/* </label> */}
-
-            {/* Campos condicionales para Médico o Enfermera */}
-            {/*}
-            {(nuevaPersona.rol === "medico" || nuevaPersona.rol === "enfermera") && (
-              <>
-                <label>
-                  Área:
-                  <select
-                    name="area"
-                    value={nuevaPersona.area}
-                    onChange={(e) => handleInputChange(e, setNuevaPersona, nuevaPersona)}
-                  >
-                    <option value="">Seleccione un área</option>
-                    <option value="cardiologia">Cardiología</option>
-                    <option value="pediatria">Pediatría</option>
-                    <option value="urgencias">Urgencias</option>
-                  </select>
-                </label>
-
-                <label>
-                  Especialidad:
-                  <select
-                    name="especialidad"
-                    value={nuevaPersona.especialidad}
-                    onChange={(e) => handleInputChange(e, setNuevaPersona, nuevaPersona)}
-                  >
-                    <option value="">Seleccione una especialidad</option>
-                    <option value="cirugia">Cirugía</option>
-                    <option value="neurologia">Neurología</option>
-                  </select>
-                </label>
-              </>
-            )} */}
 
 
             <button onClick={guardarNuevaPersona}>Guardar Persona</button>
@@ -738,9 +678,6 @@ const CreateRols = () => {
 
       {mensaje && <p className="mensaje">{mensaje}</p>}
     </div >
-
-
-
   );
 };
 

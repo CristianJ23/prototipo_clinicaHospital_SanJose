@@ -17,10 +17,14 @@ import CrearTratamiento from "../controllers/CrearTratamiento.js";
 import buscarHistoria from "../controllers/buscarHistoria.js";
 import buscarHistoriaPorCedula from "../controllers/buscarHistoriasPorCedula.js";
 import buscarTratamientosPorHistoria from "../controllers/buscarTratamientosPorHistoria.js";
+import getAllPersonal from "../controllers/getAllPersonal.js";
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
 
+
+//ruta para obtener todos los empleados
+router.get('/getAllPersonal', getAllPersonal)
 
 //ruta para actualizar rol
 router.post('/actializarRol/', actualizarRol)
