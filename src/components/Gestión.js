@@ -11,7 +11,7 @@ import PersonalTable from "./PersonalTable";
 
 
 const Gestion = () => {
-  
+
   const navigate = useNavigate();
   const [cedula, setCedula] = useState("");
   const [persona, setPersona] = useState(null); // Para almacenar la persona encontrada
@@ -52,25 +52,25 @@ const Gestion = () => {
   /**informacion para la tabla */
   const columns = [
     {
-        Header: 'ID Historia',
-        accessorKey: 'id_historia', // Esta es la clave que viene del backend
+      Header: 'ID Historia',
+      accessorKey: 'id_historia', // Esta es la clave que viene del backend
     },
     {
-        Header: 'Motivo de Consulta',
-        accessorKey: 'motivoConsulta',
+      Header: 'Motivo de Consulta',
+      accessorKey: 'motivoConsulta',
     },
     {
-        Header: 'motivo consulta',
-        accessorKey: 'motivoConsulta',
+      Header: 'motivo consulta',
+      accessorKey: 'motivoConsulta',
     },
     {
-        Header: 'Fecha',
-        accessorKey: 'fecha_creacion',
+      Header: 'Fecha',
+      accessorKey: 'fecha_creacion',
     },
     // Añadir más columnas según sea necesario
-];
+  ];
 
-  
+
 
   return (
     <div className="gestion">
@@ -94,43 +94,51 @@ const Gestion = () => {
       {/* Contenedor para el contenido */}
       <div className="content">
         <h1>Gestión de Historias Clínicas</h1>
-        <form onSubmit={(e) => { e.preventDefault(); buscarHistoria(cedula); }}>
+        <form
+          className="busqueda-container"
+          onSubmit={(e) => { e.preventDefault(); buscarHistoria(cedula); }}>
           <label>
             Cédula:
-            <input
-              type="text"
-              value={cedula}
-              onChange={(e) => setCedula(e.target.value)}
-              placeholder="Ingrese la cédula"
-            />
+            <div className="input-group">
+              <input
+                type="text"
+                value={cedula}
+                onChange={(e) => setCedula(e.target.value)}
+                placeholder="Ingrese la cédula"
+              />
+              <button type="submit">Buscar</button>
+            </div>
           </label>
-          <button type="submit">Buscar</button>
         </form>
 
         {/* Mensaje de error o informativo */}
         {mensaje && <p className="mensaje">{mensaje}</p>}
 
         {/* Mostrar la persona y el paciente encontrados */}
-        {persona && (
-          <div className="persona-info">
-            <h2>Persona Encontrada:</h2>
-            <p><strong>Nombre:</strong> {persona.nombre} {persona.apellido}</p>
-            <p><strong>Cédula:</strong> {persona.numero_documento}</p>
-          </div>
-        )}
+        {
+          persona && (
+            <div className="persona-info">
+              <h2>Persona Encontrada:</h2>
+              <p><strong>Nombre:</strong> {persona.nombre} {persona.apellido}</p>
+              <p><strong>Cédula:</strong> {persona.numero_documento}</p>
+            </div>
+          )
+        }
 
-        {paciente && (
-          <div className="paciente-info">
-            <h2>Historias Encontradas:</h2>
-          </div>
-        )}
+        {
+          paciente && (
+            <div className="paciente-info">
+              <h2>Historias Encontradas:</h2>
+            </div>
+          )
+        }
 
-                {/* Mostrar las historias clínicas en la tabla */}
-                <PersonalTable data={historias} columns={columns} />
-      </div>
+        {/* Mostrar las historias clínicas en la tabla */}
+        <PersonalTable data={historias} columns={columns} />
+      </div >
 
-        {/* Lista de historias clínicas */}
-        {/* <div className="historias-lista">
+      {/* Lista de historias clínicas */}
+      {/* <div className="historias-lista">
           {historias.map((historia) => (
             <div
               key={historia.id}
@@ -144,7 +152,7 @@ const Gestion = () => {
           ))}
         </div> */}
       {/* </div> */}
-    </div>
+    </div >
   );
 };
 

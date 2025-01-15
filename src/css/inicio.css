@@ -7,9 +7,10 @@
 }
 
 /* Body & Layout */
+
 .inicio-container {
-  background-color: #f4f4f9; /* Soft background */
-  background-image: url('../img2/fondo.jpg'); /* Ruta de la imagen de fondo */
+  background-color: #f4f4f9; 
+  background-image: url('../img2/fondo.jpg'); 
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -18,12 +19,13 @@
   -webkit-font-smoothing: antialiased;
   font-size: 16px;
   letter-spacing: 0.5px;
-  min-height: 100vh; /* Asegura que la altura mínima sea 100% de la pantalla */
+  min-height: 100vh; 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   padding: 0;
+  outline:none;
 }
 
 /* Navigation Bar */
@@ -46,6 +48,73 @@
   font-weight: bold;
   color: #3da07b;
 }
+/*estilos de los textos de navegacion*/
+.inicio-container .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif; /* Fuente profesional y limpia */
+  justify-content: center; /* Centra los enlaces horizontalmente */
+  align-items: center;
+  background:  none;
+}
+
+.inicio-container .nav-links li {
+  position: relative;
+  cursor: pointer;
+  font-weight: 600;
+  color: #444; /* Gris oscuro para mejor contraste */
+  font-size: 1.2rem; /* Tamaño más grande para mejorar la legibilidad */
+  transition: color 0.3s ease, transform 0.2s ease;
+  outline: none; 
+  border: none;
+  background: none;
+}
+
+.inicio-container .nav-links li::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: #888; /* Línea sutil, sin gradientes */
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.inicio-container .nav-links li:hover {
+  color: #222; /* Cambia a un gris más oscuro */
+  transform: translateY(-2px); /* Animación hacia arriba */
+}
+
+.inicio-container .nav-links li:hover::after {
+  width: 100%; /* La línea se extiende completamente */
+}
+
+.inicio-container .nav-links li:focus {
+  color: #000; /* Negro puro en enfoque */
+  text-decoration: underline; /* Resalta el texto al enfocarse */
+  outline: none; /* Sin bordes visibles al enfoque */
+}
+
+@media (max-width: 768px) {
+  .inicio-container .nav-links {
+    flex-direction: column; /* Los enlaces se apilan en pantallas pequeñas */
+    gap: 1rem;
+  }
+}
+
+
+
+
+
+/* **********************cambio en los link del inicio*
+
+  /*
 
 .inicio-container .nav-links {
   list-style: none;
@@ -61,8 +130,8 @@
 }
 
 .inicio-container .nav-links li:hover {
-  color: #3da07b;
-}
+  color: #a03d51;
+} */
 
 /* Main Content */
 .inicio-container .content {

@@ -18,6 +18,7 @@ import Mostrar from './components/Mostrar';
 import RequestPasswordReset from './components/RequestPasswordReset';
 import ResetPassword from './components/Reset';
 import Personal from './components/Personal';
+import Exportacion from './components/Exportacion';
 
 // Define el router
 const router = createBrowserRouter([
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
     {
         path: "/personal", // Ruta para gestionar personal
         element: <ProtectedRoute requiredRole={["admin"]}><Personal /></ProtectedRoute>, // Solo accesible para admins
+    },
+    {
+        path: "/exportacion", // Ruta para gestionar personal
+        element: <ProtectedRoute requiredRole={["admin"]}><Exportacion /></ProtectedRoute>, // Solo accesible para admins
     },
 ]);
 

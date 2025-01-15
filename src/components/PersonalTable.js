@@ -27,6 +27,7 @@ function PersonalTable({ data, columns }) {
                 type='text'
                 value={filtering}
                 onChange={(e) => setFiltering(e.target.value)}
+                placeholder='ingrese nombre para filtro'
             />
             <table>
                 <thead>

@@ -53,20 +53,32 @@ const Personal = () => {
             header: "Apellido",
             accessorKey: "primer_apellido",  // Adjust this according to the data structure
         },
+        {
+            header: "numero_documento",
+            accessorKey: "numero_documento",  // Adjust this according to the data structure
+        },
+        {
+            header: "sexo",
+            accessorKey: "sexo",  // Adjust this according to the data structure
+        },
+        {
+            header: "fecha_nacimiento",
+            accessorKey: "fecha_nacimiento",  // Adjust this according to the data structure
+        }
     ];
 
-        // Function to fetch all people from the API
-        const fetchAllPersonas = async () => {
-            try {
-                const response = await axios.get("http://localhost:8000/kriss/getAllPersonal");
-                setPersonaList(response.data);  // Update state with the list of people
-            } catch (error) {
-                console.error("Error al obtener las personas:", error);
-                setMensaje("Error al obtener las personas.");
-            }
-        };
+    // Function to fetch all people from the API
+    const fetchAllPersonas = async () => {
+        try {
+            const response = await axios.get("http://localhost:8000/kriss/getAllPersonal");
+            setPersonaList(response.data);  // Update state with the list of people
+        } catch (error) {
+            console.error("Error al obtener las personas:", error);
+            setMensaje("Error al obtener las personas.");
+        }
+    };
 
-            // Fetch people when component mounts
+    // Fetch people when component mounts
     useEffect(() => {
         fetchAllPersonas();
     }, []);
@@ -297,31 +309,426 @@ const Personal = () => {
 
     return (
         <div className="container">
-            {/* Barra superior con botones */}
-            <header className="header">
-                <button className="header-button" onClick={() => alert("Crear Nueva Persona")}>
-                    Crear Nueva Persona
-                </button>
-                <button className="header-button" onClick={() => alert("Dar Acceso a Persona")}>
-                    Dar Acceso a Persona
-                </button>
-                <button className="header-button" onClick={() => alert("Eliminar Rol")}>
-                    Eliminar Rol
-                </button>
-                <button className="header-button" onClick={() => alert("Editar Rol")}>
-                    Editar Rol
-                </button>
-            </header>
+            {vista === "inicio" && (
+                <div className="content-container">
+                    {/* Barra superior con botones */}
+                    <header className="header">
+                        <button className="header-button" onClick={() => setVista("crearPersona")}>
+                            Crear Nueva Persona
+                        </button>
+                        <button className="header-button" onClick={() => setVista("darAcceso")}>
+                            Dar Acceso a Persona
+                        </button>
+                        <button className="header-button" onClick={() => setVista("eliminarRol")}>
+                            Eliminar Rol
+                        </button>
+                        <button className="header-button" onClick={() => setVista("editarRol")}>
+                            Editar Rol
+                        </button>
+                    </header>
 
-            <body>
+                    <body>
+                        <div>
+                            <h1>Mi Tabla Ordenable</h1>
+                            <PersonalTable data={personaList} columns={columns} />
+                        </div>
+                        <div id="contenedor-button-personal">
+                            <button
+                                id="back-personal"
+                                onClick={() => navigate("/inicio")}
+                            >
+                                Volver
+                            </button>
+                        </div>
+                    </body>
 
-            <div>
-                <h1>Mi Tabla Ordenable</h1>
-                <PersonalTable data={personaList} columns={columns} />
-            </div>
-            </body>
-        </div>
+                </div>
+            )}
+
+            {vista === "editarRol" && (
+                <div className="editar-container">
+                    <h2> Editar rol</h2>
+                    <div>
+                        <label>
+                            Buscar por Cédula:
+                            <input
+                                type="text"
+                                value={cedula}
+                                onChange={(e) => {
+                                    handleCedulaChange(e); // Llama a la primera función
+                                    // buscarEstadoCredencialPorCedula(e); // Llama a la segunda función
+                                }}// Solo actualiza el estado y llama a debounce
+                            // onChange={(e) => setCedula(e.target.value)}
+                            // onKeyDown={(e) => {
+                            //   if (e.key === "Enter") {
+                            //     buscarPersona();
+                            //     // buscarPersonaPorCedula();
+                            //     debouncedBuscarPersonaPorCedula();
+                            //   }
+                            // }}
+                            />
+                        </label>
+                        {/* <button
+              onClick={() => {
+                buscarPersona();
+                // buscarPersonaPorCedula();
+                debouncedBuscarPersonaPorCedula();
+              }}
+            >
+              Buscar
+            </button> */}
+                        <button onClick={() => { setVista("inicio"); eliminarDatos() }}>Atrás</button>
+                    </div>
+
+                    {/* mostrar los datos de la persona encontrada */}
+                    {persona && (
+                        <div>
+                            <h3>Información de la Persona</h3>
+                            <p><strong>Nombres: </strong> {persona.primer_nombre + " " + persona.segundo_nombre}</p>
+                            <p><strong>Apellidos: </strong> {persona.primer_apellido + " " + persona.segundo_apellido}</p>
+                            <p><strong>Estado: </strong>{credenciales.estado}</p>
+                        </div>
+                    )}
+
+                    {/* mostrar el estado */}
+                    {persona && (
+                        <div>
+                            <h3>estado de rol</h3>
+                            {credenciales.estado === "activo" ? (
+                                <button onClick={() => actualizarEstado(setCredenciales, "estado", "inactivo")}>
+                                    Desactivar estado
+                                </button>) :
+                                (<button onClick={() => actualizarEstado(setCredenciales, "estado", "activo")}>
+                                    Activar estado
+                                </button>)
+                            }
+                        </div>
+                    )}
+
+
+                    {/* campos para cambiar los datos */}
+                    {persona && (
+                        <div>
+                            <h3>Datos de Credenciales</h3>
+                            <label>
+                                Rol:
+                                <input
+                                    type="text"
+                                    name="role"
+                                    value={credenciales.role}
+                                    onChange={(e) =>
+                                        handleInputChange(e, setCredenciales, credenciales)
+                                    }
+                                />
+                            </label>
+                            <button onClick={actualizarRole}>Guardar</button>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {vista === "eliminarRol" && (
+                <div className="eliminar-container">
+                    <h2>Eliminar Rol</h2>
+                    <button onClick={() => { setVista("inicio"); eliminarDatos() }}>Atrás</button>
+
+
+                    <div>
+                        <label>
+                            Buscar por Cédula:
+                            <input
+                                type="text"
+                                value={cedula}
+                                onChange={handleCedulaChange}
+                            />
+                        </label>
+                    </div>
+
+                    {persona && (
+                        <div>
+                            <h3>Información de la Persona</h3>
+                            <p><strong>Nombres:</strong> {persona.primer_nombre + " " + persona.segundo_nombre}</p>
+                            <p><strong>Apellidos:</strong> {persona.primer_apellido + " " + persona.segundo_apellido}</p>
+                        </div>
+                    )}
+
+                    <button onClick={() => eliminarRol(persona.cedula)}>Eliminar rol </button>
+                    <button onClick={() => { setVista("inicio"); eliminarDatos() }}>Atrás</button>
+
+                </div>
+            )}
+
+            {vista === "darAcceso" && (
+                <div className="form-container-2">
+                    <h2>Dar Acceso a Persona Existente</h2>
+
+                    <div>
+                        <label>
+                            Buscar por Cédula:
+                            <input
+                                type="text"
+                                value={cedula}
+                                onChange={handleCedulaChange}
+                            />
+                        </label>
+                    </div>
+                    <button onClick={() => { setVista("inicio"); eliminarDatos(); }}>Atrás</button>
+
+                    {persona && (
+                        <div>
+                            <h3>Información de la Persona</h3>
+                            <p><strong>Nombres:</strong> {persona.primer_nombre + " " + persona.segundo_nombre}</p>
+                            <p><strong>Apellidos:</strong> {persona.primer_apellido + " " + persona.segundo_apellido}</p>
+                        </div>
+                    )}
+
+                    {persona && (
+                        <div>
+                            <h3>Datos de Credenciales</h3>
+                            <label>
+                                Correo Electrónico:
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={credenciales.email}
+                                    onChange={(e) =>
+                                        handleInputChange(e, setCredenciales, credenciales)
+                                    }
+                                />
+                            </label>
+                            <label>
+                                Contraseña:
+                                <input
+                                    type="password"
+                                    name="password"
+                                    value={credenciales.password}
+                                    onChange={(e) =>
+                                        handleInputChange(e, setCredenciales, credenciales)
+                                    }
+                                />
+                            </label>
+                            <label>
+                                Rol:
+                                <select
+                                    name="role"
+                                    value={credenciales.role}
+                                    onChange={(e) =>
+                                        handleInputChange(e, setCredenciales, credenciales)
+                                    }
+                                >
+                                    <option value="">Seleccione un rol</option> {/* Opción por defecto */}
+                                    <option value="admin">Administrador</option>
+                                    <option value="medico">medico</option>
+                                    <option value="enfermera">enfermera</option>
+                                    <option value="tratante">tratante</option>
+                                </select>
+                            </label>
+
+                            {/* Campos condicionales para Médico o Enfermera en dar acceso a una persona*/}
+                            {(credenciales.role === "medico" || credenciales.role === "enfermera") && (
+                                <>
+                                    <label>
+                                        Área:
+                                        <select
+                                            name="area"
+                                            value={credenciales.area || ""}
+                                            onChange={(e) => handleInputChange(e, setCredenciales, credenciales)}
+                                        >
+                                            <option value="">Seleccione un área</option>
+                                            {areas.map((area) => (
+                                                <option key={area.id_area} value={area.nombre_area}>
+                                                    {area.nombre_area}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </label>
+
+                                    <label>
+                                        Especialidad:
+                                        <select
+                                            name="especialidad"
+                                            value={credenciales.especialidad || ""}
+                                            onChange={(e) => handleInputChange(e, setCredenciales, credenciales)}
+                                        >
+                                            <option value="">Seleccione una especialidad</option>
+                                            {especialidades.map((especialidad) => (
+                                                <option key={especialidad.id_especialidad} value={especialidad.nombre_especialidad}>
+                                                    {especialidad.nombre_especialidad}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </label>
+                                </>
+                            )}
+
+                            <button onClick={guardarCredenciales}>Guardar</button>
+                        </div>
+                    )}
+                </div>
+            )
+            }
+
+            {
+                vista === "crearPersona" && (
+                    <div className="form-container">
+                        {/* <button onClick={() => setVista("inicio")}>Atrás</button> */}
+                        <h2>Crear Nueva Persona</h2>
+                        <label>
+                            primer nombre:
+                            <input
+                                type="text"
+                                name="primer_nombre"
+                                value={nuevaPersona.primer_nombre}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                }
+                            />
+                        </label>
+                        <label>
+                            segundo nombre:
+                            <input
+                                type="text"
+                                name="segundo_nombre"
+                                value={nuevaPersona.segundo_nombre}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                }
+                            />
+                        </label>
+                        <label>
+                            primer apellido:
+                            <input
+                                type="text"
+                                name="primer_apellido"
+                                value={nuevaPersona.primer_apellido}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                }
+                            />
+                        </label>
+                        <label>
+                            segundo apellido:
+                            <input
+                                type="text"
+                                name="segundo_apellido"
+                                value={nuevaPersona.segundo_apellido}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                }
+                            />
+                        </label>
+                        <label>
+                            Tipo de Documento:
+                            <select
+                                name="tipo_documento"
+                                value={nuevaPersona.tipo_documento}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                }
+                                require
+                            >
+                                <option value="">Seleccione</option>
+                                <option value="cc">Cédula de Ciudadanía</option>
+                                <option value="ci">Cédula de Identidad</option>
+                                <option value="pasaporte">Pasaporte</option>
+                                <option value="refugiado">Carné de Refugiado</option>
+                                <option value="sd">Sin Dato</option>
+                            </select>
+                        </label>
+                        {nuevaPersona.tipo_documento && (
+                            <label>
+                                Número de Documento:
+                                <input
+                                    name="numero_documento"
+                                    value={nuevaPersona.numero_documento}
+                                    onChange={(e) =>
+                                        handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                    }
+                                    required
+                                />
+                            </label>
+                        )}
+                        <label>
+                            Estado Civil:
+                            <input
+                                name="estado_civil"
+                                value={nuevaPersona.estado_civil}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                } />
+                        </label>
+                        <label>
+                            Sexo:
+                            <select
+                                name="sexo"
+                                value={nuevaPersona.sexo}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                } required
+                            >
+                                <option value="">Seleccione</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="femenino">Femenino</option>
+                            </select>
+                        </label>
+                        <label>
+                            Celular:
+                            <input
+                                name="celular"
+                                value={nuevaPersona.celular}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                } />
+                        </label>
+                        <label>
+                            Correo Electrónico:
+                            <input
+                                type="email"
+                                name="correo_electronico"
+                                value={nuevaPersona.correo_electronico}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                } />
+                        </label>
+                        <label>
+                            Fecha de Nacimiento:
+                            <input
+                                type="date"
+                                name="fecha_nacimiento"
+                                value={nuevaPersona.fecha_nacimiento}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                } />
+                        </label>
+                        <label>
+                            Lugar de Nacimiento:
+                            <input
+                                name="lugar_nacimiento"
+                                value={nuevaPersona.lugar_nacimiento}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                } />
+                        </label>
+                        <label>
+                            Nacionalidad:
+                            <input
+                                name="nacionalidad"
+                                value={nuevaPersona.nacionalidad}
+                                onChange={(e) =>
+                                    handleInputChange(e, setNuevaPersona, nuevaPersona)
+                                } />
+                        </label>
+
+
+                        <button onClick={guardarNuevaPersona}>Guardar Persona</button>
+                        <button onClick={() => setVista("inicio")}>Atrás</button>
+                    </div>
+                )
+            }
+
+
+        </div >
     );
-};
+}
 
 export default Personal;

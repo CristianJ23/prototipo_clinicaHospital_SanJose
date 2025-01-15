@@ -19,7 +19,6 @@ const RegistroHistoria = ({ onCancel }) => {
     cedula: "",
     nombres: "",
     apellidos: "",
-    // id_persona: "",
     id_paciente: "",
     /**datos de la clinica */
     /**los datos de la institucion se llenan con un json guardado */
@@ -29,7 +28,6 @@ const RegistroHistoria = ({ onCancel }) => {
     motivoConsulta: "",
     antecedentesPatologicosPersonales: "",
     constantesVitales: {
-      // hora: "",
       presionArterial: "",
       peso: "",
       talla: "",
@@ -272,6 +270,7 @@ const RegistroHistoria = ({ onCancel }) => {
         tratamiento: undefined, // No incluir el tratamiento aún
       }),
     });
+    // console.log("hisotria: ", formData);
 
     if (!historiaResponse.ok) {
       throw new Error("Error al crear historia clínica");

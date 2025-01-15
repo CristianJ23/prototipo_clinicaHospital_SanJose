@@ -21,7 +21,7 @@ const Inicio = () => {
           <li onClick={() => navigate("/vista-enfermera")}>Vista Enfermera</li>
           <li onClick={() => navigate("/tratamientos")}>Tratamientos</li>
           <li onClick={() => navigate("/crear-usuario")}>Crear Usuario</li>
-          <li onClick={() => navigate("/")}>cerrar sesion</li> // el cierre de sesion deberia ser eliminando la sesion desde el backend
+          <li onClick={() => navigate("/")}>cerrar sesion</li> {/* el cierre de sesion deberia ser eliminando la sesion desde el backend*/}
         </ul>
       </nav>
 
@@ -54,7 +54,7 @@ const Inicio = () => {
             <p>Personal</p>
           </div>
           <div className="modulo"
-            onClick={() => navigate('/personal')} // Redirige a la página 'personal'
+            onClick={() => navigate('/exportacion')} // Redirige a la página 'personal'
           >
             <img src={crearUsuarioImg} alt="Personal" />
             <p>Exportacion</p>

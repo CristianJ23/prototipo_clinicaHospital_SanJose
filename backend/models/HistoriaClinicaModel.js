@@ -1,10 +1,10 @@
-// Importar la conexión a la base de datos
+// Import the database connection
 import db from "../database/db.js";
 import { DataTypes } from "sequelize";
-import PacienteModel from './PacienteModel.js';       // Importar el modelo de Paciente
-import MedicoModel from './MedicoModel.js';           // Importar el modelo de Medico
+import PacienteModel from './PacienteModel.js';       // Import Paciente model
+import MedicoModel from './MedicoModel.js';           // Import Medico model
 
-// Definir el modelo HistoriaClinica
+// Define the HistoriaClinica model
 const HistoriaClinicaModel = db.define('HistoriaClinica', {
   id_historia: {
     type: DataTypes.INTEGER,
@@ -15,145 +15,160 @@ const HistoriaClinicaModel = db.define('HistoriaClinica', {
   id_paciente: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: PacienteModel,
-      key: 'id_paciente',
-    },
   },
   id_medico: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: MedicoModel,
-      key: 'id_medico',
-    },
   },
-  // id_area: {
-  //   type: DataTypes.INTEGER,
-  //   allowNull: false,
-  //   references: {
-  //     model: AreaModel,
-  //     key: 'id_area',
-  //   },
-  // },
   motivoConsulta: {
     type: DataTypes.TEXT,
-    allowNull: true,
+    allowNull: false,
   },
   antecedentesPatologicosPersonales: {
     type: DataTypes.TEXT,
-    allowNull: true,
+    allowNull: false,
   },
-  // Constantes vitales
+  // Vital signs
   presionArterial: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataTypes.STRING(255),
+    allowNull: false,
   },
   peso: {
     type: DataTypes.STRING(20),
-    allowNull: true,
+    allowNull: false,
   },
   talla: {
     type: DataTypes.STRING(20),
-    allowNull: true,
+    allowNull: false,
   },
   imc: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataTypes.STRING(255),
+    allowNull: false,
   },
   perimetroAbdominal: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataTypes.STRING(255),
+    allowNull: false,
   },
   glucosaCapilar: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataTypes.STRING(255),
+    allowNull: false,
   },
   hemoglobinaCapilar: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataTypes.STRING(255),
+    allowNull: false,
   },
   pulsioximetria: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataTypes.STRING(255),
+    allowNull: false,
   },
-  // Examen físico
+  // Physical exam
   cabeza: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   cuello: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   torax: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   abdomen: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   extremidades: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   piel: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   sistema_linfatico: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   sistema_nervioso: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   fisico_cardiovascular: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   fisico_respiratorio: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   observacion_fisica: {
     type: DataTypes.TEXT,
-    allowNull: true,
+    allowNull: false,
   },
-  // Órganos y sistemas
+  // Organs and systems
   organos_sentidos: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
+  },
+  respiratorio: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+  },
+  cardiovascular: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
   },
   digestivo: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   urinario: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   musculo_esqueletico: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   endocrino: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   nervioso: {
     type: DataTypes.BOOLEAN,
-    allowNull: true,
+    defaultValue: false,
+    allowNull: false,
   },
   observacion_organos: {
     type: DataTypes.TEXT,
-    allowNull: true,
+    allowNull: false,
+  },
+  fecha_creacion: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW, // Asigna la fecha actual por defecto
+    allowNull: false,
   },
 }, {
-  tableName: 'HistoriaClinica', // Nombre exacto de la tabla en la base de datos
-  timestamps: false,            // Deshabilitar createdAt y updatedAt si no se desean
+  tableName: 'HistoriaClinica', // Exact name of the table in the database
+  timestamps: false,            // Disable createdAt and updatedAt if not needed
 });
 
 export default HistoriaClinicaModel;
