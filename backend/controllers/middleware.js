@@ -11,7 +11,7 @@ import ModificacionModel from "../models/Modificaciones.js";
 import PlanTratamientoModel from "../models/PlanTratamientoModel.js";
 
 const models = {
-  PlanTratamientoModel: PlanTratamientoModel,
+    PlanTratamiento: PlanTratamientoModel,
     tratamiento: TratamientoModel,
     especialidades: EspecialidadModel,
     persona: PersonaModel,

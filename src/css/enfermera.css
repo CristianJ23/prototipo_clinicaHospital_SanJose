@@ -1,0 +1,100 @@
+/* General container to center the content */
+.containerEnfermera {
+    width: 80%;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Form section styling */
+.formSectionEnfermera {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.titleEnfermera {
+    font-size: 24px;
+    color: #4b8b3b;  /* Primary color for title */
+    margin-bottom: 10px;
+}
+
+.subtitleEnfermera {
+    font-size: 20px;
+    color: #4b8b3b;  /* Primary color for subtitle */
+    margin-bottom: 20px;
+}
+
+.inputLabelEnfermera {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #4b8b3b;  /* Primary color for labels */
+}
+
+.inputFieldEnfermera {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #4b8b3b;  /* Green border */
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.inputFieldEnfermera:focus {
+    border-color: #4CAF50;  /* Lighter green on focus */
+    outline: none;
+}
+
+/* Error message styling */
+.errorMessageEnfermera {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Treatment section */
+.treatmentSectionEnfermera {
+    padding: 20px;
+}
+
+.treatmentListEnfermera {
+    margin-top: 20px;
+}
+
+.treatmentTableEnfermera {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+.treatmentTableEnfermera th,
+.treatmentTableEnfermera td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.treatmentTableEnfermera th {
+    background-color: #f4f4f4;
+    color: #4b8b3b;  /* Green color for table headers */
+    font-weight: bold;
+}
+
+.treatmentTableEnfermera tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.treatmentTableEnfermera tr:hover {
+    background-color: #e7f2e1;  /* Light green hover effect */
+}
+
+.treatmentTableEnfermera td {
+    color: #333;
+}
+
+.treatmentTableEnfermera td:hover {
+    color: #4b8b3b;  /* Change text color on hover */
+}

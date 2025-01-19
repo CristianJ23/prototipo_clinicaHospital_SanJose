@@ -19,9 +19,13 @@ import buscarTratamientosPorHistoria from "../controllers/buscarTratamientosPorH
 import getAllPersonal from "../controllers/getAllPersonal.js";
 import CrearPlanTratamiento from "../controllers/CrearPlanTratamiento.js";
 import changeEstadoPlan from "../controllers/changeEstadoPlan.js";
+import planTratamientoPorCedula from "../controllers/planTratamientoPorCedula.js";
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
+
+//ruta para buscar el plan de tratamiento segun la cedula
+router.get("/planTratamientoPorCedula/:cedula", planTratamientoPorCedula)
 
 //ruta para cambiar el estado del plan de tratamientos
 router.put("/change-estado-plan-tratamientos/:id_plan_tratamiento", changeEstadoPlan);

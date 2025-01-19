@@ -19,6 +19,7 @@ import RequestPasswordReset from './components/RequestPasswordReset';
 import ResetPassword from './components/Reset';
 import Personal from './components/Personal';
 import Exportacion from './components/Exportacion';
+import Enfermera from './components/Enfermera';
 
 // Define el router
 const router = createBrowserRouter([
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
     {
         path: "/exportacion", // Ruta para gestionar personal
         element: <ProtectedRoute requiredRole={["admin"]}><Exportacion /></ProtectedRoute>, // Solo accesible para admins
+    },
+    {
+        path: "/vista-enfermera", // Ruta para la vista del médico
+        element: <Enfermera />, // Asegúrate de que este componente exista
     },
 ]);
 

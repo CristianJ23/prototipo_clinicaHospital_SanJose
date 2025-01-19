@@ -22,7 +22,7 @@ const PlanTratamientoModel = db.define('Plan_tratamientos', {
     },
     fecha_fin: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     estado: {
         type: DataTypes.ENUM('ACTIVO', 'TERMINADO'),
