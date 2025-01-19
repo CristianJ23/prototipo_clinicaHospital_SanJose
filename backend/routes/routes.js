@@ -13,15 +13,18 @@ import eliminarRol from "../controllers/eliminarRol.js";
 import { requestPasswordReset } from "../controllers/requestPasswordreset.js";
 import ResetPassword from "../controllers/ResetPassword.js";
 import CrearHistoriaClinica from "../controllers/crearHistoriaClinica.js";
-import CrearTratamiento from "../controllers/CrearTratamiento.js";
 import buscarHistoria from "../controllers/buscarHistoria.js";
 import buscarHistoriaPorCedula from "../controllers/buscarHistoriasPorCedula.js";
 import buscarTratamientosPorHistoria from "../controllers/buscarTratamientosPorHistoria.js";
 import getAllPersonal from "../controllers/getAllPersonal.js";
+import CrearPlanTratamiento from "../controllers/CrearPlanTratamiento.js";
+import changeEstadoPlan from "../controllers/changeEstadoPlan.js";
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
 
+//ruta para cambiar el estado del plan de tratamientos
+router.put("/change-estado-plan-tratamientos/:id_plan_tratamiento", changeEstadoPlan);
 
 //ruta para obtener todos los empleados
 router.get('/getAllPersonal', getAllPersonal)
@@ -39,7 +42,7 @@ router.get("/buscarHistoriaPorCedula/:cedula", buscarHistoriaPorCedula)
 router.post("/crear_historia_clinica", CrearHistoriaClinica)
 
 //ruta para crear el historial de un paciente
-router.post("/crear_tratamiento", CrearTratamiento)
+router.post("/crear_plan_tratamiento", CrearPlanTratamiento)
 
 // Ruta para solicitar restablecimiento de contraseña
 router.post('/request-password-reset', requestPasswordReset);

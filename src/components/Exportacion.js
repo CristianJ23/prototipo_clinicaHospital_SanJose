@@ -4,12 +4,15 @@ import PersonalTable from "./PersonalTable";
 import "../css/exportacion.css"
 import { jsPDF } from "jspdf";
 import { useNavigate } from "react-router-dom";
+import autoTable from 'jspdf-autotable';
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
 
 
 const Exportacion = () => {
+    const [scale, setScale] = useState(1.5); // Establece el zoom inicial
     // Función para buscar la persona, paciente y sus historias clínicas con una sola API
-        const navigate = useNavigate();  // Hook para navegación programática
-
+    const navigate = useNavigate();  // Hook para navegación programática
     const [mensaje, setMensaje] = useState("");
     const [historias, setHistorias] = useState([]);
     const [historiasConId, setHistoriasConId] = useState([]);
@@ -19,6 +22,8 @@ const Exportacion = () => {
     const [paciente, setPaciente] = useState(null); // Para almacenar el paciente encontrado
     const [previewUrl, setPreviewUrl] = useState(null);
     const [pdfDoc, setPdfDoc] = useState(null); // Aquí guardamos el PDF generado
+    const [numPages, setNumPages] = useState(null);
+    const [pageNum, setPageNum] = useState(1);
 
 
     const buscarHistoria = async () => {
@@ -92,14 +97,13 @@ const Exportacion = () => {
         { Header: "Fecha", accessorKey: "fecha_creacion" },
     ];
 
-    /** ************ codigo para ecportas en pdf */
-
+    /** ************ codigo para exportar en pdf */
     // Función para generar el PDF
     const generarPDF = (historia) => {
         const doc = new jsPDF();
 
         // Título centrado en la parte superior
-        const title = "Historia Clínica";
+        const title = "Epicrisis -- Clinica Hospital San Jose";
         const pageWidth = doc.internal.pageSize.width;
         const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
         const titleX = (pageWidth - titleWidth) / 2; // Calculando el centro horizontal
@@ -110,40 +114,93 @@ const Exportacion = () => {
         // Espacio después del título
         let currentY = 30;
 
-        // Agregar los datos al PDF
-        doc.text(`ID Historia: ${historia.id_historia}`, 10, currentY);
-        currentY += 10; // Incrementamos la posición en Y para los siguientes textos
+        /**primera tabla        */
+        const columns = ['  INSTITUCIÓN DEL SISTEMA',
+            'UNICÓDIGO',
+            'ESTABLECIMIENTO DE SALUD',
+            'NUMERO DE HISTORIA CLÍNICA ÚNICA',
+            'NÚMERO DE ARCHIVO',
+            'No. de HOJA']; // Encabezados de la tabla
+        const rows = [
+            ["clinica san jose",
+                'san jose',
+                "loja san jose",
+                historia.id_historia,
+                "archivo primero",
+                "1",
+            ],
+        ];
 
-        doc.text(`Motivo de Consulta: ${historia.motivoConsulta}`, 10, currentY);
-        currentY += 10;
+        autoTable(doc, {
+            startY: currentY, // Aquí colocamos la tabla después del título
+            head: [["A: Datos del establecimiento y usuario"]],
+            headStyles: {
+                halign: 'center', // Centra el texto del encabezado
+                fillColor: [61, 160, 123] // Verde claro en formato RGB
+            }
+        })
 
-        doc.text(`Fecha de Creación: ${historia.fecha_creacion}`, 10, currentY);
-        currentY += 10;
+        // Agregar la tabla con un inicio específico en Y
+        autoTable(doc, {
+            startY: currentY + 8, // Aquí colocamos la tabla después del título
+            head: [columns],
+            headStyles: {
+                halign: 'center', // Centra el texto del encabezado
+                fillColor: [61, 160, 123] // Verde claro en formato RGB
+            },  // Encabezados
+            body: rows,       // Datos de las filas
+        });
 
-        // Agregar más datos en nuevas líneas o ubicaciones
-        doc.text(`Más Datos: ${historia.antecedentesPatologicosPersonales || 'No disponibles'}`, 10, currentY);
-        currentY += 10;
+        const columnsPaciente = ['  INSTITUCIÓN DEL SISTEMA',
+            'UNICÓDIGO',
+            'ESTABLECIMIENTO DE SALUD',
+            'NUMERO DE HISTORIA CLÍNICA ÚNICA',
+            'NÚMERO DE ARCHIVO',
+            'No. de HOJA']; // Encabezados de la tabla
+        const rowsPaciente = [
+            ["clinica san jose",
+                'san jose',
+                "loja san jose",
+                historia.id_historia,
+                "archivo primero",
+                "1",
+            ],
+        ];
 
-        // Agregar más información personalizada
-        doc.text(`Presión Arterial: ${historia.presionArterial || 'No disponible'}`, 10, currentY);
-        currentY += 10;
+        autoTable(doc, {
+            startY: currentY + 32, // Aquí colocamos la tabla después del título
+            head: [columns],
+            headStyles: {
+                halign: 'center', // Centra el texto del encabezado
+                fillColor: [61, 160, 123] // Verde claro en formato RGB
+            },  // Encabezados
+            body: rows,       // Datos de las filas
+        });
 
-        doc.text(`Peso: ${historia.peso || 'No disponible'}`, 10, currentY);
-        currentY += 10;
-
-        // Si tienes más datos, puedes seguir agregando con un incremento de Y
-        // Siempre ajustando `currentY` para separar los textos
 
         // Guardamos el PDF en el estado
         setPdfDoc(doc);
 
         // Generar el PDF como un objeto de datos (en lugar de guardarlo directamente)
-        const pdfOutput = doc.output('arraybuffer');
+        const pdfBlob = doc.output("blob");
+        const fileURL = URL.createObjectURL(pdfBlob);
 
         // Mostrar la vista previa del PDF
-        const file = new Blob([pdfOutput], { type: 'application/pdf' });
-        const fileURL = URL.createObjectURL(file);
         setPreviewUrl(fileURL);
+    };
+
+    // Next page
+    const goToNextPage = () => {
+        if (pageNum < numPages) {
+            setPageNum(pageNum + 1);
+        }
+    };
+
+    // Previous page
+    const goToPrevPage = () => {
+        if (pageNum > 1) {
+            setPageNum(pageNum - 1);
+        }
     };
 
 
@@ -158,11 +215,9 @@ const Exportacion = () => {
 
 
     return (
-        <div className="content">
-            <h1>Gestión de Historias Clínicas</h1>
-            <form
-                className="busqueda-container"
-                onSubmit={(e) => { e.preventDefault(); buscarHistoria(cedula); }}>
+        <div className="exportacion-container">
+            <h1 className="page-title">Gestión de Historias Clínicas</h1>
+            <form className="search-form" onSubmit={(e) => { e.preventDefault(); buscarHistoria(cedula); }}>
                 <label>
                     Cédula:
                     <div className="input-group">
@@ -172,15 +227,13 @@ const Exportacion = () => {
                             onChange={(e) => setCedula(e.target.value)}
                             placeholder="Ingrese la cédula"
                         />
-                        <button type="submit">Buscar</button>
+                        <button type="submit" className="search-btn">Buscar</button>
                     </div>
                 </label>
             </form>
 
-            {/* Mensaje de error o informativo */}
-            {mensaje && <p className="mensaje">{mensaje}</p>}
+            {mensaje && <p className="message">{mensaje}</p>}
 
-            {/* Mostrar la persona y el paciente encontrados */}
             {persona && (
                 <div className="persona-info">
                     <h2>Persona Encontrada:</h2>
@@ -195,25 +248,21 @@ const Exportacion = () => {
                 </div>
             )}
 
-            {/* Mostrar las historias clínicas en la tabla */}
             <PersonalTable data={historias} columns={columns} />
 
-
-            {/* ********************para la segunda tabla ***********/}
-
             {historias && (
-                <div>
+                <div className="input-container">
                     <input
                         type="text"
                         value={id_historia}
                         onChange={e => { setIdHistoria(e.target.value); buscarHistoriaPorId() }}
-                        placeholder="ingrece id de la historia a exportar"
-                    ></input>
+                        placeholder="Ingrese ID de la historia a exportar"
+                    />
                 </div>
             )}
 
             {historiasConId.length > 0 && (
-                <div>
+                <div className="history-details">
                     <h3>Detalles de la Historia Clínica</h3>
                     <table>
                         <thead>
@@ -233,29 +282,28 @@ const Exportacion = () => {
                             ))}
                         </tbody>
                     </table>
-                    <button onClick={() => generarPDF(historiasConId[0])}>Ver Vista Previa</button>
+                    <button className="preview-btn" onClick={() => generarPDF(historiasConId[0])}>Ver Vista Previa</button>
                 </div>
             )}
 
-            {/* Vista previa del PDF */}
             {previewUrl && (
-                <div>
-                    <h3>Vista Previa del PDF:</h3>
-                    <iframe src={previewUrl} width="170%" height="500px"></iframe>
-                    <button onClick={descargarPDF}>Descargar PDF</button>
+                <div className="pdf-preview-container">
+                    <h2 className="pdf-preview-title">Vista Previa del Documento PDF</h2>
+                    <Worker workerUrl={`${process.env.PUBLIC_URL}/pdf.worker.min.js`}>
+                        <Viewer fileUrl={previewUrl} scale={3.5} />
+                    </Worker>
                 </div>
             )}
 
-            <div id="contenedor-button-personal">
+            <div className="button-container">
                 <button
-                    id="back-personal"
+                    className="back-btn"
                     onClick={() => navigate("/inicio")}
                 >
                     Volver
                 </button>
             </div>
-
-        </div >)
-}
-
+        </div>
+    );
+};
 export default Exportacion;

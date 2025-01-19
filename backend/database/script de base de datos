@@ -149,20 +149,30 @@ CREATE TABLE HistoriaClinica (
     endocrino BIT(1) DEFAULT 0,
     nervioso BIT(1) DEFAULT 0,
     observacion_organos TEXT,
+	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Aquí se agrega la fecha de creación
   
     FOREIGN KEY (id_paciente) REFERENCES Paciente(id_paciente),
     FOREIGN KEY (id_medico) REFERENCES Medico(id_medico)
     -- FOREIGN KEY (id_area) REFERENCES Area(id_area)
 );
 
+-- Crear tabla Plan_tratamientos
+CREATE TABLE Plan_tratamientos (
+	id_plan_tratamiento INT AUTO_INCREMENT PRIMARY KEY,
+	id_historia INT,
+    fecha_inicio DATE,
+	fecha_fin DATE,
+    estado ENUM('ACTIVO', 'TERMINADO') NOT NULL, 
+    foreign key(id_historia) references HistoriaClinica(id_historia)
+);
 
 -- Crear tabla Tratamiento
 CREATE TABLE Tratamiento (
     id_tratamiento INT AUTO_INCREMENT PRIMARY KEY,
     medicamentos TEXT,
     metodoAdministracion TEXT,
-    id_historia INt,
-    foreign key(id_historia) references HistoriaClinica(id_historia)
+    id_plan_tratamiento INt,
+    foreign key(id_plan_tratamiento) references Plan_tratamientos(id_plan_tratamiento)
 );
 
 -- Crear tabla Modificaciones
@@ -205,6 +215,108 @@ CREATE TABLE parroquia (
     codigo_canton INTEGER NOT NULL,
     FOREIGN KEY (codigo_canton) REFERENCES canton(codigo_canton)
 );
+
+-- creacion de datos de muestra
+INSERT INTO Persona (
+    primer_apellido, 
+    segundo_apellido, 
+    primer_nombre, 
+    segundo_nombre, 
+    tipo_documento, 
+    numero_documento, 
+    estado_civil, 
+    sexo, 
+    celular, 
+    correo_electronico, 
+    fecha_nacimiento, 
+    lugar_nacimiento, 
+    nacionalidad
+) VALUES (
+    'kriss', 
+    'kriss', 
+    'kriss', 
+    'kriss', 
+    'Cédula de ciudadanía', 
+    '1101', 
+    'Soltero', 
+    'M', 
+    '3216549870', 
+    'kriss@utpl.com', 
+    '1995-08-15', 
+    'Bogotá, Colombia',
+    'Colombiana'
+);
+
+-- Insertar médicos
+INSERT INTO Persona (primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, tipo_documento, numero_documento, estado_civil, sexo, celular, correo_electronico, fecha_nacimiento, lugar_nacimiento, nacionalidad) 
+VALUES 
+    ('Gomez', 'Perez', 'Carlos', 'Luis', 'Cédula de ciudadanía', '1001', 'Casado', 'M', '3001234567', 'carlos.gomez@clinica.com', '1980-05-20', 'Quito, Ecuador', 'Ecuatoriana'),
+    ('Martinez', 'Lopez', 'Ana', 'Maria', 'Cédula de ciudadanía', '1002', 'Soltera', 'F', '3002345678', 'ana.martinez@clinica.com', '1985-07-14', 'Quito, Ecuador', 'Ecuatoriana');
+
+-- Insertar enfermeras
+INSERT INTO Persona (primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, tipo_documento, numero_documento, estado_civil, sexo, celular, correo_electronico, fecha_nacimiento, lugar_nacimiento, nacionalidad) 
+VALUES 
+    ('Diaz', 'Rojas', 'Maria', 'Josefa', 'Cédula de ciudadanía', '2001', 'Casada', 'F', '3003456789', 'maria.diaz@clinica.com', '1990-09-25', 'Guayaquil, Ecuador', 'Ecuatoriana'),
+    ('Mendoza', 'Castro', 'Luis', 'Alberto', 'Cédula de ciudadanía', '2002', 'Soltero', 'M', '3004567890', 'luis.mendoza@clinica.com', '1992-12-30', 'Guayaquil, Ecuador', 'Ecuatoriana');
+
+-- Insertar tratantes
+INSERT INTO Persona (primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, tipo_documento, numero_documento, estado_civil, sexo, celular, correo_electronico, fecha_nacimiento, lugar_nacimiento, nacionalidad) 
+VALUES 
+    ('Salazar', 'Gutierrez', 'David', 'Andres', 'Cédula de ciudadanía', '3001', 'Soltero', 'M', '3005678901', 'david.salazar@clinica.com', '1987-11-10', 'Ambato, Ecuador', 'Ecuatoriana'),
+    ('Perez', 'Vega', 'Paola', 'Lorena', 'Cédula de ciudadanía', '3002', 'Casada', 'F', '3006789012', 'paola.perez@clinica.com', '1990-05-20', 'Ambato, Ecuador', 'Ecuatoriana');
+
+-- Insertar pacientes
+INSERT INTO Persona (primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, tipo_documento, numero_documento, estado_civil, sexo, celular, correo_electronico, fecha_nacimiento, lugar_nacimiento, nacionalidad) 
+VALUES 
+    ('Ruiz', 'Flores', 'Juan', 'Carlos', 'Cédula de ciudadanía', '4001', 'Casado', 'M', '3007890123', 'juan.ruiz@clinica.com', '1990-01-05', 'Loja, Ecuador', 'Ecuatoriana'),
+    ('Sanchez', 'Cordero', 'Maria', 'Jose', 'Cédula de ciudadanía', '4002', 'Soltera', 'F', '3008901234', 'maria.sanchez@clinica.com', '1992-03-14', 'Loja, Ecuador', 'Ecuatoriana'),
+    ('Hernandez', 'Bermudez', 'Carlos', 'Eduardo', 'Cédula de ciudadanía', '4003', 'Soltero', 'M', '3009012345', 'carlos.hernandez@clinica.com', '1993-04-20', 'Loja, Ecuador', 'Ecuatoriana');
+    
+    -- Insertar médicos en la tabla Medico
+INSERT INTO Medico (id_persona, id_area, id_especialidad) 
+VALUES 
+    (1, 1, 1),  -- Médico 1 con especialidad en cirugía
+    (2, 2, 2);  -- Médico 2 con especialidad en neurología
+
+-- Insertar enfermeras en la tabla Enfermera
+INSERT INTO Enfermera (id_persona, id_area, id_especialidad) 
+VALUES 
+    (3, 1, 1),  -- Enfermera 1 en cardiología con especialidad en cirugía
+    (4, 2, 2);  -- Enfermera 2 en pediatría con especialidad en neurología
+
+-- Insertar tratantes en la tabla Tratante
+INSERT INTO Tratante (id_persona) 
+VALUES 
+    (5),  -- Tratante 1
+    (6);  -- Tratante 2
+
+-- Insertar pacientes en la tabla Paciente
+INSERT INTO Paciente (id_persona) 
+VALUES 
+    (7),  -- Paciente 1
+    (8),  -- Paciente 2
+    (9);  -- Paciente 3
+
+-- Insertar historias clínicas de los pacientes
+INSERT INTO HistoriaClinica (id_paciente, id_medico, motivoConsulta, antecedentesPatologicosPersonales, presionArterial, peso, talla, imc, perimetroAbdominal, glucosaCapilar, hemoglobinaCapilar, pulsioximetria) 
+VALUES 
+    (1, 1, 'Consulta por dolor en el pecho', 'No tiene antecedentes patológicos', '120/80', '70kg', '1.75m', '22.9', '80cm', '95mg/dL', '13g/dL', '98%'),
+    (2, 1, 'Consulta por mareos frecuentes', 'Hipertensión controlada', '130/85', '60kg', '1.60m', '23.4', '75cm', '100mg/dL', '12.5g/dL', '97%'),
+    (3, 2, 'Consulta por dolores de cabeza', 'Migraña ocasional', '125/75', '80kg', '1.80m', '24.7', '85cm', '105mg/dL', '14g/dL', '99%');
+
+-- Insertar planes de tratamiento
+INSERT INTO Plan_tratamientos (id_historia, fecha_inicio, fecha_fin, estado)
+VALUES 
+    (1, '2025-01-20', '2025-02-20', 'ACTIVO'),
+    (2, '2025-01-15', '2025-02-15', 'ACTIVO'),
+    (3, '2025-01-10', '2025-02-10', 'ACTIVO');
+
+-- Insertar tratamientos
+INSERT INTO Tratamiento (medicamentos, metodoAdministracion, id_plan_tratamiento)
+VALUES 
+    ('Aspirina 100mg', 'Oral', 1),
+    ('Paracetamol 500mg', 'Oral', 2),
+    ('Ibuprofeno 200mg', 'Oral', 3);
 
 
 -- insercion de datos
@@ -1381,36 +1493,6 @@ INSERT INTO parroquia(codigo_parroquia, nombre_parroquia, codigo_canton) VALUES 
 INSERT INTO parroquia(codigo_parroquia, nombre_parroquia, codigo_canton) VALUES (240352, 'JOSE LUIS TAMAYO (MUEY)', 2403); 
 INSERT INTO parroquia(codigo_parroquia, nombre_parroquia, codigo_canton) VALUES (900451, 'EL PIEDRERO', 9004);
 
-
-INSERT INTO Persona (
-    primer_apellido, 
-    segundo_apellido, 
-    primer_nombre, 
-    segundo_nombre, 
-    tipo_documento, 
-    numero_documento, 
-    estado_civil, 
-    sexo, 
-    celular, 
-    correo_electronico, 
-    fecha_nacimiento, 
-    lugar_nacimiento, 
-    nacionalidad
-) VALUES (
-    'kriss', 
-    'kriss', 
-    'kriss', 
-    'kriss', 
-    'Cédula de ciudadanía', 
-    '1101', 
-    'Soltero', 
-    'M', 
-    '3216549870', 
-    'kriss@utpl.com', 
-    '1995-08-15', 
-    'Bogotá, Colombia',
-    'Colombiana'
-);
 
 
 

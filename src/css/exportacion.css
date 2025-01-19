@@ -1,0 +1,15 @@
+/* exportacion.css */
+
+.exportacion-container {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.page-title {
+    text-align: center;
+    color: #4b8b3b;
+    font-size: 2em;
+}
+

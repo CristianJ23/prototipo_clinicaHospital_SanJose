@@ -7,6 +7,7 @@ import MedicoModel from "./MedicoModel.js";
 import ModificacionModel from "./Modificaciones.js";
 import PacienteModel from "./PacienteModel.js";
 import PersonaModel from "./PersonaModel.js";
+import PlanTratamientoModel from "./PlanTratamientoModel.js";
 import TratamientoModel from "./TratamientoModel.js";
 import TratanteModel from "./TratanteModel.js";
 
@@ -153,9 +154,16 @@ MedicoModel.belongsTo(PersonaModel, {
 
 }
 
-  //un tratamiento puede estar asociado con varias historias
-  TratamientoModel.hasMany(HistoriaClinicaModel,{
-    foreignKey: 'id_historia',
-    sourceKey: 'id_historia',
-})
+// Relación: Un plan de tratamiento tiene muchos tratamientos
+PlanTratamientoModel.hasMany(TratamientoModel, {
+  foreignKey: 'id_plan_tratamiento',
+  sourceKey: 'id_plan_tratamiento'
+});
+
+// Relación: Un historia puede tener muchos planes de tratamientos
+HistoriaClinicaModel.hasMany(PlanTratamientoModel, {
+  foreignKey: 'id_historia',
+  targetKey: 'id_historia'
+});
+
 export default loadAssociations;

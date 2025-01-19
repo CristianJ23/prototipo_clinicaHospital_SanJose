@@ -8,8 +8,10 @@ import TratanteModel from "../models/TratanteModel.js";
 import PacienteModel from "../models/PacienteModel.js";
 import HistoriaClinicaModel from "../models/HistoriaClinicaModel.js";
 import ModificacionModel from "../models/Modificaciones.js";
+import PlanTratamientoModel from "../models/PlanTratamientoModel.js";
 
 const models = {
+  PlanTratamientoModel: PlanTratamientoModel,
     tratamiento: TratamientoModel,
     especialidades: EspecialidadModel,
     persona: PersonaModel,
