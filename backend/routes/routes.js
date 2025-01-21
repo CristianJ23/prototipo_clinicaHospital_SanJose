@@ -19,9 +19,16 @@ import buscarTratamientosPorHistoria from "../controllers/buscarTratamientosPorH
 import getAllPersonal from "../controllers/getAllPersonal.js";
 import CrearPlanTratamiento from "../controllers/CrearPlanTratamiento.js";
 import changeEstadoPlan from "../controllers/changeEstadoPlan.js";
+import planTratamientoPorCedula from "../controllers/planTratamientoPorCedula.js";
+import guardarmodificacion from "../controllers/guardarModificacion.js";
+import PorecesosCreacion from "../controllers/crearProceso.js";
+
 
 // Creación de contenedor de rutas para exportar al final del script
 const router = express.Router();
+
+//ruta para buscar el plan de tratamiento segun la cedula
+router.get("/planTratamientoPorCedula/:cedula", planTratamientoPorCedula)
 
 //ruta para cambiar el estado del plan de tratamientos
 router.put("/change-estado-plan-tratamientos/:id_plan_tratamiento", changeEstadoPlan);
@@ -32,14 +39,21 @@ router.get('/getAllPersonal', getAllPersonal)
 //ruta para actualizar rol
 router.post('/actializarRol/', actualizarRol)
 
+// Ruta para guardar la modificación (cuando se agrega un tratamiento)
+router.post('/guardar_modificacion', guardarmodificacion);
+
+
 //ruata para buscar trataminetos para la historia
-router.get('/buscarTratamientosPorHistoria/:historia', buscarTratamientosPorHistoria)
+router.get('/buscarTratamientosPorHistoria/:ID', buscarTratamientosPorHistoria)
 
 //ruta para buscar historiales clinicos por numero de cedula
 router.get("/buscarHistoriaPorCedula/:cedula", buscarHistoriaPorCedula)
 
 //ruta para crear el historial de un paciente
 router.post("/crear_historia_clinica", CrearHistoriaClinica)
+
+//ruta para crear el historial de un paciente
+router.post("/Porecesos_Creacion", PorecesosCreacion);
 
 //ruta para crear el historial de un paciente
 router.post("/crear_plan_tratamiento", CrearPlanTratamiento)

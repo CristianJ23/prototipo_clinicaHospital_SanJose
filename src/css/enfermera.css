@@ -1,0 +1,156 @@
+/* Estilos generales */
+.container-enfermera {
+    padding: 30px;
+    font-family: 'Roboto', sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 45px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-enfermera:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Títulos */
+.title-enfermera, .subtitle-enfermera {
+    color: #3da07a;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.title-enfermera {
+    font-size: 2.8rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.subtitle-enfermera {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #555;
+}
+
+/* Estilos para las tablas */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Permite desplazamiento horizontal en pantallas pequeñas */
+}
+
+.treatment-table-enfermera,
+.process-table-enfermera {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.treatment-table-enfermera th,
+.process-table-enfermera th,
+.treatment-table-enfermera td,
+.process-table-enfermera td {
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 1.3rem;
+    color: #333;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+.treatment-table-enfermera th,
+.process-table-enfermera th {
+    background-color: #f1f1f1;
+    color: #3da07a;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.treatment-table-enfermera td,
+.process-table-enfermera td {
+    background-color: #fafafa;
+    font-weight: 400;
+}
+
+.treatment-table-enfermera tr:hover td,
+.process-table-enfermera tr:hover td {
+    background-color: #f1f1f1;
+}
+
+.treatment-table-enfermera tr:nth-child(odd) td,
+.process-table-enfermera tr:nth-child(odd) td {
+    background-color: #f9f9f9;
+}
+
+.treatment-table-enfermera tr:nth-child(even) td,
+.process-table-enfermera tr:nth-child(even) td {
+    background-color: #fff;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+    .title-enfermera {
+        font-size: 2.4rem;
+    }
+
+    .subtitle-enfermera {
+        font-size: 1.8rem;
+    }
+
+    .treatment-table-enfermera th,
+    .process-table-enfermera th,
+    .treatment-table-enfermera td,
+    .process-table-enfermera td {
+        font-size: 1.2rem;
+        padding: 12px 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container-enfermera {
+        padding: 20px;
+    }
+
+    .title-enfermera {
+        font-size: 2rem;
+    }
+
+    .subtitle-enfermera {
+        font-size: 1.6rem;
+    }
+
+    .treatment-table-enfermera th,
+    .process-table-enfermera th,
+    .treatment-table-enfermera td,
+    .process-table-enfermera td {
+        font-size: 1.1rem;
+        padding: 10px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-enfermera {
+        font-size: 1.8rem;
+    }
+
+    .subtitle-enfermera {
+        font-size: 1.4rem;
+    }
+
+    .treatment-table-enfermera th,
+    .process-table-enfermera th,
+    .treatment-table-enfermera td,
+    .process-table-enfermera td {
+        font-size: 1rem;
+        padding: 8px 10px;
+    }
+}

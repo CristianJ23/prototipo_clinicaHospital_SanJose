@@ -2,34 +2,26 @@ import HistoriaClinicaModel from "../models/HistoriaClinicaModel.js";
 import PacienteModel from "../models/PacienteModel.js";
 import PersonaModel from "../models/PersonaModel.js";
 
-const buscarHistoriaPorCedula = async (req, res) => {
+const buscarPersonaPorCedula = async (cedula) => {
     try {
-        const { cedula } = req.params;
-        console.log("Datos recibidos en el backend:", cedula);
-
-        const persona = await PersonaModel.findOne({ where: { numero_documento: cedula } })
-
-        if (!persona) {
-            // Si no se encuentra la persona, devolver un mensaje 404
-            console.log('No se encontró ninguna persona con esa cédula');
-            return res.status(404).json({ message: 'Persona no encontrada' });
+      const response = await axios.get(`http://localhost:8000/kriss/Pacientes_Cedula/${cedula}`);
+      if (response.data) {
+        // Obtener la historia clínica del paciente
+        const historia = response.data.historia;
+        // Obtener el último tratamiento activo
+        const tratamientoActivo = historia.tratamientos.filter((tratamiento) => tratamiento.planTratamiento.estado === "ACTIVO");
+        if (tratamientoActivo.length > 0) {
+          const idPlanTratamiento = tratamientoActivo[tratamientoActivo.length - 1].planTratamiento.id_plan_tratamiento;
+          setNuevoProceso(prevState => ({
+            ...prevState,
+            id_plan_tratamiento: idPlanTratamiento, // Asignar el id_plan_tratamiento
+          }));
         }
-
-        const paciente = await PacienteModel.findOne({ where: { id_persona: persona.id_persona } });
-
-        const historias = await HistoriaClinicaModel.findAll({ where: { id_paciente: paciente.id_paciente } });
-
-        if (historias.length > 0) {
-            res.json(historias);
-        } else {
-            console.log("No se encontró historias con esa cedula");
-            res.status(404).json({ message: "Paciente no encontrado" });
-        }
+      }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error al buscar el paciente", error: error.message });
+      console.error("Error al buscar persona por cédula:", error);
     }
-}
+  };
+  
 
-
-export default buscarHistoriaPorCedula;
+export default buscarPersonaPorCedula;

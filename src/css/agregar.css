@@ -1,0 +1,288 @@
+/* Variables CSS */
+:root {
+    --primary-color: #3da07b; /* Verde oscuro */
+    --secondary-color: #f44336; /* Rojo vibrante */
+    --background-color: #f9f9f9; /* Fondo claro */
+    --form-background: #ffffff; /* Fondo del formulario */
+    --text-color-dark: #333; /* Texto oscuro */
+    --text-color-light: #555; /* Texto gris claro */
+    --box-shadow-light: rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    --box-shadow-dark: rgba(0, 0, 0, 0.2); /* Sombra más oscura */
+    --border-radius: 8px; /* Bordes redondeados */
+    --transition-speed: 0.3s; /* Velocidad de transición */
+    --divider-color: #ddd; /* Color para la línea de separación */
+}
+
+/* Estilos para el formulario */
+.form-tratamiento {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--form-background);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px var(--box-shadow-light);
+    transition: box-shadow var(--transition-speed), transform var(--transition-speed);
+}
+
+.form-tratamiento:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px var(--box-shadow-dark);
+}
+
+/* Título del formulario */
+.form-tratamiento .form-title {
+    font-size: 2.5em;
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* Estilos para los inputs y etiquetas */
+.form-tratamiento .form-label {
+    font-size: 1.1em;
+    color: var(--text-color-dark);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.form-tratamiento input {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    outline: none;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.form-tratamiento input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px 0 var(--primary-color);
+}
+
+/* Lista de sugerencias de medicamentos */
+.sugerencias-lista {
+    position: absolute;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px var(--box-shadow-light);
+    margin-top: 8px;
+    z-index: 10;
+}
+
+.sugerencia-item {
+    padding: 12px;
+    cursor: pointer;
+    font-size: 1em;
+    color: var(--text-color-dark);
+    transition: background-color var(--transition-speed);
+}
+
+.sugerencia-item:hover {
+    background-color: #f1f1f1;
+}
+
+/* Estilos para el botón agregar medicamento */
+.form-tratamiento .btn-agregar {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+    margin-top: 20px;
+}
+
+.form-tratamiento .btn-agregar:hover {
+    background-color: #328f68;
+    transform: scale(1.05);
+}
+
+.form-tratamiento .btn-agregar:active {
+    transform: scale(0.98);
+}
+
+/* Medicamentos seleccionados */
+.medicamentos-seleccionados {
+    margin-top: 30px;
+}
+
+.medicamentos-seleccionados .plan-title {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.medicamentos-seleccionados .medicamentos-lista {
+    margin-bottom: 20px;
+}
+
+.medicamentos-seleccionados .medicamento-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f7f7f7;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px var(--box-shadow-light);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.medicamentos-seleccionados .medicamento-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px var(--box-shadow-dark);
+}
+
+.medicamentos-seleccionados .medicamento-item span {
+    font-size: 1.2em;
+    color: var(--text-color-dark);
+}
+
+.medicamentos-seleccionados .btn-eliminar {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.medicamentos-seleccionados .btn-eliminar:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+.medicamentos-seleccionados .btn-eliminar:active {
+    transform: scale(0.98);
+}
+
+/* Botones de guardar y cancelar */
+.form-tratamiento .btn-guardar,
+.form-tratamiento .btn-cancelar {
+    padding: 12px 24px;
+    font-size: 1.2em;
+    border-radius: var(--border-radius);
+    width: 100%;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.form-tratamiento .btn-guardar {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.form-tratamiento .btn-guardar:hover {
+    background-color: #328f68;
+    transform: scale(1.05);
+}
+
+.form-tratamiento .btn-cancelar {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.form-tratamiento .btn-cancelar:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+.form-tratamiento .btn-guardar:active,
+.form-tratamiento .btn-cancelar:active {
+    transform: scale(0.98);
+}
+
+.form-tratamiento .btn-guardar:focus,
+.form-tratamiento .btn-cancelar:focus {
+    outline: 3px solid var(--primary-color);
+}
+
+/* Media queries para mejorar la visualización en móviles y tabletas */
+@media (max-width: 1200px) {
+    .form-tratamiento {
+        padding: 20px;
+    }
+
+    .form-tratamiento .form-title {
+        font-size: 2em;
+    }
+
+    .form-tratamiento .form-label {
+        font-size: 1em;
+    }
+
+    .form-tratamiento input {
+        font-size: 1em;
+    }
+
+    .form-tratamiento .btn-agregar,
+    .form-tratamiento .btn-guardar,
+    .form-tratamiento .btn-cancelar {
+        padding: 10px 20px;
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-tratamiento {
+        padding: 15px;
+    }
+
+    .form-tratamiento .form-title {
+        font-size: 1.8em;
+    }
+
+    .form-tratamiento .form-label {
+        font-size: 0.9em;
+    }
+
+    .form-tratamiento input {
+        font-size: 1em;
+    }
+
+    .form-tratamiento .btn-agregar,
+    .form-tratamiento .btn-guardar,
+    .form-tratamiento .btn-cancelar {
+        padding: 8px 16px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-tratamiento {
+        padding: 10px;
+    }
+
+    .form-tratamiento .form-title {
+        font-size: 1.6em;
+    }
+
+    .form-tratamiento .form-label {
+        font-size: 0.9em;
+    }
+
+    .form-tratamiento input {
+        font-size: 1em;
+    }
+
+    .form-tratamiento .btn-agregar,
+    .form-tratamiento .btn-guardar,
+    .form-tratamiento .btn-cancelar {
+        padding: 8px 16px;
+        font-size: 1em;
+    }
+}

@@ -6,77 +6,47 @@ import axios from "axios";
 // Importar imágenes
 import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
-import tratamientosImg from "../img2/tratamiento.png";
-import PersonalTable from "./PersonalTable";
-
+import gestion from "../img2/gestion.png";
+import home from "../img2/home.png";
 
 const Gestion = () => {
-
   const navigate = useNavigate();
   const [cedula, setCedula] = useState("");
-  const [persona, setPersona] = useState(null); // Para almacenar la persona encontrada
-  const [paciente, setPaciente] = useState(null); // Para almacenar el paciente encontrado
+  const [paciente, setPaciente] = useState(null);
   const [historias, setHistorias] = useState([]);
   const [mensaje, setMensaje] = useState("");
 
-  // Función para buscar la persona, paciente y sus historias clínicas con una sola API
   const buscarHistoria = async (cedula) => {
     try {
-      // Llamada a la API que busca la persona, el paciente y las historias clínicas
       const response = await axios.get(`http://localhost:8000/kriss/buscarHistoria/${cedula}`);
-
       if (response.data) {
-        setPersona(response.data.persona);
-        setPaciente(response.data.paciente);
+        setPaciente(response.data.paciente);  // Aquí esperamos que paciente tenga id_paciente
         setHistorias(response.data.historiasClinicas);
-        setMensaje(""); // Limpiar el mensaje de error
-
-        if (response.data.historiasClinicas.length === 0) {
-          setMensaje("No se encontraron historias clínicas para este paciente.");
-        }
+        setMensaje(
+          response.data.historiasClinicas.length === 0
+            ? "No se encontraron historias clínicas para este paciente."
+            : ""
+        );
       } else {
         setMensaje("No se encontraron datos para esta cédula.");
-        setPersona(null);
         setPaciente(null);
         setHistorias([]);
       }
     } catch (error) {
       console.error("Error al buscar la información:", error);
       setMensaje("Hubo un error al realizar la búsqueda. Por favor, inténtelo de nuevo.");
-      setPersona(null);
       setPaciente(null);
       setHistorias([]);
     }
   };
 
-  /**informacion para la tabla */
-  const columns = [
-    {
-      Header: 'ID Historia',
-      accessorKey: 'id_historia', // Esta es la clave que viene del backend
-    },
-    {
-      Header: 'Motivo de Consulta',
-      accessorKey: 'motivoConsulta',
-    },
-    {
-      Header: 'motivo consulta',
-      accessorKey: 'motivoConsulta',
-    },
-    {
-      Header: 'Fecha',
-      accessorKey: 'fecha_creacion',
-    },
-    // Añadir más columnas según sea necesario
-  ];
-
-
-
   return (
     <div className="gestion">
-      {/* Contenedor para el menú */}
-      <div className="sidebar">
-        <h2 className="sidebar-title">Menú</h2>
+  {/* Contenedor del menú */}
+  <div className="menu-container">
+    <aside className="sidebar">
+      <h2 className="sidebar-title">Menú</h2>
+      <nav>
         <div className="modulo" onClick={() => navigate("/crear-paciente")}>
           <img src={crearPacienteImg} alt="Registro de Paciente" />
           <p>Registro de Paciente</p>
@@ -85,74 +55,76 @@ const Gestion = () => {
           <img src={gestionHistoriasImg} alt="Registro de Historia" />
           <p>Registro de Historia</p>
         </div>
-        <div className="modulo" onClick={() => navigate("/tratamientos")}>
-          <img src={tratamientosImg} alt="Tratamiento" />
-          <p>Tratamiento</p>
+        <div className="modulo" onClick={() => navigate("/gestion")}>
+          <img src={gestion} alt="Gestión Historias" />
+          <p>Gestión de Historias</p>
         </div>
-      </div>
+        <div className="modulo" onClick={() => navigate("/vista-medico")}>
+          <img src={home} alt="Home" />
+          <p>Home</p>
+        </div>
+      </nav>
+    </aside>
+  </div>
 
-      {/* Contenedor para el contenido */}
-      <div className="content">
-        <h1>Gestión de Historias Clínicas</h1>
-        <form
-          className="busqueda-container"
-          onSubmit={(e) => { e.preventDefault(); buscarHistoria(cedula); }}>
-          <label>
-            Cédula:
-            <div className="input-group">
+  {/* Contenedor principal */}
+  <div className="main-content-container">
+    <main className="content">
+      <h1>Gestión de Historias Clínicas</h1>
+
+      {/* Contenedor de búsqueda */}
+      <div className="search-container">
+        <section className="busqueda-container">
+          <h2>Buscar Paciente</h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              buscarHistoria(cedula);
+            }}
+          >
+            <label>
+              Cédula:
               <input
                 type="text"
                 value={cedula}
                 onChange={(e) => setCedula(e.target.value)}
                 placeholder="Ingrese la cédula"
               />
-              <button type="submit">Buscar</button>
-            </div>
-          </label>
-        </form>
+            </label>
+            <button type="submit">Buscar</button>
+          </form>
+        </section>
 
-        {/* Mensaje de error o informativo */}
+        {/* Mensaje informativo */}
         {mensaje && <p className="mensaje">{mensaje}</p>}
+      </div>
 
-        {/* Mostrar la persona y el paciente encontrados */}
-        {
-          persona && (
-            <div className="persona-info">
-              <h2>Persona Encontrada:</h2>
-              <p><strong>Nombre:</strong> {persona.nombre} {persona.apellido}</p>
-              <p><strong>Cédula:</strong> {persona.numero_documento}</p>
-            </div>
-          )
-        }
+      {/* Contenedor de historias */}
+      <div className="historias-container">
+        {paciente && (
+          <section className="paciente-info">
+            <h2>Historias Encontradas:</h2>
+            {historias.map((historia) => (
+              <div
+                key={historia.id}
+                className="modulo historia"
+                onClick={() =>
+                  navigate(`/mostrar/${paciente.id_paciente}/${historia.id_historia}`) // Usando id_paciente
+                }
+              >
+                <h3>{`Número de historia: ${historia.id_historia}`}</h3>
+                <p>{`Fecha de Creación: ${historia.fecha_creacion}`}</p>
+                <p>{`Antecedentes: ${historia.antecedentesPatologicosPersonales}`}</p>
+                <p>{`Motivo de Consulta: ${historia.motivoConsulta}`}</p>
+              </div>
+            ))}
+          </section>
+        )}
+      </div>
+    </main>
+  </div>
+</div>
 
-        {
-          paciente && (
-            <div className="paciente-info">
-              <h2>Historias Encontradas:</h2>
-            </div>
-          )
-        }
-
-        {/* Mostrar las historias clínicas en la tabla */}
-        <PersonalTable data={historias} columns={columns} />
-      </div >
-
-      {/* Lista de historias clínicas */}
-      {/* <div className="historias-lista">
-          {historias.map((historia) => (
-            <div
-              key={historia.id}
-              className="modulo"
-              onClick={() => navigate(`/mostrar/${historia.id_historia}`)}
-            >
-              <h3>{`Numero de historia: ${historia.id_historia}`}</h3>
-              <p>{`Antecedentes: ${historia.antecedentesPatologicosPersonales}`}</p>
-              <p>{`Motivo de Consulta: ${historia.motivoConsulta}`}</p>
-            </div>
-          ))}
-        </div> */}
-      {/* </div> */}
-    </div >
   );
 };
 

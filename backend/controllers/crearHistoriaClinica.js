@@ -9,9 +9,9 @@ const CrearHistoriaClinica = async (req, res) => {
         const id_medico = req.session.person.id_persona;
         const input = req.body; // Datos enviados desde el formulario
         input.id_medico = id_medico;
-        input.id_area = req.session.person.id_area ? req.session.person.id_area : 0;        
-         // Transformar datos para la base de datos
-         const historial = {
+        input.id_area = req.session.person.id_area ? req.session.person.id_area : 0;
+        // Transformar datos para la base de datos
+        const historial = {
             id_paciente: input.id_paciente,
             id_medico: input.id_medico,
             motivoConsulta: input.motivoConsulta,
@@ -27,13 +27,13 @@ const CrearHistoriaClinica = async (req, res) => {
             observacion_fisica: input.examenFisico.observacion || "",
             observacion_organos: input.revisionOrganosYSystems.observacion || "",
             ...mapNamesToFields(input.examenFisico.seleccionados, [
-                "cabeza", "cuello", "torax", "abdomen", "extremidades", 
-                "piel", "sistema_linfatico", "sistema_nervioso", 
+                "cabeza", "cuello", "torax", "abdomen", "extremidades",
+                "piel", "sistema_linfatico", "sistema_nervioso",
                 "fisico_cardiovascular", "fisico_respiratorio",
             ]),
             ...mapNamesToFields(input.revisionOrganosYSystems.seleccionados, [
-                "organos_sentidos", "respiratorio", "cardiovascular", 
-                "digestivo", "urinario", "musculo_esqueletico", 
+                "organos_sentidos", "respiratorio", "cardiovascular",
+                "digestivo", "urinario", "musculo_esqueletico",
                 "endocrino", "nervioso",
             ]),
         };

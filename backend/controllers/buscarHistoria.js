@@ -38,6 +38,7 @@ const buscarHistoria = async (req, res) => {
 
     // Respuesta con los datos del paciente y sus historias clínicas
     res.json({
+      persona,
       paciente,
       historiasClinicas,
     });

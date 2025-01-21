@@ -25,7 +25,6 @@ const Exportacion = () => {
     const [numPages, setNumPages] = useState(null);
     const [pageNum, setPageNum] = useState(1);
 
-
     const buscarHistoria = async () => {
         try {
             // Llamada a la API que busca la persona, el paciente y las historias clínicas
@@ -97,6 +96,15 @@ const Exportacion = () => {
         { Header: "Fecha", accessorKey: "fecha_creacion" },
     ];
 
+    const calcularEdad = (fechaNacimiento) => {
+        if (!fechaNacimiento) return "N/A"; // Verifica que la fecha no sea nula o indefinida
+
+        const anioNacimiento = parseInt(fechaNacimiento.slice(0, 4), 10); // Toma los primeros 4 caracteres y los convierte a número
+        const anioActual = new Date().getFullYear(); // Obtiene el año actual
+
+        return anioActual - anioNacimiento; // Calcula la edad
+    };
+
     /** ************ codigo para exportar en pdf */
     // Función para generar el PDF
     const generarPDF = (historia) => {
@@ -151,32 +159,160 @@ const Exportacion = () => {
             body: rows,       // Datos de las filas
         });
 
-        const columnsPaciente = ['  INSTITUCIÓN DEL SISTEMA',
-            'UNICÓDIGO',
-            'ESTABLECIMIENTO DE SALUD',
-            'NUMERO DE HISTORIA CLÍNICA ÚNICA',
-            'NÚMERO DE ARCHIVO',
-            'No. de HOJA']; // Encabezados de la tabla
+        const columnsPaciente = [
+            'PRIMER APELLIDO',
+            'SEGUNDO APELLIDO',
+            'PRIMER NOMBRE',
+            'SEGUNDO NOMBRE',
+            'SEXO',
+            'EDAD',
+            'CONDICION EDAD',
+        ]; // Encabezados de la tabla
+
         const rowsPaciente = [
-            ["clinica san jose",
-                'san jose',
-                "loja san jose",
-                historia.id_historia,
-                "archivo primero",
-                "1",
+            [
+                persona?.primer_apellido || "N/A",
+                persona?.segundo_apellido || "N/A",
+                persona?.primer_nombre || "N/A",
+                persona?.segundo_nombre || "N/A",
+                persona?.sexo || "N/A",
+                calcularEdad(persona?.fecha_nacimiento || 0),
+                paciente?.condicion_edad || "sin condicion",
+                // Aquí simulamos la "subtabla" como un texto con saltos de línea
+                // `H | D | M | A\n` +
+                // `-------------------\n`+
+                // `H | D | M | A \n`
             ],
         ];
 
+        // Generar la tabla principal
         autoTable(doc, {
             startY: currentY + 32, // Aquí colocamos la tabla después del título
-            head: [columns],
+            head: [columnsPaciente],
+            headStyles: {
+                halign: 'center', // Centra el texto del encabezado
+                fillColor: [61, 160, 123], // Verde claro en formato RGB
+            }, // Encabezados
+            body: rowsPaciente, // Datos de las filas
+        });
+
+        /** resumen del cuadro clinico*/
+        generarCuadroConContenido(doc, 15, currentY + 55, 180, 40, "Resumen del cuadro clinico",
+            [["motivo de consulta: ", historia.motivoConsulta],
+            ["antecedentes patologicos", historia.antecedentesPatologicosPersonales]
+            ]);
+
+        /** resumen de evolucion y complicaciones*/
+        generarCuadroConContenido(doc, 15, currentY + 105, 180, 40, "Resumen de evolucion y complicaciones",
+            [["motivo de consulta: ", historia.motivoConsulta],
+            ["antecedentes patologicos", historia.antecedentesPatologicosPersonales]
+            ]);
+
+        /** hallazgos relevantes de examenes y procedimientos diagnosticos*/
+        generarCuadroConContenido(doc, 15, currentY + 155, 180, 40, "Hallazgos relevantes de examenes y procedimientos diagnosticos",
+            [["motivo de consulta: ", historia.motivoConsulta],
+            ["antecedentes patologicos", historia.antecedentesPatologicosPersonales],
+            ["antecedentes patologicos", historia.antecedentesPatologicosPersonales]
+            ]);
+
+
+        /** **********************datos de motivo consulta */
+
+        autoTable(doc, {
+            startY: currentY + 305, // Aquí colocamos la tabla después del título
+            head: [["Datos del usuario paciente"]],
             headStyles: {
                 halign: 'center', // Centra el texto del encabezado
                 fillColor: [61, 160, 123] // Verde claro en formato RGB
-            },  // Encabezados
-            body: rows,       // Datos de las filas
+            }
+        })
+
+        const columnsMotivoConsulta = [
+            'PRIMER APELLIDO',
+            'PRIMER NOMBRE',
+            'EDAD',
+            'NUMERO DE HISTORIA CLÍNICA',
+            'NUMERO DE ARCHIVO',
+        ]; // Encabezados de la tabla
+
+        const rowsMotivoConsulta = [
+            [
+                persona?.primer_apellido || "N/A",
+                persona?.primer_nombre || "N/A",
+                calcularEdad(persona?.fecha_nacimiento || 0),
+                historia.id_historia,
+                "1"
+            ],
+        ];
+
+        // Generar la tabla principal
+        autoTable(doc, {
+            startY: currentY - 8, // Aquí colocamos la tabla después del título
+            head: [columnsMotivoConsulta],
+            headStyles: {
+                halign: 'center', // Centra el texto del encabezado
+                fillColor: [61, 160, 123], // Verde claro en formato RGB
+            }, // Encabezados
+            body: rowsMotivoConsulta, // Datos de las filas
         });
 
+        /** Resumen de tratamiento y procedimientos terapeuticos*/
+        generarCuadroConContenido(doc, 15, currentY + 18, 180, 40, "Resumen de tratamiento y procedimientos terapéuticos",
+            [["motivo de consulta: ", historia.motivoConsulta],
+            ["antecedentes patologicos", historia.antecedentesPatologicosPersonales],
+            ["antecedentes patologicos", historia.antecedentesPatologicosPersonales]
+            ]);
+
+        /** Indicaciones de alta egreso*/
+        generarCuadroConContenido(doc, 15, currentY + 60, 180, 40, "Indicaciones de alta egreso",
+            [["motivo de consulta: ", historia.motivoConsulta],
+            ["antecedentes patologicos", historia.antecedentesPatologicosPersonales],
+            ["antecedentes patologicos", historia.antecedentesPatologicosPersonales]
+            ]);
+
+        /** ******************medicos tratantes */
+        autoTable(doc, {
+            startY: currentY + 110, // Aquí colocamos la tabla después del título
+            head: [["I. Médicos tratantes"]],
+            headStyles: {
+                halign: 'center', // Centra el texto del encabezado
+                fillColor: [61, 160, 123] // Verde claro en formato RGB
+            }
+        })
+
+
+        const columnsMedicosTratantes = [
+            'NOMBRES Y APELLIDOS',
+            'ESPECIALIDAD',
+            'SELLO Y NUMERO DE IDENTIFICACION',
+            'PERIODO DE RESPONSABILIDAD',
+        ]; // Encabezados de la tabla
+
+        const rowsMedicosTratantes = [
+            [
+                "Gomes Perez Carlos Luis",
+                "cardiologia",
+                "1102",
+                "marzo 2024 - agosto 2025"
+            ],
+            [
+                "Martinez Lopez Ana MAria",
+                "Terapeuta",
+                "1103",
+                "marzo 2023 - agosto 2025"
+            ],
+        ];
+
+        // Generar la tabla principal
+        autoTable(doc, {
+            startY: currentY + 138, // Aquí colocamos la tabla después del título
+            head: [columnsMedicosTratantes],
+            headStyles: {
+                halign: 'center', // Centra el texto del encabezado
+                fillColor: [61, 160, 123], // Verde claro en formato RGB
+            }, // Encabezados
+            body: rowsMedicosTratantes, // Datos de las filas
+        });
 
         // Guardamos el PDF en el estado
         setPdfDoc(doc);
@@ -187,6 +323,30 @@ const Exportacion = () => {
 
         // Mostrar la vista previa del PDF
         setPreviewUrl(fileURL);
+    };
+
+
+    /**datos del cuadro clinico */
+    const generarCuadroConContenido = (doc, startX, startY, width, height, titulo, contenido) => {
+        // Dibujar el cuadro (rectángulo)
+        doc.rect(startX, startY, width, height); // Rectángulo con posición y dimensiones
+
+        // Dibujar el título en la parte superior del cuadro
+        doc.setFontSize(12); // Tamaño de fuente del título
+        doc.text(titulo, startX + 5, startY + 7); // Texto del título (ajustado con margen)
+
+        // Dibujar una línea separadora entre el título y el contenido
+        doc.line(startX, startY + 10, startX + width, startY + 10);
+
+        // Usar autoTable para dibujar el contenido dentro del cuadro
+        autoTable(doc, {
+            startY: startY + 12, // Inicia después de la línea separadora
+            margin: { left: startX + 2 }, // Margen izquierdo dentro del cuadro
+            tableWidth: width - 4, // Ajustar al ancho del cuadro con márgenes
+            body: contenido, // Contenido del cuadro
+            theme: 'grid', // Estilo de tabla
+            styles: { fontSize: 10 }, // Ajustar el tamaño del texto
+        });
     };
 
     // Next page
@@ -215,6 +375,7 @@ const Exportacion = () => {
 
 
     return (
+        
         <div className="exportacion-container">
             <h1 className="page-title">Gestión de Historias Clínicas</h1>
             <form className="search-form" onSubmit={(e) => { e.preventDefault(); buscarHistoria(cedula); }}>
@@ -237,8 +398,8 @@ const Exportacion = () => {
             {persona && (
                 <div className="persona-info">
                     <h2>Persona Encontrada:</h2>
-                    <p><strong>Nombre:</strong> {persona.nombre} {persona.apellido}</p>
-                    <p><strong>Cédula:</strong> {persona.numero_documento}</p>
+                    <p><strong>Nombre:</strong> {persona.primer_nombre + " " + persona.segundo_nombre} {persona.primer_apellido + " " + persona.segundo_apellido}</p>
+                    {/* <p><strong>Cédula:</strong> {persona.numero_documento}</p> */}
                 </div>
             )}
 

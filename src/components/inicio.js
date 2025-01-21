@@ -5,7 +5,6 @@ import "../css/inicio.css";
 // Importar imágenes
 import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
-import tratamientosImg from "../img2/tratamiento.png";
 import crearUsuarioImg from "../img2/usuario.png";
 
 const Inicio = () => {
@@ -15,12 +14,12 @@ const Inicio = () => {
     <div className="inicio-container">
       {/* Barra de navegación */}
       <nav className="navbar">
-        <div className="logo">Clínica Profesional</div>
+        <div className="logo">Clínica San Jóse</div>
         <ul className="nav-links">
           <li onClick={() => navigate("/vista-medico")}>Vista Médico</li>
           <li onClick={() => navigate("/vista-enfermera")}>Vista Enfermera</li>
-          <li onClick={() => navigate("/tratamientos")}>Tratamientos</li>
-          <li onClick={() => navigate("/crear-usuario")}>Crear Usuario</li>
+          <li onClick={() => navigate("/personal")}>Personal</li>
+          <li onClick={() => navigate("/exportacion")}>Explotación</li>
           <li onClick={() => navigate("/")}>cerrar sesion</li> {/* el cierre de sesion deberia ser eliminando la sesion desde el backend*/}
         </ul>
       </nav>
@@ -50,13 +49,13 @@ const Inicio = () => {
           <div className="modulo"
             onClick={() => navigate('/personal')} // Redirige a la página 'tratamiento'
             >
-            <img src={crearUsuarioImg} alt="Crear Usuario" />
+            <img src={crearUsuarioImg} alt="" />
             <p>Personal</p>
           </div>
           <div className="modulo"
             onClick={() => navigate('/exportacion')} // Redirige a la página 'personal'
           >
-            <img src={crearUsuarioImg} alt="Personal" />
+            <img src={crearUsuarioImg} alt="" />
             <p>Exportacion</p>
           </div>
         </div>

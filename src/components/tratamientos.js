@@ -4,6 +4,7 @@ import '../css/Tratamientos.css';
 import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
 import tratamientosImg from "../img2/tratamiento.png";
+import home from "../img2/home.png";
 
 const Tratamientos = ({ onCancel }) => {
   const [cedulaBusqueda, setCedulaBusqueda] = useState("");

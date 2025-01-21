@@ -5,7 +5,6 @@ import "../css/inicio2.css";
 // Importar imágenes
 import crearPacienteImg from "../img2/usuario.png";
 import gestionHistoriasImg from "../img2/historia.png";
-import tratamientosImg from "../img2/tratamiento.png";
 import gestion from "../img2/gestion.png";
 
 

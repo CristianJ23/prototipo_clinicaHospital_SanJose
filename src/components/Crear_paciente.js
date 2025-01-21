@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
 import "../css/crear_paciente.css";
 
+
+// Importar imágenes
 import crearPacienteImg from "../img2/medico.png";
 import gestionHistoriasImg from "../img2/enfermera.png";
-import tratamientosImg from "../img2/tratamiento.png";
+import gestion from "../img2/gestion.png";
+import home from "../img2/home.png";
 
 const CrearPaciente = ({ onCancel = () => console.log("Cancelación predeterminada") }) => {
   const navigate = useNavigate(); // Initialize the navigate function
@@ -262,6 +265,7 @@ const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
 
   return (
     <div className="main-container">
+      {/* Contenedor para el menú */}
       <div className="sidebar">
         <h2 className="sidebar-title">Menú</h2>
         <div className="modulo" onClick={() => navigate("/crear-paciente")}>
@@ -272,9 +276,13 @@ const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
           <img src={gestionHistoriasImg} alt="Registro de Historia" />
           <p>Registro de Historia</p>
         </div>
-        <div className="modulo" onClick={() => navigate("/tratamientos")}>
-          <img src={tratamientosImg} alt="Tratamiento" />
-          <p>Tratamiento</p>
+        <div className="modulo" onClick={() => navigate("/gestion")}>
+          <img src={gestion} alt="Gestión Historias" />
+          <p>Gestión de Historias</p>
+        </div>
+        <div className="modulo" onClick={() => navigate("/vista-medico")}>
+          <img src={home} alt="Home" />
+          <p>Home</p>
         </div>
       </div>
 
@@ -428,13 +436,26 @@ const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
             />
           </label>
           <label>
-            Nacionalidad:
-            <input
-              name="nacionalidad"
-              value={formData.nacionalidad}
-              onChange={handleChange}
-            />
-          </label>
+  Nacionalidad:
+  <select
+    name="nacionalidad" // Nota: usar minúsculas para mantener consistencia
+    value={formData.nacionalidad} // Sincronizado con el estado
+    onChange={(e) => {
+      setFormData((prev) => ({
+        ...prev,
+        nacionalidad: e.target.value, // Actualiza el valor seleccionado
+      }));
+    }}
+    required
+  >
+    <option value="">Seleccione</option>
+    <option value="Ecuatoriana">Ecuatoriana</option>
+    <option value="Argentina">Argentina</option>
+    <option value="Brasilera">Brasilera</option>
+    <option value="Chilena">Chilena</option>
+  </select>
+</label>
+
           <label>
   Edad:
   <input

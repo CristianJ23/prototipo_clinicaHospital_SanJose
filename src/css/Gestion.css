@@ -1,315 +1,318 @@
 /* Contenedor principal */
 .gestion .main-container {
-    display: flex;
-    height: 100vh;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    overflow: hidden;
-  }
-  
-  /* Barra lateral */
-  .gestion .sidebar {
-    width: 250px;
-    background-color: #3da07b; /* Verde oscuro para la barra lateral */
-    color: white;
-    height: 100vh;
-    padding: 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-  }
-  
-  /* Título de la barra lateral */
-  .gestion .sidebar-title {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: bold;
-  }
-  
-  /* Módulos dentro de la barra lateral */
-  .gestion .modulo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    color: #3da07b; /* Verde claro para los textos */
-    padding: 15px;
-    border-radius: 10px;
-    width: 100%;
-    margin-bottom: 15px;
-    text-decoration: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .gestion .modulo img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-  }
-  
-  .gestion .modulo p {
-    margin: 0;
-    font-size: 0.9em;
-    text-align: center;
-  }
-  
-  .gestion .modulo:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Contenedor de contenido principal */
-  .gestion .content-container {
-    flex: 1;
-    margin-left: 250px; /* Deja espacio para la barra lateral */
-    padding: 30px;
-    overflow-y: auto;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height: 100vh;
-  }
-  
-  /* Barra de búsqueda */
-  .gestion .busqueda-container {
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center; /* Alineación a la izquierda */
-    width: 100%;
-  }
-  
-  .gestion .busqueda-container h1 {
-    font-size: 2em;
-    color: #3da07b;
-    margin-right: 20px; /* Separar el título del campo de búsqueda */
-    margin-bottom: 0; /* Eliminar espacio adicional debajo del título */
-    text-align: left; /* Alinear el título a la izquierda */
-  }
-  
-  .gestion .busqueda-container label {
-    display: block;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 5px;
-  }
-  
-  .gestion .busqueda-container input {
-    padding: 10px;
-    width: 250px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px; /* Separar el campo de búsqueda del botón */
-    display: inline-block;
-  }
-  
-  .gestion .busqueda-container button {
-    padding: 10px 20px;
-    background-color: #3da07b;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
-  }
-  
-  .gestion .busqueda-container button:hover {
-    background-color: #2b8c60;
-  }
-  
-  /* Estilo de los campos del formulario */
-  .gestion .formulario {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-    width: 100%;
-  }
-  
-  .gestion .formulario .campo {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .gestion .formulario label {
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 5px;
-  }
-  
-  .gestion .formulario input,
-  .gestion .formulario textarea {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    font-size: 1em;
-  }
-  
-  .gestion .formulario textarea {
-    height: 150px;
-    grid-column: span 2; /* El campo de tratamiento ocupará toda la fila */
-  }
-  
-  .gestion .formulario input:disabled,
-  .gestion .formulario textarea:disabled {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
-  }
-  
-  /* Botones de acción */
-  .gestion .boton-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 15px;
-    margin-top: 30px;
-  }
-  
-  .gestion .boton-container button {
-    padding: 12px 25px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1.1em;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    width: 160px;
-  }
-  
-  .gestion .boton-container .btn-editar {
-    background-color: #3da07b;
-    color: white;
-  }
-  
-  .gestion .boton-container .btn-volver {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .gestion .boton-container .btn-guardar {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .gestion .boton-container .btn-cancelar {
-    background-color: #ff9800;
-    color: white;
-  }
-  
-  .gestion .boton-container button:hover {
-    transform: scale(1.05);
-  }
-  
-  .gestion .boton-container button:active {
-    transform: scale(0.98);
-  }
-
-  /* Contenedor de la barra de búsqueda */
-.busqueda-container {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* Alinea el contenido a la izquierda */
-  margin-bottom: 20px;
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  overflow: hidden;
 }
 
-.busqueda-container label {
+/* Barra lateral */
+.gestion .sidebar {
+  width: 250px;
+  background-color: #3da07b; /* Verde oscuro para la barra lateral */
+  color: white;
+  height: 100vh;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+/* Título de la barra lateral */
+.gestion .sidebar-title {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  text-align: center;
   font-weight: bold;
+  color: white;
+}
+
+/* Módulos dentro de la barra lateral */
+.gestion .modulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  color: #3da07b; /* Verde claro para los textos */
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gestion .modulo img {
+  width: 50px;
+  height: 50px;
   margin-bottom: 10px;
 }
 
-.input-group {
-  display: flex;
-  align-items: center; /* Alinea verticalmente el campo y el botón */
-  gap: 10px; /* Espacio entre el campo de entrada y el botón */
+.gestion .modulo p {
+  margin: 0;
+  font-size: 0.9em;
+  text-align: center;
 }
 
-.input-group input {
+.gestion .modulo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor de contenido principal */
+.gestion .content-container {
+  flex: 1;
+  margin-left: 250px; /* Deja espacio para la barra lateral */
+  padding: 30px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100vh;
+}
+
+/* Barra de búsqueda */
+.gestion .busqueda-container {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center; /* Alineación a la izquierda */
+  width: 100%;
+}
+
+.gestion .busqueda-container h1 {
+  font-size: 2em;
+  color: #3da07b;
+  margin-right: 20px; /* Separar el título del campo de búsqueda */
+  margin-bottom: 0; /* Eliminar espacio adicional debajo del título */
+  text-align: left; /* Alinear el título a la izquierda */
+}
+
+.gestion .busqueda-container label {
+  display: block;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.gestion .busqueda-container input {
   padding: 10px;
   width: 250px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  margin-right: 10px; /* Separar el campo de búsqueda del botón */
+  display: inline-block;
 }
 
-.input-group button {
+.gestion .busqueda-container button {
   padding: 10px 20px;
   background-color: #3da07b;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1.1em;
   transition: background-color 0.3s ease;
 }
 
-.input-group button:hover {
+.gestion .busqueda-container button:hover {
   background-color: #2b8c60;
 }
 
-  
-  /* Móvil y tablet: Ajustes para pantallas pequeñas */
-  @media (max-width: 768px) {
-    .gestion .main-container {
-      flex-direction: column;
-    }
-  
-    .gestion .sidebar {
-      position: static;
-      width: 100%;
-      height: auto;
-    }
-  
-    .gestion .content-container {
-      margin-left: 0;
-      padding: 15px;
-    }
-  
-    .gestion .formulario {
-      grid-template-columns: 1fr; /* Los campos se apilan en una sola columna */
-    }
-  
-    .gestion .boton-container {
-      align-items: stretch;
-      width: 100%;
-    }
-  
-    .gestion .boton-container button {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-  
-    .gestion .busqueda-container input {
-      width: 100%;
-    }
-  
-    .gestion .formulario textarea {
-      height: 120px; /* Ajustar altura del campo de texto en pantallas pequeñas */
-    }
+/* Estilo de los campos del formulario */
+.gestion .formulario {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.gestion .formulario .campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.gestion .formulario label {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.gestion .formulario input,
+.gestion .formulario textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 1em;
+}
+
+.gestion .formulario textarea {
+  height: 150px;
+  grid-column: span 2; /* El campo de tratamiento ocupará toda la fila */
+}
+
+.gestion .formulario input:disabled,
+.gestion .formulario textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+/* Botones de acción */
+.gestion .boton-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.gestion .boton-container button {
+  padding: 12px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  width: 160px;
+}
+
+.gestion .boton-container .btn-editar {
+  background-color: #3da07b;
+  color: white;
+}
+
+.gestion .boton-container .btn-volver {
+  background-color: #f44336;
+  color: white;
+}
+
+.gestion .boton-container .btn-guardar {
+  background-color: #4caf50;
+  color: white;
+}
+
+.gestion .boton-container .btn-cancelar {
+  background-color: #ff9800;
+  color: white;
+}
+
+.gestion .boton-container button:hover {
+  transform: scale(1.05);
+}
+
+.gestion .boton-container button:active {
+  transform: scale(0.98);
+}
+
+/* Contenedor de la barra de búsqueda */
+.busqueda-container {
+display: flex;
+flex-direction: column;
+align-items: flex-start; /* Alinea el contenido a la izquierda */
+margin-bottom: 20px;
+}
+
+.busqueda-container label {
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.input-group {
+display: flex;
+align-items: center; /* Alinea verticalmente el campo y el botón */
+gap: 10px; /* Espacio entre el campo de entrada y el botón */
+}
+
+.input-group input {
+padding: 10px;
+width: 250px;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+
+.input-group button {
+padding: 10px 20px;
+background-color: #3da07b;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-size: 1em;
+transition: background-color 0.3s ease;
+}
+
+.input-group button:hover {
+background-color: #2b8c60;
+}
+
+
+/* Móvil y tablet: Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .gestion .main-container {
+    flex-direction: column;
   }
-  
-  /* Estilos para la lista de historias */
-  .gestion .historias-lista {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+
+  .gestion .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
   }
-  
-  .gestion .modulo {
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 200px;
-    cursor: pointer;
+
+  .gestion .content-container {
+    margin-left: 0;
+    padding: 15px;
   }
-  
-  .gestion .modulo:hover {
-    background-color: #f0f0f0;
+
+  .gestion .formulario {
+    grid-template-columns: 1fr; /* Los campos se apilan en una sola columna */
   }
-  
+
+  .gestion .boton-container {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .gestion .boton-container button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .gestion .busqueda-container input {
+    width: 100%;
+  }
+
+  .gestion .formulario textarea {
+    height: 120px; /* Ajustar altura del campo de texto en pantallas pequeñas */
+  }
+}
+
+/* Estilos para la lista de historias */
+.gestion .historias-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Máximo de 4 elementos por fila */
+  gap: 20px; /* Espacio entre elementos */
+  justify-content: center; /* Centrar los elementos en la línea */
+  padding: 20px;
+}
+
+
+.gestion .modulo {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 200px;
+  cursor: pointer;
+}
+
+.gestion .modulo:hover {
+  background-color: #f0f0f0;
+}

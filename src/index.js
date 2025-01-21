@@ -19,6 +19,8 @@ import RequestPasswordReset from './components/RequestPasswordReset';
 import ResetPassword from './components/Reset';
 import Personal from './components/Personal';
 import Exportacion from './components/Exportacion';
+import Enfermera from './components/Enfermera';
+import Agregar from './components/agregar';
 
 // Define el router
 const router = createBrowserRouter([
@@ -43,6 +45,10 @@ const router = createBrowserRouter([
         element: <InicioMedico />, // Asegúrate de que este componente exista
     },
     {
+        path: "/agregar/:idPaciente/:id", // Ruta para la vista del médico
+        element: <Agregar />, // Asegúrate de que este componente exista
+    },
+    {
         path: "/tratamientos", // Ruta para gestionar tratamientos
         element: <Tratamientos />,
     },
@@ -55,9 +61,9 @@ const router = createBrowserRouter([
         element: <ProtectedRoute requiredRole="no definido"><CompShowUsers /></ProtectedRoute>, // Solo accesible para admins
     },
     {
-        path: "/mostrar/:id", // Ruta dinámica para Mostrar
-        element: <Mostrar />,
-    },
+        path: "/mostrar/:idPaciente/:idHistoria", // Ruta para aceptar ambos parámetros
+        element: <Mostrar />,
+      },      
     {
         path: "/crear-paciente", // Ruta para gestionar pacientes
         element: <CrearPaciente />,
@@ -77,6 +83,10 @@ const router = createBrowserRouter([
     {
         path: "/exportacion", // Ruta para gestionar personal
         element: <ProtectedRoute requiredRole={["admin"]}><Exportacion /></ProtectedRoute>, // Solo accesible para admins
+    },
+    {
+        path: "/vista-enfermera", // Ruta para la vista del médico
+        element: <Enfermera />, // Asegúrate de que este componente exista
     },
 ]);
 

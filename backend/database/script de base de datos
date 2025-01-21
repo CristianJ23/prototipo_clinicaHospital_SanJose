@@ -216,6 +216,26 @@ CREATE TABLE parroquia (
     FOREIGN KEY (codigo_canton) REFERENCES canton(codigo_canton)
 );
 
+-- Crear tabla Proceso
+CREATE TABLE Proceso (
+    id_proceso INT AUTO_INCREMENT PRIMARY KEY,
+    id_plan_tratamiento INT,
+    id_enfermera INT,
+    fecha_proceso DATE NOT NULL, -- Fecha en formato día/mes/año
+    hora_proceso TIME NOT NULL, -- Hora del proceso
+    medicamento VARCHAR(255) NOT NULL,
+    metodo_suministracion VARCHAR(255) NOT NULL,
+    observacion TEXT,
+    FOREIGN KEY (id_plan_tratamiento) REFERENCES Plan_tratamientos(id_plan_tratamiento),
+    FOREIGN KEY (id_enfermera) REFERENCES Enfermera(id_enfermera)
+);
+
+-- Insertar datos de prueba (opcional)
+INSERT INTO Proceso (id_plan_tratamiento, id_enfermera, fecha_proceso, hora_proceso, medicamento, metodo_suministracion, observacion)
+VALUES
+    (1, 1, '2025-01-20', '10:30:00', 'Paracetamol', 'Oral', 'Sin reacciones adversas.'),
+    (1, 2, '2025-01-21', '14:00:00', 'Ibuprofeno', 'Oral', 'Se administró sin complicaciones.');
+
 -- creacion de datos de muestra
 INSERT INTO Persona (
     primer_apellido, 
