@@ -88,6 +88,10 @@ const router = createBrowserRouter([
         path: "/vista-enfermera", // Ruta para la vista del médico
         element: <Enfermera />, // Asegúrate de que este componente exista
     },
+    {
+        path: "/vista-enfermera", // Ruta para la vista del médico
+        element: <Enfermera />, // Asegúrate de que este componente exista
+    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
