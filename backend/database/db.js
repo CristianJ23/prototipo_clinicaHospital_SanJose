@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize';
 class MySQL {
   constructor() {
     if (!MySQL.instance) {
-      const sequelize = new Sequelize('clinica_san_jose', 'root', 'UTPL2023', {
+      const sequelize = new Sequelize('clinica_san_jose', 'root', '22Ivan', {
         host: 'localhost',
         dialect: 'mysql',
       });

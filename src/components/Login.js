@@ -42,7 +42,7 @@ export const Login = ({ setUser }) => {
                         navigate("/tratamiento"); // Página para enfermeras
                         break;
                     case "tratante":
-                        navigate("/crear-paciente"); // Página para tratantes
+                        navigate("/crear-paciente2"); // Página para tratantes
                         break;
                     default:
                         console.error("Rol no reconocido:", role);

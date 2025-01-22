@@ -21,6 +21,7 @@ import Personal from './components/Personal';
 import Exportacion from './components/Exportacion';
 import Enfermera from './components/Enfermera';
 import Agregar from './components/agregar';
+import CrearPaciente2 from './components/Crear_paciente2';
 
 // Define el router
 const router = createBrowserRouter([
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
     {
         path: "/crear-paciente", // Ruta para gestionar pacientes
         element: <CrearPaciente />,
+    },
+    {
+        path: "/crear-paciente2", // Ruta para gestionar pacientes
+        element: <CrearPaciente2 />,
     },
     {
         path: "/crear_rol",
