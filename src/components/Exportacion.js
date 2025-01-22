@@ -466,6 +466,7 @@ const Exportacion = () => {
                 >
                     Volver
                 </button>
+                <button className="preview-btn" onClick={() => descargarPDF()}>Imprimir</button>
             </div>
         </div>
     );
