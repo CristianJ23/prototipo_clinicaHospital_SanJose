@@ -4,25 +4,25 @@ import "../css/agregar.css";
 
 const guardarModificacion = async (detalles, id, idPaciente) => {
   try {
-    // Enviar los detalles de la modificación a tu API
+    console.log("Datos enviados al backend:", { id_historia: id, detalles, id_paciente: idPaciente });
     const response = await fetch("http://localhost:8000/kriss/guardar_modificacion", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify({
         id_historia: id,
         detalles,
-        id_paciente: idPaciente, // Enviamos el idPaciente
-        fecha: new Date().toISOString()
-      })
+        id_paciente: idPaciente,
+        fecha: new Date().toISOString(),
+      }),
     });
-
     if (!response.ok) throw new Error("Error al guardar la modificación");
   } catch (error) {
     console.error("Error al guardar la modificación:", error);
     alert("Ocurrió un error al guardar la modificación.");
   }
 };
+
 
 const medicamentos = [
   {
