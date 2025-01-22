@@ -22,7 +22,7 @@ const InicioMedico = () => {
           <li onClick={() => navigate("/crear-paciente")}>Crear Paciente</li>
           <li onClick={() => navigate("/gestion-historias")}>Registro Historias</li>
           <li onClick={() => navigate("/gestion")}>Gestión Historias</li>
-          <li onClick={() => navigate("/tratamientos")}>Tratamientos</li>
+          <li onClick={() => navigate("/")}>Cerrar Sesión</li>
         </ul>
       </nav>
 

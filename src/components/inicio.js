@@ -20,7 +20,7 @@ const Inicio = () => {
           <li onClick={() => navigate("/vista-enfermera")}>Vista Enfermera</li>
           <li onClick={() => navigate("/personal")}>Personal</li>
           <li onClick={() => navigate("/exportacion")}>Explotación</li>
-          <li onClick={() => navigate("/")}>cerrar sesion</li> {/* el cierre de sesion deberia ser eliminando la sesion desde el backend*/}
+          <li onClick={() => navigate("/")}> Cerrar Sesión</li> {/* el cierre de sesion deberia ser eliminando la sesion desde el backend*/}
         </ul>
       </nav>
 
