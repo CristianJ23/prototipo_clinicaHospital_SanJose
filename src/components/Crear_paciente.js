@@ -211,31 +211,53 @@ const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
     }
   };
 
-  //metodo para calculara la edad 
+  //edad calcular
   const handleChange = (e) => {
     const { name, value } = e.target;
   
-    // Actualización general del estado
     setFormData((prev) => {
       const updatedForm = { ...prev, [name]: value };
   
-      // Cálculo de edad si se cambia la fecha de nacimiento
       if (name === "fecha_nacimiento") {
         const fechaNacimiento = new Date(value);
         const hoy = new Date();
         let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
         const mesDiferencia = hoy.getMonth() - fechaNacimiento.getMonth();
+        const diaDiferencia = hoy.getDate() - fechaNacimiento.getDate();
   
-        if (mesDiferencia < 0 || (mesDiferencia === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
-          edad--; // Restar un año si no ha cumplido en el mes actual
+        // Ajustar la edad si aún no ha cumplido en el año actual
+        if (mesDiferencia < 0 || (mesDiferencia === 0 && diaDiferencia < 0)) {
+          edad--;
         }
   
-        updatedForm.edad = edad; // Actualizar el campo de edad
+        // Verificar si la edad es negativa (fecha futura)
+        if (edad < 0) {
+          updatedForm.edad = "Error: la fecha de nacimiento es futura.";
+          updatedForm.error = true; // Establecer error
+        } else {
+          // Calcular meses y días solo si es menor a un mes
+          if (edad < 1) {
+            let meses = (hoy.getFullYear() - fechaNacimiento.getFullYear()) * 12 + mesDiferencia;
+            if (diaDiferencia < 0) meses--; // Ajustar si aún no ha cumplido el mes
+  
+            // Si es menos de un mes, calcular los días
+            if (meses === 0) {
+              let dias = Math.floor((hoy - fechaNacimiento) / (1000 * 60 * 60 * 24));
+              updatedForm.edad = `${dias} días`;
+            } else {
+              updatedForm.edad = `${meses} ${meses === 1 ? 'mes' : 'meses'}`; // Singular si es 1 mes
+            }
+          } else {
+            updatedForm.edad = `${edad} años`;
+          }
+          updatedForm.error = false; // No hay error
+        }
       }
   
       return updatedForm;
     });
   };
+  
 
 
   const handleSubmit = (e) => {
@@ -436,6 +458,15 @@ const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
             />
           </label>
           <label>
+  Edad:
+  <input
+    type="text"
+    name="edad"
+    value={formData.edad}
+    readOnly
+  />
+</label>
+          <label>
   Nacionalidad:
   <select
     name="nacionalidad" // Nota: usar minúsculas para mantener consistencia
@@ -456,15 +487,26 @@ const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
   </select>
 </label>
 
-          <label>
-  Edad:
-  <input
-    type="number"
-    name="edad"
-    value={formData.edad}
-    readOnly
-  />
-</label>
+
+{formData.error && (
+  <div 
+    style={{
+      position: 'fixed',
+      top: '20px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: '#f8d7da',
+      color: '#721c24',
+      padding: '10px 20px',
+      borderRadius: '5px',
+      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+      zIndex: 9999,
+    }}
+  >
+    Error: la fecha de nacimiento es futura.
+  </div>
+)}
+
 
           <label>
             Condición de Edad:
@@ -600,6 +642,11 @@ const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
     ))}
   </select>
 </label>
+{formData.error && (
+  <div style={{ color: 'red', marginTop: '10px' }}>
+    Error: la fecha de nacimiento es futura.
+  </div>
+)}
 
           <label>
             Barrio o Sector:
@@ -698,8 +745,10 @@ const [parroquiasDisponibles, setParroquiasDisponibles] = useState([]);
           </div>
         </form>
       </div>
+      
     </div>
   );
 };
+
 
 export default CrearPaciente;

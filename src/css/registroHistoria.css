@@ -45,6 +45,12 @@
   width: 50px;
   height: 50px;
   margin-bottom: 10px;
+  border-radius: 50%;
+  transition: transform 0.3s ease; /* Agrega una transición suave */
+}
+
+.registro-historia .modulo:hover img {
+  transform: rotate(360deg); /* Gira el ícono 360 grados */
 }
 
 .registro-historia .modulo p {
@@ -180,20 +186,13 @@
   font-size: 0.9em;
 }
 
-/* Estilo para las imágenes en los módulos */
-.registro-historia .modulo img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 10px;
-  border-radius: 50%;
-}
-
 /* Barra de navegación activa */
 .registro-historia .modulo.active {
   background-color: #2e8b57;
   color: white;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
 /* Estilo general para el formulario */
 label {
   display: block;
@@ -336,3 +335,89 @@ label {
   margin-bottom: 20px;
 }
 
+/* Media queries para dispositivos móviles y tabletas */
+@media (max-width: 1200px) {
+  .registro-historia {
+    flex-direction: column; /* Cambia a una columna en pantallas medianas */
+    height: auto;
+  }
+
+  .registro-historia .sidebar {
+    width: 100%;
+    flex: 0 0 auto; /* La barra lateral ocupa todo el ancho disponible */
+    height: auto;
+    box-shadow: none;
+    margin-bottom: 20px; /* Espacio entre la barra lateral y el formulario */
+  }
+
+  .registro-historia .form-container {
+    padding: 15px;
+  }
+
+  .registro-historia form {
+    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+  }
+
+  .registro-historia button {
+    width: 100%; /* Botones a pantalla completa en dispositivos medianos */
+    margin-top: 10px; /* Separación entre botones */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mejorar el diseño en dispositivos móviles */
+  .registro-historia .sidebar {
+    width: 100%;
+    padding: 10px;
+    height: auto;
+    box-shadow: none;
+  }
+
+  .registro-historia .modulo {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .registro-historia .form-container h1 {
+    font-size: 1.5em;
+  }
+
+  .registro-historia form {
+    grid-template-columns: 1fr;
+  }
+
+  .registro-historia button {
+    width: 100%; /* Hacer que los botones ocupen todo el ancho disponible */
+    margin: 10px 0; /* Separación entre botones */
+  }
+}
+
+@media (max-width: 480px) {
+  /* En pantallas muy pequeñas, como teléfonos móviles */
+  .registro-historia .sidebar {
+    display: none; /* Ocultar la barra lateral en dispositivos muy pequeños */
+  }
+
+  .registro-historia .form-container {
+    padding: 10px;
+  }
+
+  .registro-historia .form-container h1 {
+    font-size: 1.3em;
+  }
+
+  .registro-historia form {
+    grid-template-columns: 1fr;
+  }
+
+  .registro-historia .modulo {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .registro-historia button {
+    width: 100%; /* Botones a pantalla completa en dispositivos muy pequeños */
+    margin: 10px 0;
+  }
+}

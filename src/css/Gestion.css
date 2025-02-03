@@ -1,318 +1,395 @@
-/* Contenedor principal */
+:root {
+  --primary-color: #3da07b;
+  --secondary-color: #3da07b;
+  --background-color: #f9f9f9;
+  --sidebar-background: #ffffff;
+  --form-background: #ffffff;
+  --text-color-dark: #333;
+  --text-color-light: #555;
+  --box-shadow-light: rgba(0, 0, 0, 0.1);
+  --box-shadow-dark: rgba(0, 0, 0, 0.2);
+  --border-radius: 12px;
+  --transition-speed: 0.3s;
+  --sidebar-width: 270px;
+  --divider-color: #e0e0e0;
+  --highlight-color: #3da07b;
+  --white-color: #ffffff;
+}
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color-dark);
+  line-height: 1.6;
+}
+
+.gestion .content h1,
+.gestion .paciente-info h2 {
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
 .gestion .main-container {
   display: flex;
   height: 100vh;
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
   overflow: hidden;
+  transition: margin-left var(--transition-speed), width var(--transition-speed);
 }
 
-/* Barra lateral */
 .gestion .sidebar {
-  width: 250px;
-  background-color: #3da07b; /* Verde oscuro para la barra lateral */
-  color: white;
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-background);
+  color: var(--text-color-dark);
   height: 100vh;
-  padding: 20px;
+  padding: 40px 20px;
   position: fixed;
   top: 0;
   left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 10px var(--box-shadow-light);
   z-index: 10;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  transition: transform var(--transition-speed), width var(--transition-speed);
 }
 
-/* Título de la barra lateral */
 .gestion .sidebar-title {
-  font-size: 1.5em;
-  margin-bottom: 20px;
+  font-size: 1.8em;
+  margin-bottom: 30px;
   text-align: center;
-  font-weight: bold;
-  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgb(242, 236, 236);
+  z-index: 20;
 }
 
-/* Módulos dentro de la barra lateral */
 .gestion .modulo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
-  color: #3da07b; /* Verde claro para los textos */
-  padding: 15px;
-  border-radius: 10px;
+  background-color: var(--form-background);
+  color: var(--text-color-dark);
+  padding: 20px;
+  border-radius: var(--border-radius);
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   text-decoration: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px var(--box-shadow-light);
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed), opacity var(--transition-speed);
+  opacity: 0.9;
 }
 
 .gestion .modulo img {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 15px;
+  transition: transform var(--transition-speed);
 }
 
 .gestion .modulo p {
   margin: 0;
-  font-size: 0.9em;
+  font-size: 1em;
+  font-weight: 500;
   text-align: center;
 }
 
 .gestion .modulo:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px var(--box-shadow-dark);
+  opacity: 1;
 }
 
-/* Contenedor de contenido principal */
+.gestion .modulo:hover img {
+  transform: rotate(360deg);
+}
+
 .gestion .content-container {
   flex: 1;
-  margin-left: 250px; /* Deja espacio para la barra lateral */
-  padding: 30px;
+  margin-left: calc(var(--sidebar-width) + 40px);
+  padding: 50px;
+  padding-right: 50px;
   overflow-y: auto;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  background-color: var(--form-background);
   height: 100vh;
-}
-
-/* Barra de búsqueda */
-.gestion .busqueda-container {
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center; /* Alineación a la izquierda */
-  width: 100%;
-}
-
-.gestion .busqueda-container h1 {
-  font-size: 2em;
-  color: #3da07b;
-  margin-right: 20px; /* Separar el título del campo de búsqueda */
-  margin-bottom: 0; /* Eliminar espacio adicional debajo del título */
-  text-align: left; /* Alinear el título a la izquierda */
-}
-
-.gestion .busqueda-container label {
-  display: block;
-  font-weight: bold;
-  color: #555;
-  margin-bottom: 5px;
-}
-
-.gestion .busqueda-container input {
-  padding: 10px;
-  width: 250px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px; /* Separar el campo de búsqueda del botón */
-  display: inline-block;
-}
-
-.gestion .busqueda-container button {
-  padding: 10px 20px;
-  background-color: #3da07b;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1.1em;
-  transition: background-color 0.3s ease;
-}
-
-.gestion .busqueda-container button:hover {
-  background-color: #2b8c60;
-}
-
-/* Estilo de los campos del formulario */
-.gestion .formulario {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.gestion .formulario .campo {
   display: flex;
   flex-direction: column;
+  transition: margin-left var(--transition-speed);
 }
 
-.gestion .formulario label {
-  font-weight: bold;
-  color: #555;
-  margin-bottom: 5px;
+.search-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 30px;
+  justify-content: flex-start;
+  padding-left: calc(var(--sidebar-width) + 20px);
+  padding-right: 20px;
 }
 
-.gestion .formulario input,
-.gestion .formulario textarea {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.busqueda-container, .filtros-container {
+  background-color: var(--form-background);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px var(--box-shadow-light);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.busqueda-container h2, .filtros-container h2 {
+  margin-bottom: 15px;
+  font-size: 1.5em;
+  color: var(--text-color-dark);
   width: 100%;
+  text-align: center; /* Centrar los títulos */
+}
+
+.busqueda-container label, .filtros-container label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1em;
+  color: var(--text-color-dark);
+}
+
+.busqueda-container input[type="text"], .filtros-container input[type="text"], .filtros-container select {
+  padding: 8px;
+  border: 1px solid var(--divider-color);
+  border-radius: var(--border-radius);
   font-size: 1em;
 }
 
-.gestion .formulario textarea {
-  height: 150px;
-  grid-column: span 2; /* El campo de tratamiento ocupará toda la fila */
+.busqueda-container button, .filtros-container input[type="range"] {
+  padding: 8px 15px;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color var(--transition-speed);
 }
 
-.gestion .formulario input:disabled,
-.gestion .formulario textarea:disabled {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
+.busqueda-container button:hover {
+  background-color: var(--secondary-color);
 }
 
-/* Botones de acción */
-.gestion .boton-container {
+.filtros-container input[type="range"] {
+  width: 150px;
+}
+
+.mensaje {
+  margin-top: 15px;
+  font-size: 1em;
+  color: var(--text-color-dark);
+  text-align: center;
+}
+
+/* Historias */
+.historias-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+  width: calc(100% - 270px);
+  margin-left: 270px;
+}
+
+.historias-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Estilo individual de cada historia */
+.modulo.historia {
+  width: calc(33.333% - 20px);
+  max-width: 300px;
+  padding: 20px;
+  background-color: var(--white-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+  text-align: center;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 15px;
-  margin-top: 30px;
+  flex-grow: 1;
 }
 
-.gestion .boton-container button {
-  padding: 12px 25px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1.1em;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  width: 160px;
+/* Primera historia (la más reciente) */
+.modulo.historia:first-child {
+  background-color: var(--highlight-color);
+  color: var(--white-color);
+  border: 2px solid var(--primary-color); /* Borde destacado */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
 }
 
-.gestion .boton-container .btn-editar {
-  background-color: #3da07b;
-  color: white;
+.modulo.historia:first-child h3,
+.modulo.historia:first-child p {
+  color: var(--white-color);
 }
 
-.gestion .boton-container .btn-volver {
-  background-color: #f44336;
-  color: white;
+.modulo.historia:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
-.gestion .boton-container .btn-guardar {
-  background-color: #4caf50;
-  color: white;
+/* Título de la historia */
+.modulo.historia h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: var(--text-color-dark);
+  font-weight: bold;
+  text-align: center; /* Centrar el título */
 }
 
-.gestion .boton-container .btn-cancelar {
-  background-color: #ff9800;
-  color: white;
+/* Descripción de la historia */
+.modulo.historia p {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin: 5px 0;
+  line-height: 1.5;
+  text-align: center; /* Centrar la descripción */
 }
 
-.gestion .boton-container button:hover {
-  transform: scale(1.05);
-}
-
-.gestion .boton-container button:active {
-  transform: scale(0.98);
-}
-
-/* Contenedor de la barra de búsqueda */
-.busqueda-container {
-display: flex;
-flex-direction: column;
-align-items: flex-start; /* Alinea el contenido a la izquierda */
-margin-bottom: 20px;
-}
-
-.busqueda-container label {
-font-weight: bold;
-margin-bottom: 10px;
-}
-
-.input-group {
-display: flex;
-align-items: center; /* Alinea verticalmente el campo y el botón */
-gap: 10px; /* Espacio entre el campo de entrada y el botón */
-}
-
-.input-group input {
-padding: 10px;
-width: 250px;
-border: 1px solid #ccc;
-border-radius: 4px;
-}
-
-.input-group button {
-padding: 10px 20px;
-background-color: #3da07b;
-color: white;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-font-size: 1em;
-transition: background-color 0.3s ease;
-}
-
-.input-group button:hover {
-background-color: #2b8c60;
-}
-
-
-/* Móvil y tablet: Ajustes para pantallas pequeñas */
-@media (max-width: 768px) {
-  .gestion .main-container {
-    flex-direction: column;
-  }
-
-  .gestion .sidebar {
-    position: static;
+/* Pantallas pequeñas (hasta 767px) - Celulares */
+@media (max-width: 767px) {
+  /* Ajustar el contenedor principal */
+  .historias-container {
     width: 100%;
-    height: auto;
-  }
-
-  .gestion .content-container {
     margin-left: 0;
-    padding: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaciado entre componentes */
   }
 
-  .gestion .formulario {
-    grid-template-columns: 1fr; /* Los campos se apilan en una sola columna */
+  /* Módulos de historia */
+  .modulo.historia {
+    width: 100%; /* Ocupar todo el ancho */
+    margin-bottom: 15px; /* Espaciado entre módulos */
+    padding: 15px; /* Añadir padding interno */
+    background-color: #fff; /* Fondo blanco */
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px var(--box-shadow-light); /* Sombra suave */
   }
 
-  .gestion .boton-container {
-    align-items: stretch;
+  /* Barra lateral oculta */
+  .gestion .sidebar {
+    display: none;
+  }
+
+  /* Contenedores de búsqueda y filtros */
+  .busqueda-container, .filtros-container {
     width: 100%;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column; /* Apilar elementos verticalmente */
+    align-items: center; /* Centrar elementos */
   }
 
-  .gestion .boton-container button {
-    width: 100%;
-    margin-bottom: 10px;
+  /* Títulos en búsqueda y filtros */
+  .busqueda-container h2, .filtros-container h2 {
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 10px; /* Espaciado inferior */
   }
 
-  .gestion .busqueda-container input {
-    width: 100%;
+  /* Inputs y botones en búsqueda y filtros */
+  .busqueda-container input, .filtros-container input[type="range"] {
+    width: 100%; /* Ocupar todo el ancho */
+    padding: 10px;
+    font-size: 0.9em;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
   }
 
-  .gestion .formulario textarea {
-    height: 120px; /* Ajustar altura del campo de texto en pantallas pequeñas */
+  .busqueda-container button, .filtros-container button {
+    width: 100%; /* Ocupar todo el ancho */
+    padding: 10px;
+    font-size: 0.9em;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
   }
-}
 
-/* Estilos para la lista de historias */
-.gestion .historias-lista {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Máximo de 4 elementos por fila */
-  gap: 20px; /* Espacio entre elementos */
-  justify-content: center; /* Centrar los elementos en la línea */
-  padding: 20px;
-}
+  .busqueda-container button:hover, .filtros-container button:hover {
+    background-color: var(--primary-color-hover); /* Efecto hover */
+  }
 
+  /* Botón "Volver al inicio" */
+  .volver-al-inicio {
+    display: block;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    z-index: 100;
+    font-size: 0.8em;
+    box-shadow: 0 2px 5px var(--box-shadow-dark); /* Sombra para destacar */
+  }
 
-.gestion .modulo {
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 200px;
-  cursor: pointer;
-}
+  /* Ajustar el tamaño de los textos */
+  .modulo.historia h3, .modulo.historia p {
+    font-size: 0.9em; /* Reducir tamaño de fuente */
+  }
 
-.gestion .modulo:hover {
-  background-color: #f0f0f0;
+  /* Mejorar la legibilidad de los textos */
+  .modulo.historia p {
+    line-height: 1.5; /* Espaciado entre líneas */
+    color: var(--text-color-dark);
+  }
+
+  /* Ajustar imágenes dentro de los módulos */
+  .modulo.historia img {
+    width: 100%; /* Ocupar todo el ancho */
+    height: auto; /* Mantener proporción */
+    border-radius: var(--border-radius);
+    margin-bottom: 10px; /* Espaciado inferior */
+  }
+
+  /* Ajustar botones dentro de los módulos */
+  .modulo.historia button {
+    width: 100%; /* Ocupar todo el ancho */
+    padding: 10px;
+    font-size: 0.9em;
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+  }
+
+  .modulo.historia button:hover {
+    background-color: var(--secondary-color-hover); /* Efecto hover */
+  }
 }

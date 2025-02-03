@@ -1,7 +1,9 @@
 /* Variables CSS */
 :root {
     --primary-color: #3da07b; /* Verde oscuro */
+    --primary-color-hover: #8ca009; /* Verde más oscuro para hover */
     --secondary-color: #f44336; /* Rojo vibrante */
+    --secondary-color-hover: #e53935; /* Rojo más oscuro para hover */
     --background-color: #f9f9f9; /* Fondo claro */
     --sidebar-background: #3da07b; /* Barra lateral verde */
     --form-background: #ffffff; /* Fondo del formulario */
@@ -13,6 +15,8 @@
     --transition-speed: 0.3s; /* Velocidad de transición */
     --sidebar-width: 270px; /* Ancho de la barra lateral */
     --divider-color: #ddd; /* Color para la línea de separación */
+    --golden-green: #b0a565; /* Dorado verdoso para el botón de agregar */
+    --golden-green-hover: #9c8f4e; /* Dorado verdoso más oscuro para hover */
 }
 
 /* Contenedor principal de la pantalla */
@@ -20,6 +24,7 @@
     display: flex;
     height: 100vh;
     overflow: hidden;
+    background-color: var(--background-color);
 }
 
 /* Barra lateral (Menú) */
@@ -37,7 +42,7 @@
     align-items: center;
     box-shadow: 2px 0 10px var(--box-shadow-light);
     z-index: 10;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
     transition: transform var(--transition-speed), width var(--transition-speed);
 }
 
@@ -188,6 +193,7 @@
 .mostrar table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
 .mostrar table th,
@@ -200,6 +206,14 @@
 .mostrar table th {
     background-color: var(--primary-color);
     color: white;
+}
+
+.mostrar table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Fondo alterno para filas */
+}
+
+.mostrar table tr:hover {
+    background-color: #f1f1f1; /* Efecto hover en filas */
 }
 
 /* Diseño de los planes de tratamiento */
@@ -242,15 +256,28 @@
     margin-top: 20px;
 }
 
+/* Botón de "Agregar nuevo tratamiento" */
+.mostrar .acciones .agregar-tratamiento {
+    background-color: var(--golden-green); /* Dorado verdoso */
+}
+
+.mostrar .acciones .agregar-tratamiento:hover {
+    background-color: var(--golden-green-hover); /* Dorado verdoso más oscuro */
+}
+
 /* Botón de "Cancelar" en rojo */
 .mostrar .acciones .cancelar {
     background-color: var(--secondary-color); /* Rojo vibrante */
 }
 
 .mostrar .acciones button:hover {
-    background-color: #328f68; /* Efecto de color más oscuro al pasar el mouse */
+    background-color: var(--primary-color-hover); /* Efecto de color más oscuro al pasar el mouse */
     transform: scale(1.05);
     box-shadow: 0 6px 15px var(--box-shadow-dark);
+}
+
+.mostrar .acciones .cancelar:hover {
+    background-color: var(--secondary-color-hover); /* Rojo más oscuro al pasar el mouse */
 }
 
 .mostrar .acciones button:active {
@@ -277,4 +304,106 @@
 .mostrar .observacion p {
     margin: 0;
     font-weight: 500;
+}
+
+/* Tabletas pequeñas y móviles (menos de 768px) */
+@media (max-width: 768px) {
+    .mostrar .sidebar {
+        width: 100%; /* Barra lateral ocupa todo el ancho */
+        height: auto;
+        position: absolute;
+        top: 0;
+        left: -100%; /* Menú oculto por defecto */
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: left var(--transition-speed);
+    }
+
+    .mostrar .sidebar.open {
+        left: 0; /* Despliega el menú */
+    }
+
+    .mostrar .form-container {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .mostrar .sidebar-title {
+        font-size: 1.5em;
+    }
+
+    .mostrar .modulo {
+        margin-bottom: 15px;
+    }
+
+    .mostrar .form-container h2 {
+        font-size: 1.8em;
+    }
+
+    .mostrar h3 {
+        font-size: 1.2em;
+    }
+
+    .mostrar p {
+        font-size: 1em;
+    }
+
+    /* Menú desplegable */
+    .mostrar .sidebar-toggle {
+        display: block; /* Mostrar botón para abrir el menú */
+    }
+
+    .mostrar .acciones {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .mostrar .acciones button {
+        width: 100%; /* Botones ocupan todo el ancho */
+    }
+}
+
+/* Móviles (menos de 480px) */
+@media (max-width: 480px) {
+    .mostrar .sidebar {
+        padding: 15px;
+    }
+
+    .mostrar .form-container {
+        padding: 15px;
+    }
+
+    .mostrar .sidebar-title {
+        font-size: 1.4em;
+    }
+
+    .mostrar .modulo {
+        padding: 10px;
+    }
+
+    .mostrar .modulo img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .mostrar .modulo p {
+        font-size: 0.8em;
+    }
+
+    .mostrar .form-container h2 {
+        font-size: 1.6em;
+    }
+
+    .mostrar h3 {
+        font-size: 1.1em;
+    }
+
+    .mostrar p {
+        font-size: 0.9em;
+    }
+
+    .mostrar .acciones button {
+        font-size: 1em;
+        padding: 10px 15px;
+    }
 }

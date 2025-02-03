@@ -1,16 +1,20 @@
 import HistoriaClinicaModel from "../models/HistoriaClinicaModel.js";
 
-//falta por encontrar el area para la historia clinica
+// Crear historia clínica con el nuevo campo "estado"
 const CrearHistoriaClinica = async (req, res) => {
     try {
-        // console.log("Sesión recibida en CrearHistoriaClinica:", req.session);
-        // console.log("Cookies recibidas:", req.headers.cookie);
-        // console.log("persona que ingreso: ", req.session.person.id_persona);
         const id_medico = req.session.person.id_persona;
         const input = req.body; // Datos enviados desde el formulario
         input.id_medico = id_medico;
         input.id_area = req.session.person.id_area ? req.session.person.id_area : 0;
-        // Transformar datos para la base de datos
+
+        // 🔹 Paso 1: Inactivar todas las historias previas del paciente
+        await HistoriaClinicaModel.update(
+            { estado: "INACTIVO" },
+            { where: { id_paciente: input.id_paciente } }
+        );
+
+        // 🔹 Paso 2: Crear la nueva historia clínica con estado "ACTIVO"
         const historial = {
             id_paciente: input.id_paciente,
             id_medico: input.id_medico,
@@ -26,6 +30,7 @@ const CrearHistoriaClinica = async (req, res) => {
             pulsioximetria: input.constantesVitales.pulsioximetria || null,
             observacion_fisica: input.examenFisico.observacion || "",
             observacion_organos: input.revisionOrganosYSystems.observacion || "",
+            estado: "ACTIVO", // 🔹 Se establece la nueva historia como ACTIVA
             ...mapNamesToFields(input.examenFisico.seleccionados, [
                 "cabeza", "cuello", "torax", "abdomen", "extremidades",
                 "piel", "sistema_linfatico", "sistema_nervioso",
@@ -43,6 +48,7 @@ const CrearHistoriaClinica = async (req, res) => {
 
         res.status(200).json({
             id_historia: newHistory.id_historia,
+            message: "Historia clínica creada y anteriores marcadas como INACTIVO",
         });
     } catch (e) {
         console.error("Error al crear la historia clínica", e);

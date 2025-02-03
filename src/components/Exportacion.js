@@ -94,9 +94,6 @@ const Exportacion = () => {
         { Header: "ID Historia", accessorKey: "id_historia" },
         { Header: "Motivo de Consulta", accessorKey: "motivoConsulta" },
         { Header: "Fecha", accessorKey: "fecha_creacion" },
-        { Header: "Peso", accessorKey: "peso" },
-        { Header: "Talla", accessorKey: "talla" },
-        { Header: "imc", accessorKey: "imc" },
     ];
 
     const calcularEdad = (fechaNacimiento) => {
@@ -378,9 +375,8 @@ const Exportacion = () => {
 
 
     return (
-        
         <div className="exportacion-container">
-            <h1 className="page-title">Exportació de Historias Clínicas</h1>
+            <h1 className="page-title">Gestión de Historias Clínicas</h1>
             <form className="search-form" onSubmit={(e) => { e.preventDefault(); buscarHistoria(cedula); }}>
                 <label>
                     Cédula:

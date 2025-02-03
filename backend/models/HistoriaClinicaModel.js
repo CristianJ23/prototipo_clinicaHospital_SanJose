@@ -166,9 +166,15 @@ const HistoriaClinicaModel = db.define('HistoriaClinica', {
     defaultValue: DataTypes.NOW, // Asigna la fecha actual por defecto
     allowNull: false,
   },
+  estado: {
+    type: DataTypes.ENUM('ACTIVO', 'INACTIVO'), // 🔹 Nuevo campo para el estado
+    defaultValue: 'ACTIVO',
+    allowNull: false,
+  }
 }, {
   tableName: 'HistoriaClinica', // Exact name of the table in the database
   timestamps: false,            // Disable createdAt and updatedAt if not needed
 });
 
+// Export the model
 export default HistoriaClinicaModel;

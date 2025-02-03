@@ -12,7 +12,6 @@ import crearUsuarioImg from "../img2/usuario.png";
 
 const Personal = () => {
     const [personaList, setPersonaList] = useState([]);  // Store list of people
-    const [isLoading, setIsLoading] = useState(true); // Estado para indicador de carga
     const [vista, setVista] = useState("inicio"); // Estados: "inicio", "crearPersona", "darAcceso"
     const navigate = useNavigate();  // Hook para navegación programática
     const [cedula, setCedula] = useState("");
@@ -73,16 +72,14 @@ const Personal = () => {
         }
     ];
 
-    // Función para obtener todas las personas desde la API
+    // Function to fetch all people from the API
     const fetchAllPersonas = async () => {
         try {
             const response = await axios.get("http://localhost:8000/kriss/getAllPersonal");
-            setPersonaList(response.data); // Actualizar estado con los datos obtenidos
+            setPersonaList(response.data);  // Update state with the list of people
         } catch (error) {
             console.error("Error al obtener las personas:", error);
             setMensaje("Error al obtener las personas.");
-        } finally {
-            setIsLoading(false); // Finaliza el indicador de carga
         }
     };
 
@@ -335,25 +332,17 @@ const Personal = () => {
                             Editar Rol
                         </button>
                     </header>
-
-                    <body>
-                    <div>
-                            {isLoading ? (
-                                <p>Cargando datos...</p> // Indicador de carga
-                            ) : personaList.length > 0 ? (
-                                <PersonalTable data={personaList} columns={columns} />
-                            ) : (
-                                <p>No se encontraron datos. {mensaje}</p>
-                            )}
-                        </div>
-
-                        <div className="button-container">
+    
+                    <div className="table-container">
+                        <h1>Mi Tabla Ordenable</h1>
+                        <PersonalTable data={personaList} columns={columns} />
+                    </div>
+                    
+                    <div className="button-container">
                         <button className="back-button" onClick={() => navigate("/inicio")}>
                             Volver
                         </button>
                     </div>
-                    </body>
-
                 </div>
             )}
     

@@ -1,4 +1,3 @@
-// Import the database connection
 import db from "../database/db.js";
 import { DataTypes } from "sequelize";
 import PlanTratamientosModel from "./PlanTratamientoModel.js"; // Import Plan_tratamientos model
@@ -33,6 +32,10 @@ const ProcesoModel = db.define('Proceso', {
     allowNull: false,
   },
   hora_proceso: {
+    type: DataTypes.TIME, // Stores only the time (HH:MM:SS)
+    allowNull: false,
+  },
+  hora_suministro: {
     type: DataTypes.TIME, // Stores only the time (HH:MM:SS)
     allowNull: false,
   },

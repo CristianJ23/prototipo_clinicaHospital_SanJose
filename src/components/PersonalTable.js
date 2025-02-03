@@ -13,33 +13,31 @@ import "../css/personalTable.css";
 function PersonalTable({ data, columns }) {
     const [sorting, setSorting] = useState([]);
     const [filtering, setFiltering] = useState("");
-    const [pageIndex, setPageIndex] = useState(0); // Inicializamos pageIndex con 0
-    const [pageSize, setPageSize] = useState(5);  // Inicializamos pageSize con 5
+    const [pageIndex, setPageIndex] = useState(0);
+    const [pageSize, setPageSize] = useState(5);
 
-    // Validar que los datos sean un arreglo
     const validData = Array.isArray(data) ? data : [];
     
-    // Validar y formatear los datos
-    const formattedData = validData.map(row => ({
-        ...row,
-        fecha_creacion: row.fecha_creacion
-            ? format(new Date(row.fecha_creacion), "dd/MM/yyyy")
-            : "Fecha inválida",
-    }));
+    const formattedData = validData
+        .map(row => ({
+            ...row,
+            fecha_creacion: row.fecha_creacion
+                ? format(new Date(row.fecha_creacion), "dd/MM/yyyy")
+                : "Fecha inválida",
+            raw_fecha_creacion: row.fecha_creacion ? new Date(row.fecha_creacion) : null
+        }))
+        .sort((a, b) => (b.raw_fecha_creacion - a.raw_fecha_creacion)); // Ordena de más reciente a más antigua
 
-    // Filtrar los datos según la búsqueda global
     const filteredData = formattedData.filter(row => {
         return Object.values(row).some(value =>
             String(value).toLowerCase().includes(filtering.toLowerCase())
         );
     });
 
-    // Slicing the data to match the page size
     const pageData = filteredData.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize);
 
-    // Inicializar la tabla
     const table = useReactTable({
-        data: pageData, // Use the sliced data for the current page
+        data: pageData,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -54,32 +52,29 @@ function PersonalTable({ data, columns }) {
         onGlobalFilterChange: setFiltering,
         onPaginationChange: ({ pageIndex, pageSize }) => {
             setPageIndex(pageIndex);
-            setPageSize(pageSize); // Asegúrate de actualizar ambos valores
+            setPageSize(pageSize);
         },
-        manualPagination: true,  // Indicamos que la paginación se maneja manualmente
-        pageCount: Math.ceil(filteredData.length / pageSize),  // Ajuste en el cálculo de total de páginas
+        manualPagination: true,
+        pageCount: Math.ceil(filteredData.length / pageSize),
     });
 
-    // Mostrar datos para depuración
-    console.log("Page Index:", pageIndex);
-    console.log("Total Pages:", table.getPageCount());
-    console.log("Rows for current page:", table.getRowModel().rows);
-
     return (
-        <div>
+        <div className="personal_table_container">
             <input
+                className="filter_input"
                 type='text'
                 value={filtering}
                 onChange={(e) => setFiltering(e.target.value)}
                 placeholder='Ingrese nombre para filtro'
             />
-            <table>
+            <table className="personal_table">
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th
                                     key={header.id}
+                                    className="header_cell"
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
                                     {!header.isPlaceHolder ? (
@@ -101,9 +96,9 @@ function PersonalTable({ data, columns }) {
                 <tbody>
                     {table.getRowModel().rows.length > 0 ? (
                         table.getRowModel().rows.map(row => (
-                            <tr key={row.id}>
+                            <tr key={row.id} className="table_row">
                                 {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id}>
+                                    <td key={cell.id} className="table_cell">
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </td>
                                 ))}
@@ -117,26 +112,30 @@ function PersonalTable({ data, columns }) {
                 </tbody>
             </table>
 
-            <div>
+            <div className="pagination_controls">
                 <button
+                    className="pagination_button"
                     onClick={() => setPageIndex(0)}
                     disabled={pageIndex === 0}
                 >
                     First Page
                 </button>
                 <button
+                    className="pagination_button"
                     onClick={() => setPageIndex(prev => Math.max(prev - 1, 0))}
                     disabled={pageIndex === 0}
                 >
                     Previous Page
                 </button>
                 <button
+                    className="pagination_button"
                     onClick={() => setPageIndex(prev => Math.min(prev + 1, table.getPageCount() - 1))}
                     disabled={pageIndex >= table.getPageCount() - 1}
                 >
                     Next Page
                 </button>
                 <button
+                    className="pagination_button"
                     onClick={() => setPageIndex(table.getPageCount() - 1)}
                     disabled={pageIndex >= table.getPageCount() - 1}
                 >
@@ -144,14 +143,15 @@ function PersonalTable({ data, columns }) {
                 </button>
             </div>
 
-            <div>
+            <div className="page_size_selector">
                 <label htmlFor="pageSize">Filas por página:</label>
                 <select
+                    className="page_size_select"
                     id="pageSize"
                     value={pageSize}
                     onChange={(e) => {
                         setPageSize(Number(e.target.value));
-                        setPageIndex(0); // Reiniciar a la primera página al cambiar el tamaño de la página
+                        setPageIndex(0);
                     }}
                 >
                     <option value={5}>5</option>
@@ -161,7 +161,7 @@ function PersonalTable({ data, columns }) {
                 </select>
             </div>
 
-            <div>
+            <div className="pagination_info">
                 <span>
                     Página {filteredData.length > 0 ? pageIndex + 1 : 0} de {filteredData.length > 0 ? table.getPageCount() : 0}
                 </span>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import debounce from "lodash.debounce";
 import jsPDF from "jspdf";
-import "jspdf-autotable"; // Asegúrate de importar la librería
+import "jspdf-autotable";
 import "../css/enfermera.css";
 
 // Variable global para almacenar el ID del plan de tratamiento
@@ -18,6 +18,7 @@ const Enfermera = () => {
         metodo_suministracion: "",
         observacion: "",
         id_plan_tratamiento: "",
+        hora_suministro: "",
     };
 
     const [mensaje, setMensaje] = useState("");
@@ -26,6 +27,7 @@ const Enfermera = () => {
     const [tratamientos, setTratamientos] = useState([]);
     const [procesos, setProcesos] = useState([]);
     const [nuevoProceso, setNuevoProceso] = useState(estadoInicialProceso);
+    const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
 
     // Agregar proceso
     const agregarProceso = () => {
@@ -50,6 +52,7 @@ const Enfermera = () => {
 
         // Restablecer formulario
         setNuevoProceso({ ...estadoInicialProceso });
+        setMostrarConfirmacion(false);
     };
 
     // Enviar procesos al backend
@@ -63,8 +66,8 @@ const Enfermera = () => {
 
             // Enviar solo el array de procesos
             const response = await axios.post(
-                "http://localhost:8000/kriss/Porecesos_Creacion",  // Asegúrate de que esta URL esté correcta
-                procesos,  // Enviar directamente el array de procesos
+                "http://localhost:8000/kriss/Porecesos_Creacion",
+                procesos,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -140,7 +143,10 @@ const Enfermera = () => {
 
     const handleProcesoChange = (e) => {
         const { name, value } = e.target;
-        setNuevoProceso({ ...nuevoProceso, [name]: value });
+        setNuevoProceso((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
     const eliminarProceso = (index) => {
@@ -162,13 +168,14 @@ const Enfermera = () => {
             // Crear la tabla de tratamientos
             doc.autoTable({
                 startY: 30,
-                head: [["Medicamento", "Método de Administración"]],
+                head: [["Medicamento", "Método de Administración", "Duración"]],
                 body: tratamientos
                     .filter((plan) => plan.planTratamiento.estado === "ACTIVO")
                     .flatMap((plan) =>
                         plan.tratamientos.map((tratamiento) => [
                             tratamiento.medicamentos,
                             tratamiento.metodoAdministracion,
+                            tratamiento.duracion,
                         ])
                     ),
                 theme: "grid",
@@ -191,6 +198,7 @@ const Enfermera = () => {
             proceso.medicamento,
             proceso.metodo_suministracion,
             proceso.observacion,
+            proceso.hora_suministro,
         ]);
 
         // Crear la tabla de procesos
@@ -199,7 +207,7 @@ const Enfermera = () => {
 
         doc.autoTable({
             startY: doc.lastAutoTable.finalY + 30,
-            head: ["Fecha", "Hora", "Medicamento", "Método de Suministración", "Observación"],
+            head: ["Fecha", "Hora", "Medicamento", "Método de Suministración", "Observación", "Hora de Suministro"],
             body: procesosData,
             theme: "grid",
             margin: { top: 10 },
@@ -213,6 +221,14 @@ const Enfermera = () => {
 
         // Guardar el PDF
         doc.save("procesos.pdf");
+    };
+
+    const confirmarHoraSuministro = () => {
+        if (!nuevoProceso.hora_suministro) {
+            alert("Por favor ingrese la hora de suministro.");
+            return;
+        }
+        setMostrarConfirmacion(true);
     };
 
     return (
@@ -257,6 +273,7 @@ const Enfermera = () => {
                                 <tr>
                                     <th>Medicamento</th>
                                     <th>Método de Administración</th>
+                                    <th>Duración</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -267,6 +284,7 @@ const Enfermera = () => {
                                             <tr key={tratamiento.id_tratamiento}>
                                                 <td>{tratamiento.medicamentos}</td>
                                                 <td>{tratamiento.metodoAdministracion}</td>
+                                                <td>{tratamiento.duracion ? `${tratamiento.duracion} días` : "No especificado"}</td>
                                             </tr>
                                         ))
                                     )}
@@ -287,6 +305,7 @@ const Enfermera = () => {
                             <th>Medicamento</th>
                             <th>Método</th>
                             <th>Observación</th>
+                            <th>Hora de Suministro</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -298,6 +317,7 @@ const Enfermera = () => {
                                 <td>{proceso.medicamento}</td>
                                 <td>{proceso.metodo_suministracion}</td>
                                 <td>{proceso.observacion}</td>
+                                <td>{proceso.hora_suministro}</td>
                                 <td>
                                     <button onClick={() => eliminarProceso(index)}>Eliminar</button>
                                 </td>
@@ -330,11 +350,30 @@ const Enfermera = () => {
                                 />
                             </td>
                             <td>
-                                <button onClick={agregarProceso}>Agregar</button>
+                                <input
+                                    type="time"
+                                    name="hora_suministro"
+                                    value={nuevoProceso.hora_suministro}
+                                    onChange={(e) => {
+                                        const hora = e.target.value; // Obtiene el valor en formato HH:MM
+                                        const horaConSegundos = `${hora}:00`; // Convierte a HH:MM:SS
+                                        handleProcesoChange({ target: { name: e.target.name, value: horaConSegundos } });
+                                    }}
+                                />
+                            </td>
+                            <td>
+                                <button onClick={confirmarHoraSuministro}>Agregar</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                {mostrarConfirmacion && (
+                    <div className="confirmation-modal">
+                        <p>¿Está seguro de que esta es la hora de administración? Acepta cualquier responsabilidad.</p>
+                        <button onClick={agregarProceso}>Sí, confirmar</button>
+                        <button onClick={() => setMostrarConfirmacion(false)}>Cancelar</button>
+                    </div>
+                )}
                 <button onClick={exportarPDF} className="export-btn-enfermera">Exportar a PDF</button>
                 <button onClick={enviarProcesos} className="send-btn-enfermera">Enviar Procesos</button>
             </div>

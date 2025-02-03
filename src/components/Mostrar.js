@@ -146,6 +146,15 @@ const Mostrar = () => {
   };
 
   if (cargando) return <div>Cargando...</div>;
+  document.addEventListener('DOMContentLoaded', function() {
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open'); // Toggle para abrir o cerrar el menú
+    });
+});
+
 
   return (
     <div className="mostrar">

@@ -24,6 +24,10 @@ const TratamientoModel = db.define('tratamientos', {
             key: 'id_plan_tratamiento' // Clave primaria de la tabla Plan_tratamientos
         }
     },
+    duracion: {
+        type: DataTypes.INTEGER,
+        allowNull: true, // Esto permite que la columna acepte valores nulos
+    }
 }, {
     tableName: 'Tratamiento',
     timestamps: false,

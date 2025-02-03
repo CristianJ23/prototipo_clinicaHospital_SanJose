@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../css/agregar.css";
+import debounce from 'lodash.debounce';
+import axios from "axios";
 
 const guardarModificacion = async (detalles, id, idPaciente) => {
   try {
@@ -22,7 +24,6 @@ const guardarModificacion = async (detalles, id, idPaciente) => {
     alert("Ocurrió un error al guardar la modificación.");
   }
 };
-
 
 const medicamentos = [
   {
@@ -74,7 +75,7 @@ const medicamentos = [
 const FormularioTratamiento = () => {
   const { id, idPaciente } = useParams(); // Recuperar idHistoria y idPaciente
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ tratamiento: { medicamentos: "", metodoAdministracion: "" } });
+  const [formData, setFormData] = useState({ tratamiento: { medicamentos: "", metodoAdministracion: "", duracion: "" } });
   const [medicamentosSeleccionados, setMedicamentosSeleccionados] = useState([]);
   const [opcionesFiltradas, setOpcionesFiltradas] = useState([]);
 
@@ -90,8 +91,8 @@ const FormularioTratamiento = () => {
   const agregarMedicamento = () => {
     const medicamento = obtenerMedicamentoPorNombre(formData.tratamiento.medicamentos);
     if (medicamento && !medicamentosSeleccionados.some(item => item.nombre.toLowerCase() === medicamento.nombre.toLowerCase())) {
-      setMedicamentosSeleccionados([...medicamentosSeleccionados, { ...medicamento, metodoAdministracion: formData.tratamiento.metodoAdministracion }]);
-      setFormData({ ...formData, tratamiento: { medicamentos: "", metodoAdministracion: "" } });
+      setMedicamentosSeleccionados([...medicamentosSeleccionados, { ...medicamento, metodoAdministracion: formData.tratamiento.metodoAdministracion, duracion: formData.tratamiento.duracion }]);
+      setFormData({ ...formData, tratamiento: { medicamentos: "", metodoAdministracion: "", duracion: "" } });
     } else {
       alert(medicamento ? "Este medicamento ya ha sido agregado" : "Medicamento no encontrado");
     }
@@ -129,6 +130,7 @@ const FormularioTratamiento = () => {
           body: JSON.stringify({
             medicamentos: medicamento.nombre,
             metodoAdministracion: medicamento.metodoAdministracion,
+            duracion: medicamento.duracion, // Incluir la duración
             id_plan_tratamiento,
             id_paciente: idPaciente, // Incluir el idPaciente
           }),
@@ -139,7 +141,7 @@ const FormularioTratamiento = () => {
   
       // Limpiar campos
       setMedicamentosSeleccionados([]);
-      setFormData({ tratamiento: { medicamentos: "", metodoAdministracion: "" } });
+      setFormData({ tratamiento: { medicamentos: "", metodoAdministracion: "", duracion: "" } });
   
       // Crear detalles de la modificación con los medicamentos agregados
       const nuevoTratamiento = medicamentosSeleccionados.map(med => med.nombre).join(", ");
@@ -192,6 +194,18 @@ const FormularioTratamiento = () => {
           className="input-metodo"
         />
       </label>
+
+      <label className="form-label">
+        Duración del Tratamiento (días):
+        <input
+          type="number"
+          value={formData.tratamiento.duracion}
+          onChange={(e) => setFormData({ ...formData, tratamiento: { ...formData.tratamiento, duracion: e.target.value } })}
+          placeholder="Duración en días"
+          className="input-duracion"
+        />
+      </label>
+
       <button type="button" onClick={agregarMedicamento} className="btn-agregar">Agregar</button>
 
       <div className="medicamentos-seleccionados">
@@ -199,7 +213,7 @@ const FormularioTratamiento = () => {
         <div className="medicamentos-lista">
           {medicamentosSeleccionados.map(medicamento => (
             <div key={medicamento.nombre} className="medicamento-item">
-              <span>{medicamento.nombre} ({medicamento.dosis}) - Método: {medicamento.metodoAdministracion}</span>
+              <span>{medicamento.nombre} ({medicamento.dosis}) - Método: {medicamento.metodoAdministracion} - Duración: {medicamento.duracion} días</span>
               <button type="button" onClick={() => eliminarMedicamento(medicamento)} className="btn-eliminar">Eliminar</button>
             </div>
           ))}

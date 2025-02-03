@@ -260,18 +260,15 @@ body {
 /* Para pantallas de menos de 768px (tabletas y móviles) */
 @media (max-width: 768px) {
   .main-container .sidebar {
-    width: 100%;
-    position: relative;
-    height: auto;
-    padding: 20px;
-    box-shadow: none;
+    display: none; /* Eliminar la barra lateral */
   }
   .main-container .form-container {
-    margin-left: 0;
+    margin-left: 0; /* Quitar el margen izquierdo */
     padding: 20px;
+    width: 100%; /* Hacer el formulario de ancho completo */
   }
   .main-container form {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Colocar los campos en una sola columna */
   }
   .main-container .button-group {
     flex-direction: column;
@@ -282,19 +279,14 @@ body {
 /* Para pantallas de menos de 480px (móviles pequeños) */
 @media (max-width: 480px) {
   .main-container .sidebar {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    top: auto;
-    left: 0;
-    z-index: 15;
+    display: none; /* Eliminar la barra lateral */
   }
   .main-container .form-container {
     margin-left: 0;
     padding: 10px;
   }
   .main-container form {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Colocar los campos en una sola columna */
   }
   .main-container .button-group {
     flex-direction: column;

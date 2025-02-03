@@ -96,6 +96,127 @@
     background-color: #fff;
 }
 
+/* Estilos para botones */
+.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 5px;
+    color: white;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+}
+
+/* Botón primario */
+.button-primary {
+    background-color: #3da07a; /* Verde */
+}
+
+.button-primary:hover {
+    background-color: #2f7d5f;
+}
+
+/* Botón secundario */
+.button-secondary {
+    background-color: #6c757d; /* Gris */
+}
+
+.button-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Botón de éxito */
+.button-success {
+    background-color: #28a745; /* Verde más claro */
+}
+
+.button-success:hover {
+    background-color: #218838;
+}
+
+/* Botón de peligro */
+.button-danger {
+    background-color: #dc3545; /* Rojo */
+}
+
+.button-danger:hover {
+    background-color: #c82333;
+}
+
+/* Botón de advertencia */
+.button-warning {
+    background-color: #ffc107; /* Amarillo */
+    color: #333;
+}
+
+.button-warning:hover {
+    background-color: #e0a800;
+}
+
+/* Botón de información */
+.button-info {
+    background-color: #17a2b8; /* Azul claro */
+}
+
+.button-info:hover {
+    background-color: #138496;
+}
+
+/* Botón de acción alternativa */
+.button-alternative {
+    background-color: #6610f2; /* Morado */
+}
+
+.button-alternative:hover {
+    background-color: #560ac2;
+}
+
+/* Modal de confirmación */
+.confirmation-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.confirmation-modal p {
+    margin-bottom: 20px;
+}
+
+.confirmation-modal button {
+    margin-right: 10px;
+}
+
+/* Estilos para botones en el modal */
+.confirmation-modal .button-confirm {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+.confirmation-modal .button-confirm:hover {
+    background-color: #218838;
+}
+
+.confirmation-modal .button-cancel {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+}
+
+.confirmation-modal .button-cancel:hover {
+    background-color: #c82333;
+}
+
 /* Media Queries */
 @media (max-width: 1024px) {
     .title-enfermera {

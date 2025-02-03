@@ -1,44 +1,44 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    height: 100%; /* Asegura que el body y el html ocupen toda la pantalla */
-}
-
+/* Contenedor Principal */
 .login-container {
     display: flex;
     height: 100vh; /* Asegura que el contenedor ocupe la altura completa de la pantalla */
     width: 100vw; /* Asegura que ocupe el ancho completo */
 }
 
+/* Sección de Imagen */
 .image-section {
     flex: 1;
     background: url('../img2/v2_10546.png') no-repeat center center;
     background-size: cover;
+    min-height: 100vh; /* Asegura que la imagen cubra toda la pantalla */
 }
 
+/* Sección del Formulario */
 .form-section {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
+/* Contenedor del formulario de inicio de sesión */
 .contenedor-login {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%; /* Asegura que ocupe todo el ancho */
+    width: 100%;
     padding: 20px;
 }
 
+/* Título */
 h1 {
     color: #3da07b;
     margin-bottom: 20px;
 }
 
+/* Estilo del formulario */
 .formulario {
     max-width: 450px; /* Mantiene un tamaño cómodo para el formulario */
     width: 100%;
@@ -47,8 +47,10 @@ h1 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin: 20px auto;
+    background-color: #fff; /* Fondo blanco para el formulario */
 }
 
+/* Estilo de las etiquetas del formulario */
 .formulario label {
     display: block;
     margin-bottom: 10px;
@@ -57,6 +59,7 @@ h1 {
     font-size: 14px;
 }
 
+/* Estilo de los campos de entrada */
 .formulario input {
     width: 100%;
     padding: 12px;
@@ -66,6 +69,7 @@ h1 {
     font-size: 14px;
 }
 
+/* Estilo del botón */
 .formulario button {
     padding: 12px;
     width: 100%;
@@ -77,10 +81,12 @@ h1 {
     font-size: 16px;
 }
 
+/* Efecto Hover en el botón */
 .formulario button:hover {
     background-color: #2e7b5e;
 }
 
+/* Sección "Recordarme" */
 .seccion-recordar {
     display: flex;
     justify-content: space-between;
@@ -88,10 +94,12 @@ h1 {
     margin: 15px 0;
 }
 
+/* Estilo del input de la sección "Recordar" */
 .seccion-recordar input {
     margin-right: 5px;
 }
 
+/* Estilo del enlace de "Olvidé mi contraseña" */
 .olvido-contrasena {
     font-size: 12px;
     color: #555;
@@ -99,6 +107,7 @@ h1 {
     cursor: pointer;
 }
 
+/* Mensaje de carga */
 .loading {
     color: #888;
     font-size: 14px;
@@ -106,7 +115,157 @@ h1 {
     margin-top: 10px;
 }
 
+/* Estilo para los botones deshabilitados */
 button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+/* Media Queries para Responsividad */
+
+/* Computadoras grandes */
+@media (max-width: 1280px) {
+    .formulario {
+        padding: 30px; /* Reduce el padding en pantallas grandes */
+    }
+}
+
+/* Tabletas (768px a 1024px) */
+@media (max-width: 1024px) {
+    .login-container {
+        flex-direction: column; /* Pone las secciones una debajo de la otra */
+    }
+
+    .image-section {
+        height: 250px; /* Reduce la altura de la imagen */
+    }
+
+    .form-section {
+        padding: 30px 15px; /* Añade más espacio alrededor del formulario */
+    }
+
+    .formulario {
+        max-width: 400px; /* Reduce el tamaño máximo del formulario */
+    }
+
+    .contenedor-login {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em; /* Ajusta el tamaño del título */
+    }
+
+    .formulario input {
+        font-size: 16px; /* Aumenta el tamaño de los campos de entrada */
+    }
+
+    .formulario button {
+        font-size: 18px; /* Aumenta el tamaño del botón */
+    }
+
+    .seccion-recordar {
+        flex-direction: column; /* Coloca los elementos uno debajo del otro */
+        align-items: flex-start;
+    }
+
+    .seccion-recordar input {
+        margin-bottom: 10px;
+    }
+}
+
+/* Tabletas pequeñas y móviles (menos de 768px) */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .image-section {
+        display: none; /* Oculta la imagen en dispositivos móviles */
+    }
+
+    .form-section {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .formulario {
+        max-width: 350px; /* Ajusta el tamaño del formulario */
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 1.5em; /* Ajusta el tamaño del título */
+    }
+
+    .formulario label {
+        font-size: 16px; /* Ajusta el tamaño de las etiquetas */
+    }
+
+    .formulario input {
+        font-size: 16px; /* Aumenta el tamaño de los campos de entrada */
+        padding: 14px;
+    }
+
+    .formulario button {
+        font-size: 18px; /* Aumenta el tamaño del botón */
+        padding: 14px;
+    }
+
+    .seccion-recordar {
+        flex-direction: column; /* Pone los elementos uno debajo del otro */
+        margin: 10px 0;
+    }
+
+    .seccion-recordar input {
+        margin-right: 0;
+    }
+
+    .olvido-contrasena {
+        font-size: 14px; /* Aumenta el tamaño del texto del enlace */
+    }
+
+    .loading {
+        font-size: 16px; /* Aumenta el tamaño del texto de carga */
+    }
+}
+
+/* Móviles (menos de 480px) */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 10px;
+    }
+
+    .image-section {
+        display: none; /* Oculta la imagen en dispositivos más pequeños */
+    }
+
+    .formulario {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+    }
+
+    .formulario input,
+    .formulario button {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    .formulario button {
+        font-size: 18px;
+    }
+
+    .seccion-recordar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .olvido-contrasena {
+        font-size: 14px;
+    }
 }

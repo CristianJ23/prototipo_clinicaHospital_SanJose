@@ -48,8 +48,11 @@ const RegistroHistoria = ({ onCancel }) => {
       observacion: "",
     },
     tratamiento: {
-      medicamentos: [],  // Ahora es un array de objetos
-    },
+      medicamentos: "",
+      metodoAdministracion: "",
+      duracion: "", // Nuevo campo para la duración
+      medicamentosSeleccionados: []
+    }
   });
 
 
@@ -124,21 +127,23 @@ const RegistroHistoria = ({ onCancel }) => {
     const medicamentoExistente = medicamentosSeleccionados.some(
       (medicamento) => medicamento.nombre.toLowerCase() === formData.tratamiento.medicamentos.toLowerCase()
     );
-
+  
     if (!medicamentoExistente && formData.tratamiento.medicamentos !== "") {
       const medicamento = obtenerMedicamentoPorNombre(formData.tratamiento.medicamentos);
       if (medicamento) {
         const nuevoMedicamento = {
           ...medicamento,
-          metodoAdministracion: formData.tratamiento.metodoAdministracion,  // Asociar el método
+          metodoAdministracion: formData.tratamiento.metodoAdministracion,
+          duracion: formData.tratamiento.duracion, // Se añade duración
         };
+        
         setMedicamentosSeleccionados([...medicamentosSeleccionados, nuevoMedicamento]);
         setFormData({
           ...formData,
           tratamiento: {
-            ...formData.tratamiento,
             medicamentos: "",
             metodoAdministracion: "",
+            duracion: "", // Limpiar campo después de agregar
           },
         });
       } else {
@@ -252,8 +257,8 @@ const RegistroHistoria = ({ onCancel }) => {
 
   try {
     // ID de la historia clínica
-  let historiaClinicaId = null;
-	let planTratamientoId = null; // Variable para almacenar el ID del plan de tratamiento
+    let historiaClinicaId = null;
+    let planTratamientoId = null; // Variable para almacenar el ID del plan de tratamiento
 
     const updatedFormData = {
       ...formData,
@@ -261,7 +266,7 @@ const RegistroHistoria = ({ onCancel }) => {
     };
 
     console.log("id del paciene", paciente.id_paciente);
-    console.log(updatedFormData)
+    console.log(updatedFormData);
 
     // 1. Crear la Historia Clínica (primero se necesita para obtener su ID)
     const historiaResponse = await fetch("http://localhost:8000/kriss/crear_historia_clinica", {
@@ -273,14 +278,13 @@ const RegistroHistoria = ({ onCancel }) => {
         tratamiento: undefined, // No incluir el tratamiento aún
       }),
     });
-    // console.log("hisotria: ", formData);
 
     if (!historiaResponse.ok) {
       throw new Error("Error al crear historia clínica");
     }
     const historiaResult = await historiaResponse.json();
     historiaClinicaId = historiaResult.id_historia; // Asegúrate de recibir este campo del backend
-	
+
     // 2. Crear el Plan de Tratamiento
     const planTratamientoData = {
       id_historia: historiaResult.id_historia, // Cambiar 'historiaClinicaId' por 'id_historia'
@@ -288,7 +292,6 @@ const RegistroHistoria = ({ onCancel }) => {
       fecha_fin: null, // Fecha de fin como null
       estado: 'ACTIVO', // O 'TERMINADO' dependiendo de lo que sea apropiado
     };
-    
 
     const planTratamientoResponse = await fetch("http://localhost:8000/kriss/crear_plan_tratamiento", {
       method: "POST",
@@ -303,12 +306,13 @@ const RegistroHistoria = ({ onCancel }) => {
     const planTratamientoResult = await planTratamientoResponse.json();
     planTratamientoId = planTratamientoResult.id_plan_tratamiento; // ID del plan de tratamiento creado
 
-    // 2. Crear Tratamientos asociados a la historia
+    // 3. Crear Tratamientos asociados a la historia
     for (const medicamento of medicamentosSeleccionados) {
       const tratamientoData = {
-        medicamentos: medicamento.nombre, // Nombre del medicamento
+        medicamentos: medicamento.nombre,
         metodoAdministracion: medicamento.metodoAdministracion,
-        id_plan_tratamiento: planTratamientoId, // ID del plan de tratamiento recién creado
+        duracion: medicamento.duracion, // Nuevo campo
+        id_plan_tratamiento: planTratamientoId,
       };
 
       const tratamientoResponse = await fetch("http://localhost:8000/kriss/tratamiento", {
@@ -328,7 +332,7 @@ const RegistroHistoria = ({ onCancel }) => {
     // Reiniciar el formulario
     setFormData({
       ...formData,
-      tratamiento: { medicamentos: [], metodoAdministracion: "" },
+      tratamiento: { medicamentos: [], metodoAdministracion: "", duracion: "" },
     });
     setMedicamentosSeleccionados([]);
 
@@ -337,7 +341,6 @@ const RegistroHistoria = ({ onCancel }) => {
     alert("Ocurrió un error al guardar los datos.");
   }
 };
-
 
   const examenesFisicos = [
     "cabeza",
@@ -594,7 +597,7 @@ const RegistroHistoria = ({ onCancel }) => {
               </div>
             )}
 
-            <button type="button" onClick={agregarMedicamento}>Agregar</button>
+            
           </label>
           <label>
             Método de Administración:
@@ -605,22 +608,35 @@ const RegistroHistoria = ({ onCancel }) => {
               onChange={(e) => handleNestedChange("tratamiento", "metodoAdministracion", e.target.value)}
               placeholder="Método de administración"
             />
+            
           </label>
+          <label>
+  Duración del tratamiento (días):
+  <input
+    type="number"
+    name="duracion"
+    value={formData.tratamiento.duracion}
+    onChange={(e) => handleNestedChange("tratamiento", "duracion", e.target.value)}
+    placeholder="Ingrese la duración en días"
+  />
+</label>
+<button type="button" onClick={agregarMedicamento}>Agregar</button>
           <div className="medicamentos-seleccionados">
-            <h3>Plan de tratamiento</h3>
-            <div className="medicamentos-lista">
-              {medicamentosSeleccionados.map((medicamento) => (
-                <div key={medicamento.nombre} className="medicamento-item">
-                  <span>
-                    {medicamento.nombre} ({medicamento.dosis}) - Método: {medicamento.metodoAdministracion}
-                  </span>
-                  <button type="button" onClick={() => eliminarMedicamento(medicamento)}>
-                    Eliminar
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
+  <h3>Plan de tratamiento</h3>
+  <div className="medicamentos-lista">
+    {medicamentosSeleccionados.map((medicamento) => (
+      <div key={medicamento.nombre} className="medicamento-item">
+        <span>
+          {medicamento.nombre} ({medicamento.dosis}) - Método: {medicamento.metodoAdministracion} - 
+          Duración: {medicamento.duracion} días
+        </span>
+        <button type="button" onClick={() => eliminarMedicamento(medicamento)}>
+          Eliminar
+        </button>
+      </div>
+    ))}
+  </div>
+</div>
 
           <h2></h2>
           <div className="form-buttons">

@@ -17,22 +17,6 @@
   transform: scale(1.02);
 }
 
-/* Títulos */
-h2, h3, h1 {
-  color: #3da07a;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-h3 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
 
 /* Contenedor de botones y formularios */
 .header {

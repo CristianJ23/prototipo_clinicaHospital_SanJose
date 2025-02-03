@@ -17,6 +17,7 @@ const CrearProceso = async (req, res) => {
                 id_enfermera: id_enfermera,
                 fecha_proceso: input.fecha_proceso,
                 hora_proceso: input.hora_proceso,
+                hora_suministro: input.hora_suministro, // Asegúrate de que esté en formato HH:MM:SS
                 medicamento: input.medicamento,
                 metodo_suministracion: input.metodo_suministracion,
                 observacion: input.observacion || "", // Campo opcional
