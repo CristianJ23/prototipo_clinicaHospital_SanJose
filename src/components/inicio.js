@@ -14,7 +14,7 @@ const Inicio = () => {
     <div className="inicio-container">
       {/* Barra de navegación */}
       <nav className="navbar">
-        <div className="logo">Clínica San Jóse</div>
+        <div className="logo">Clínica Profesional</div>
         <ul className="nav-links">
           <li onClick={() => navigate("/vista-medico")}>Vista Médico</li>
           <li onClick={() => navigate("/vista-enfermera")}>Vista Enfermera</li>
